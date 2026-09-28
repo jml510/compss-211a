@@ -10,3 +10,4 @@ def summarize_requests(requests, group_by="district"):
         .reset_index()
     )
     return summary
+
