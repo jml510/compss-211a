@@ -13,6 +13,11 @@ wandb/
 /output/
 /tmp/
 
+# Week 4 runtime files and generated reports
+/lessons/week04_reproducible-analyses/**/__pycache__/
+/lessons/week04_reproducible-analyses/outputs/*
+!/lessons/week04_reproducible-analyses/outputs/.gitkeep
+
 # Students' personal copies of course notebooks (keeps pulls conflict-free)
 *_mine.ipynb
 *-mine.ipynb

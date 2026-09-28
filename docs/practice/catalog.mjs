@@ -528,8 +528,8 @@ export const skills = [
     "weeks": "Week 4",
     "releaseWeek": 4,
     "activity": null,
-    "practice": "Lab 4: reuse the calculation and verify the result — Save a category report and compare its counts with the input.",
-    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lab/lab04_run_adapt_check.ipynb"
+    "practice": "Week 4 pair activity — Extend a function, rerun it, and check its results.",
+    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lessons/week04_reproducible-analyses/week04_pair_activity.ipynb"
   },
   {
     "id": "git-and-github",
