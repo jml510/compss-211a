@@ -139,6 +139,8 @@ html,body{overflow-x:clip}
 .rise,.reveal,.fade{opacity:1!important;transform:none!important;animation:none!important}
 h2 .step{color:var(--berkeley)}
 footer{background:var(--berkeley);color:rgba(255,255,255,.85);margin:44px calc(50% - 50vw) 0;padding:20px calc(50vw - 50%) 26px;border-top:0}
+/* Cards for later weeks stay hidden until their week starts (see the script at the end). */
+.card[data-open]:not(.is-open){display:none}
 </style>
 </head>
 <body>
@@ -163,7 +165,7 @@ footer{background:var(--berkeley);color:rgba(255,255,255,.85);margin:44px calc(5
 <hr class="rule rise d4">
 
 <section class="howto rise d5" aria-label="How to use these">
-  <div><b><span class="n">1</span>Pick your week</b>Open the page for the current week, ideally before Friday’s discussion.</div>
+  <div><b><span class="n">1</span>Pick your week</b>Open the page for the current week, ideally before Friday’s discussion. New pages appear here when their week starts.</div>
   <div><b><span class="n">2</span>Answer before you check</b>When a question appears, pick an answer before revealing it. Wrong answers here cost nothing.</div>
   <div><b><span class="n">3</span>Read the recap</b>Each page ends with a short summary in the same terms as the quiz and the lab.</div>
 </section>
@@ -176,39 +178,55 @@ footer{background:var(--berkeley);color:rgba(255,255,255,.85);margin:44px calc(5
     <span class="quiz">includes: weekly skill checklist &middot; direct practice links &middot; progress backup</span>
     <span class="go">Open</span>
   </a>
-  <a class="card rise d5" href="interactives/week03-how-git-thinks.html">
+  <a class="card rise d5" data-open="2026-09-21T00:00:00-07:00" href="interactives/week03-how-git-thinks.html">
     <span class="meta"><span class="week">Week 3</span><span class="mins">≈ 6 min + optional tabs</span></span>
-    <h2>How Git Thinks</h2>
+    <h2>How Git thinks</h2>
     <p>Which copy of a repository changes when you save, check, commit, push, and pull: working directory, staging area, local repository, GitHub. Optional tabs cover a refused push, branches and pull requests, a merge conflict, and GitHub Pages.</p>
     <span class="quiz">pairs with: GitHub Desktop &middot; Lab 3 &middot; HW2 &middot; project repo</span>
     <span class="go">Open</span>
   </a>
 
-  <a class="card rise d6" href="interactives/week04-terminal-navigator.html">
+  <a class="card rise d6" data-open="2026-09-28T00:00:00-07:00" href="interactives/week04-terminal-navigator.html">
     <span class="meta"><span class="week">Week 4</span><span class="mins">≈ 14 min</span></span>
-    <h2>Terminal Navigator</h2>
-    <p>A simulated shell that cannot touch your real files. Navigate a small project, see why a script runs from one folder but fails from another, then create, copy, move, and delete files.</p>
+    <h2>Terminal navigator</h2>
+    <p>A practice shell that cannot touch your real files. Move around a small project, see why a script runs from one folder but fails from another, and create, copy, move, and delete files. Then try the same steps in a real terminal with real Python.</p>
     <span class="quiz">pairs with: command line &middot; relative paths &middot; mv and rm</span>
     <span class="go">Open</span>
   </a>
 
-  <a class="card rise d7" href="interactives/week05-one-dataset-four-formats.html">
+  <a class="card rise d7" data-open="2026-10-05T00:00:00-07:00" href="interactives/week05-one-dataset-four-formats.html">
     <span class="meta"><span class="week">Week 5</span><span class="mins">≈ 7 min</span></span>
-    <h2>One Dataset, Four Formats</h2>
+    <h2>One dataset, four formats</h2>
     <p>The same records in CSV, TSV, JSON, and XML. Click a value to find it in each format, then work through the comma trap, the leading zero, and three kinds of missing values.</p>
     <span class="quiz">pairs with: structured data &middot; reconciliation &middot; HW3</span>
     <span class="go">Open</span>
   </a>
 
-  <a class="card rise d7" href="interactives/week06-understanding-web-apis.html">
+  <a class="card rise d7" data-open="2026-10-05T00:00:00-07:00" href="interactives/week05-pandas-sql.html">
+    <span class="meta"><span class="week">Week 5</span><span class="mins">≈ 8–10 min</span></span>
+    <h2>Do these queries answer the same question?</h2>
+    <p>Follow six requests through pandas and SQL, and see how missing values and a repeated lookup row can change a count without any error.</p>
+    <span class="quiz">pairs with: structured data &middot; SQL &middot; joins</span>
+    <span class="go">Open</span>
+  </a>
+
+  <a class="card rise d7" data-open="2026-10-05T00:00:00-07:00" href="interactives/week05-sql-practice.html">
+    <span class="meta"><span class="week">Week 5 · optional</span><span class="mins">30–45 min</span></span>
+    <h2>SQL interview practice</h2>
+    <p>Ten questions like the ones in analyst job interviews, on real San Francisco 311 data. Write SQL, run it in your browser, and check your answer. You can also answer each question in pandas.</p>
+    <span class="quiz">pairs with: SQL &middot; pandas &middot; job interviews</span>
+    <span class="go">Open</span>
+  </a>
+
+  <a class="card rise d7" data-open="2026-10-12T00:00:00-07:00" href="interactives/week06-understanding-web-apis.html">
     <span class="meta"><span class="week">Week 6</span><span class="mins">≈ 8 min</span></span>
-    <h2>Understanding Web APIs</h2>
+    <h2>Understanding web APIs</h2>
     <p>Build a bounded OpenAlex-style request, read the response starting from the status code, page with cursors, handle a 429, and keep your API key out of the URL.</p>
     <span class="quiz">pairs with: web APIs &middot; pagination &middot; HW3</span>
     <span class="go">Open</span>
   </a>
 
-  <a class="card rise d8" href="interactives/week08-understanding-tf-idf.html">
+  <a class="card rise d8" data-open="2026-10-26T00:00:00-07:00" href="interactives/week08-understanding-tf-idf.html">
     <span class="meta"><span class="week">Week 8</span><span class="mins">≈ 8 min</span></span>
     <h2>Understanding TF-IDF</h2>
     <p>Four campus comments become tokens, counts, and TF-IDF weights as you type. Flip the preprocessing switches and watch the top terms change.</p>
@@ -216,9 +234,9 @@ footer{background:var(--berkeley);color:rgba(255,255,255,.85);margin:44px calc(5
     <span class="go">Open</span>
   </a>
 
-  <a class="card rise d8" href="interactives/week09-how-computers-learn-word-meanings.html">
+  <a class="card rise d8" data-open="2026-11-02T00:00:00-08:00" href="interactives/week09-how-computers-learn-word-meanings.html">
     <span class="meta"><span class="week">Week 9</span><span class="mins">≈ 8 min</span></span>
-    <h2>How Computers Learn Word Meanings</h2>
+    <h2>How computers learn word meanings</h2>
     <p>Words as positions, similarity as angles. Compare words, average them into documents, run a small KMeans, and see why you read a cluster before naming it.</p>
     <span class="quiz">pairs with: embeddings &middot; clustering &middot; lab 9</span>
     <span class="go">Open</span>
@@ -226,10 +244,10 @@ footer{background:var(--berkeley);color:rgba(255,255,255,.85);margin:44px calc(5
 </main>
 
 <aside class="note rise d9">
-  <b>About the data.</b> These pages simulate workflows so you can experiment without
-  accounts or API keys. Most use synthetic examples. Understanding Python Scripts
-  uses report summaries calculated from the lesson’s real San Francisco 311 extract;
-  that page explains the source and preparation. No activity changes your real files.
+  <b>About the data.</b> Most pages use small made-up examples so you can experiment
+  without accounts or API keys. Some sections run real Python in your browser, and the
+  Week 6 page can send a real request to OpenAlex. Those sections need an internet
+  connection. No activity can change the files on your computer.
 </aside>
 
 <footer class="rise d9">
@@ -237,5 +255,15 @@ footer{background:var(--berkeley);color:rgba(255,255,255,.85);margin:44px calc(5
 </footer>
 
 </div>
+<script>
+/* Show a week's cards from Monday 00:00 Pacific of that week. Add ?preview to the URL to see every card. */
+(function () {
+  var now = new Date();
+  var preview = /[?&]preview\b/.test(location.search);
+  document.querySelectorAll(".card[data-open]").forEach(function (card) {
+    if (preview || now >= new Date(card.getAttribute("data-open"))) card.classList.add("is-open");
+  });
+})();
+</script>
 </body>
 </html>

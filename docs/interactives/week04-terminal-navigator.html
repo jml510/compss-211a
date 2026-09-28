@@ -1046,6 +1046,10 @@ function cmdPwd(){
   emit('pwd');
 }
 
+function cmdWhoami(){
+  out(HOME[HOME.length - 1]);
+}
+
 function cmdCd(argv){
   if (argv.length > 2){ outErr('cd: too many arguments'); return; }
   var target = argv[1];
@@ -1171,6 +1175,52 @@ function cmdCat(argv){
     var lines = readFileLines(argv[i], 'cat');
     if (lines) lines.forEach(function(l){ out(l); });
   }
+}
+
+/* grep and wc read files without counting as a mission step. */
+function readFileQuiet(t, cmdName){
+  var node = getNode(resolvePath(t));
+  if (!node){ outErr(cmdName + ': ' + t + ': No such file or directory'); return null; }
+  if (node.type !== 'file'){ outErr(cmdName + ': ' + t + ': Is a directory'); return null; }
+  return node.content;
+}
+
+function cmdGrep(argv){
+  var parsed = splitFlags(argv);
+  if (parsed.operands.length < 2){ outErr('usage: grep [-i] [-c] [-n] pattern file ...'); return; }
+  var pattern = parsed.operands[0], files = parsed.operands.slice(1);
+  var ignoreCase = parsed.flags.has('i'), countOnly = parsed.flags.has('c'), numbers = parsed.flags.has('n');
+  var needle = ignoreCase ? pattern.toLowerCase() : pattern;
+  files.forEach(function(t){
+    var text = readFileQuiet(t, 'grep');
+    if (text === null) return;
+    var lines = text.replace(/\n$/, '').split('\n');
+    var prefix = files.length > 1 ? t + ':' : '';
+    var hits = 0;
+    lines.forEach(function(line, i){
+      var hay = ignoreCase ? line.toLowerCase() : line;
+      if (hay.indexOf(needle) >= 0){
+        hits++;
+        if (!countOnly) out(prefix + (numbers ? (i + 1) + ':' : '') + line);
+      }
+    });
+    if (countOnly) out(prefix + hits);
+  });
+}
+
+function cmdWc(argv){
+  var parsed = splitFlags(argv);
+  if (!parsed.operands.length){ outNote('wc: give it a file path, like wc -l data/sample.csv'); return; }
+  var linesOnly = parsed.flags.has('l');
+  parsed.operands.forEach(function(t){
+    var text = readFileQuiet(t, 'wc');
+    if (text === null) return;
+    var newlines = (text.match(/\n/g) || []).length;
+    var words = text.split(/\s+/).filter(Boolean).length;
+    var bytes = new Blob([text]).size;
+    var pad = function(n){ return String(n).padStart(8); };
+    out(linesOnly ? pad(newlines) + ' ' + t : pad(newlines) + pad(words) + pad(bytes) + ' ' + t);
+  });
 }
 
 function parseHeadTail(argv, cmdName){
@@ -1426,11 +1476,14 @@ function cmdClear(){
 function cmdHelp(){
   var rows = [
     ['pwd',                 'print the working directory'],
+    ['whoami',              'print your username'],
     ['ls [-lah] [path]',    'list a directory (-a also shows hidden files)'],
     ['cd [path]',           'change directory: a path, .., ~, or - for the previous one'],
     ['cat <file>',          'print a whole file'],
     ['head [-n N] <file>',  'first lines of a file (default 3)'],
     ['tail [-n N] <file>',  'last lines of a file (default 3)'],
+    ['wc -l <file>',        'count the lines in a file'],
+    ['grep <text> <file>',  'show lines containing the text (-i ignore case, -c count, -n numbers)'],
     ['mkdir [-p] <name>',   'make a directory'],
     ['mv <src> <dst>',      'move or rename; an existing file at dst is replaced'],
     ['cp <src> <dst>',      'copy a file; an existing file at dst is replaced'],
@@ -1523,7 +1576,6 @@ function cmdReset(){
 
 /* Real commands that exist in a real shell but are out of scope here. */
 var NOT_INCLUDED = {
-  'grep':'searches inside files', 'wc':'counts lines, words, and bytes',
   'find':'searches for files by name or type', 'less':'pages through a long file',
   'more':'pages through a long file', 'man':'opens a manual page',
   'nano':'opens a terminal text editor', 'vim':'opens a terminal text editor',
@@ -1533,7 +1585,7 @@ var NOT_INCLUDED = {
   'sudo':'runs a command as an administrator', 'ps':'lists processes',
   'which':'locates a program', 'pip':'installs Python packages',
   'jupyter':'starts a notebook server', 'exit':'closes a real shell session',
-  'whoami':'prints your username', 'git':'manages version history',
+  'git':'manages version history',
   'mkdir-p':''
 };
 
@@ -1564,15 +1616,15 @@ function tokenize(raw){
 }
 
 var HANDLERS = {
-  'pwd': cmdPwd, 'ls': cmdLs, 'cd': cmdCd, 'cat': cmdCat,
-  'head': cmdHead, 'tail': cmdTail, 'mkdir': cmdMkdir,
+  'pwd': cmdPwd, 'whoami': cmdWhoami, 'ls': cmdLs, 'cd': cmdCd, 'cat': cmdCat,
+  'head': cmdHead, 'tail': cmdTail, 'grep': cmdGrep, 'wc': cmdWc, 'mkdir': cmdMkdir,
   'mv': cmdMv, 'cp': cmdCp, 'touch': cmdTouch,
   'python3': cmdPython, 'echo': cmdEcho,
   'history': cmdHistory, 'clear': cmdClear, 'help': cmdHelp,
   'rm': cmdRm, 'rmdir': cmdRmdir, 'reset': cmdReset
 };
 
-var COMMAND_NAMES = ['pwd','ls','cd','cat','head','tail','mkdir','mv','cp','touch','rm','rmdir','python3','reset','echo','history','clear','help'];
+var COMMAND_NAMES = ['pwd','whoami','ls','cd','cat','head','tail','grep','wc','mkdir','mv','cp','touch','rm','rmdir','python3','reset','echo','history','clear','help'];
 
 function execute(raw){
   echoCommand(raw);

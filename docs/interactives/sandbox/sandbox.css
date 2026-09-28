@@ -26,3 +26,4 @@
 @media(max-width:720px){.sbx-term .sbx-screen{height:300px;font-size:12px}.sbx-code{font-size:12.5px}}
 .sbx-editor{border-top:1px solid #CBD4E1}
 .sbx-editor .sbx-code{min-height:220px;border-bottom:0}
+.sbx-term .sbx-new{color:#9FE0B0}

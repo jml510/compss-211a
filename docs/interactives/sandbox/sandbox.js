@@ -206,7 +206,7 @@ def _sandbox_run_cell(code, namespace, root):
     const packages = opts.packages || [];
     const files = opts.files || {};
     const user = opts.user || "you", host = opts.host || "laptop";
-    let cwd = root, FS = null, ready = null;
+    let cwd = root, prevCwd = null, FS = null, ready = null;
     const history = []; let histPos = 0;
 
     el.classList.add("sbx", "sbx-term");
@@ -252,16 +252,56 @@ def _sandbox_run_cell(code, namespace, root):
       return ready;
     }
 
+    const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    function longLine(path, name, human) {
+      const st = FS.stat(path), dir = FS.isDir(st.mode), d = new Date(st.mtime);
+      let size = String(dir ? 64 : st.size);
+      if (human && !dir) size = st.size < 1024 ? `${st.size}B` : st.size < 1048576 ? `${(st.size / 1024).toFixed(st.size < 10240 ? 1 : 0)}K` : `${(st.size / 1048576).toFixed(1)}M`;
+      const when = `${MONTHS[d.getMonth()]} ${String(d.getDate()).padStart(2)} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+      const shown = dir ? `<span class="sbx-dir">${esc(name)}</span>` : esc(name);
+      return esc(`${dir ? "drwxr-xr-x" : "-rw-r--r--"}  1 ${user}  staff  ${size.padStart(6)} ${when} `) + shown;
+    }
+
+    // Line-by-line comparison in the same format as the diff command on a Mac.
+    function diffLines(a, b) {
+      const A = a.replace(/\n$/, "").split("\n"), B = b.replace(/\n$/, "").split("\n");
+      if (A.length * B.length > 4000000) return null;
+      const n = A.length, m = B.length;
+      const L = Array.from({length: n + 1}, () => new Int32Array(m + 1));
+      for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--)
+        L[i][j] = A[i] === B[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+      const out = [], range = (s, e) => s === e ? `${s}` : `${s},${e}`;
+      let i = 0, j = 0;
+      while (i < n || j < m) {
+        if (i < n && j < m && A[i] === B[j]) { i++; j++; continue; }
+        const i0 = i, j0 = j;
+        while ((i < n || j < m) && !(i < n && j < m && A[i] === B[j])) {
+          if (j >= m || (i < n && L[i + 1][j] >= L[i][j + 1])) i++; else j++;
+        }
+        const dels = A.slice(i0, i), adds = B.slice(j0, j);
+        if (dels.length && adds.length) out.push(`${range(i0 + 1, i)}c${range(j0 + 1, j)}`);
+        else if (dels.length) out.push(`${range(i0 + 1, i)}d${j0}`);
+        else out.push(`${i0}a${range(j0 + 1, j)}`);
+        dels.forEach(l => out.push("< " + l));
+        if (dels.length && adds.length) out.push("---");
+        adds.forEach(l => out.push("> " + l));
+      }
+      return out;
+    }
+
     const commands = {
       help() {
         println([
           "pwd                 show the folder you are in",
-          "ls [-a] [folder]    list what is in a folder",
-          "cd [folder]         move to another folder (cd .. goes up one)",
+          "whoami              show your username",
+          "ls [-alh] [folder]  list what is in a folder (-a hidden files, -l details, -h readable sizes)",
+          "cd [folder]         move to another folder (cd .. goes up one, cd - goes back)",
           "cat FILE            print a whole file",
           "head [-n N] FILE    print the first lines of a file (10 unless you give -n)",
           "tail [-n N] FILE    print the last lines of a file",
           "wc -l FILE          count the lines in a file",
+          "grep TEXT FILE      show lines containing TEXT (-i ignore case, -c count, -n line numbers)",
+          "diff FILE1 FILE2    show the lines that differ between two files",
           "mkdir [-p] FOLDER   make a folder",
           "touch FILE          make an empty file",
           "cp FROM TO          copy a file",
@@ -269,30 +309,83 @@ def _sandbox_run_cell(code, namespace, root):
           "rm [-r] PATH        delete a file (-r for a folder)",
           "echo TEXT           print text",
           "edit FILE           open a file in the editor below (nano and code work too)",
-          "python FILE.py      run a Python script (python3 works too)",
+          "python FILE.py      run a Python script (python3 and uv run python work too)",
+          "history             list the commands you have typed",
           "clear               clear the screen",
           "reset               put every file back the way it started"].join("\n"));
       },
       pwd() { println(cwd); },
+      whoami() { println(user); },
       ls(args) {
-        const showAll = args.includes("-a") || args.includes("-la") || args.includes("-al");
+        const flags = new Set(args.filter(a => a.startsWith("-")).join("").replace(/-/g, ""));
+        const showAll = flags.has("a"), long = flags.has("l"), human = flags.has("h");
         const targets = args.filter(a => !a.startsWith("-"));
         const list = targets.length ? targets : ["."];
         list.forEach((t, i) => {
           const p = resolve(t);
           if (!exists(FS, p)) return println(`ls: ${t}: No such file or directory`, "sbx-err");
-          if (!isDir(FS, p)) return println(t);
+          if (!isDir(FS, p)) return long ? log.insertAdjacentHTML("beforeend", longLine(p, t, human) + "\n") : println(t);
           if (list.length > 1) println((i ? "\n" : "") + t + ":");
           const names = FS.readdir(p).filter(n => n !== "." && n !== ".." && (showAll || !n.startsWith("."))).sort();
           if (showAll) names.unshift(".", "..");
+          if (long) {
+            println(`total ${names.length}`);
+            log.insertAdjacentHTML("beforeend", names.map(n => longLine(p + "/" + n, n, human)).join("\n") + (names.length ? "\n" : ""));
+            return;
+          }
           log.insertAdjacentHTML("beforeend", names.map(n => isDir(FS, p + "/" + n) ? `<span class="sbx-dir">${esc(n)}</span>` : esc(n)).join("  ") + (names.length ? "\n" : ""));
         });
       },
       cd(args) {
+        if (args[0] === "-") {
+          if (!prevCwd || !exists(FS, prevCwd)) return println("cd: no previous directory", "sbx-err");
+          [cwd, prevCwd] = [prevCwd, cwd];
+          return println(cwd === home || cwd.startsWith(home + "/") ? "~" + cwd.slice(home.length) : cwd);
+        }
         const target = args[0] ? resolve(args[0]) : home;
         if (!exists(FS, target)) return println(`cd: no such file or directory: ${args[0]}`, "sbx-err");
         if (!isDir(FS, target)) return println(`cd: not a directory: ${args[0]}`, "sbx-err");
+        if (target !== cwd) prevCwd = cwd;
         cwd = target;
+      },
+      grep(args) {
+        const flags = new Set(args.filter(a => /^-[a-zA-Z]+$/.test(a)).join("").replace(/-/g, ""));
+        const rest = args.filter(a => !/^-[a-zA-Z]+$/.test(a));
+        if (rest.length < 2) return println("usage: grep [-i] [-c] [-n] TEXT FILE ...", "sbx-err");
+        const [pattern, ...fileArgs] = rest;
+        const needle = flags.has("i") ? pattern.toLowerCase() : pattern;
+        for (const f of fileArgs) {
+          const p = resolve(f);
+          if (!exists(FS, p)) { println(`grep: ${f}: No such file or directory`, "sbx-err"); continue; }
+          if (isDir(FS, p)) { println(`grep: ${f}: Is a directory`, "sbx-err"); continue; }
+          const lines = FS.readFile(p, {encoding: "utf8"}).replace(/\n$/, "").split("\n");
+          const prefix = fileArgs.length > 1 ? f + ":" : "";
+          let hits = 0;
+          lines.forEach((line, i) => {
+            if ((flags.has("i") ? line.toLowerCase() : line).includes(needle)) {
+              hits++;
+              if (!flags.has("c")) println(prefix + (flags.has("n") ? `${i + 1}:` : "") + line);
+            }
+          });
+          if (flags.has("c")) println(prefix + hits);
+        }
+      },
+      diff(args) {
+        const files = args.filter(a => !a.startsWith("-"));
+        if (files.length !== 2) return println("usage: diff FILE1 FILE2", "sbx-err");
+        const texts = [];
+        for (const f of files) {
+          const p = resolve(f);
+          if (!exists(FS, p)) return println(`diff: ${f}: No such file or directory`, "sbx-err");
+          if (isDir(FS, p)) return println(`diff: ${f}: Is a directory`, "sbx-err");
+          texts.push(FS.readFile(p, {encoding: "utf8"}));
+        }
+        const out = diffLines(texts[0], texts[1]);
+        if (out === null) return println("diff: these files are too long to compare in this sandbox", "sbx-err");
+        out.forEach(line => println(line, line.startsWith("<") ? "sbx-err" : line.startsWith(">") ? "sbx-new" : ""));
+      },
+      history() {
+        history.forEach((h, i) => println(`${String(i + 1).padStart(5)}  ${h}`));
       },
       cat(args) {
         for (const a of args) {
@@ -426,6 +519,12 @@ def _sandbox_run_cell(code, namespace, root):
       try {
         await start();
         if (!FS) return;
+        if (cmd === "uv") {
+          if (args[0] === "run" && (args[1] === "python" || args[1] === "python3")) await commands.python(args.slice(2));
+          else if (args[0] === "sync") println("Nothing to install here: Python and pandas are already set up. On your own computer, uv sync installs the course's packages.", "sbx-dim");
+          else println("In this sandbox, uv only supports: uv run python FILE.py", "sbx-dim");
+          return;
+        }
         const fn = commands[cmd];
         if (!fn) println(`zsh: command not found: ${cmd}`, "sbx-err");
         else await fn(args);
