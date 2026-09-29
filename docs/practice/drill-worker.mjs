@@ -16,7 +16,9 @@ def _drill_run_cell(code, namespace):
         exec(compile(tree, "<cell>", "exec"), namespace)
         if last is not None:
             value = eval(compile(last, "<cell>", "eval"), namespace)
-            if value is not None:
+            if value is Ellipsis:
+                print("(... is a placeholder. Replace it with your code.)")
+            elif value is not None:
                 print(repr(value))
         return True
     except BaseException:

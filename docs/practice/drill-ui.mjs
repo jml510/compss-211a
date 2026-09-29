@@ -103,7 +103,7 @@ export function createDrills({getProgress,save,getWeek,skills,esc,title,track=()
     const id=++runId;busy={drill:d.id,mode};state.status=worker?'Running…':'Loading Python and pandas. The first run needs a download of about 30 MB.';
     if(mode==='example')delete state.example[d.id];
     try{
-      if(!worker)worker=new Worker(new URL('./drill-worker.mjs',import.meta.url),{type:'module'});
+      if(!worker)worker=new Worker(new URL('./drill-worker.mjs?v=20260929-ux',import.meta.url),{type:'module'});
       worker.onerror=()=>{if(id===runId){stop('Python could not load. Check your connection and try again.');refresh();}};
       worker.onmessage=({data})=>{
         if(data.id!==runId)return;
