@@ -8,6 +8,8 @@ import {validateEvents,activityReport,reportCSV} from '../activity-model.mjs';
 import {createActivityTracker} from '../activity-client.mjs';
 import {api,createWorker} from '../server.mjs';
 import {sqliteDatabase} from './sqlite-adapter.mjs';
+import {activityEndpoint} from '../activity-config.mjs';
+import pagesWorker from '../worker.mjs';
 globalThis.crypto??=webcrypto;
 const event=(kind,value,variant='skill')=>({id:crypto.randomUUID(),kind,value,skill:'sql-basics',variant});
 test('events strip names, code and answer text; reject unknown actions and skills',()=>{
@@ -95,4 +97,27 @@ test('client drops queued hint/solution events and ignores new openings while re
  tracker.record('hint','sql-basics','opened');tracker.record('solution','sql-basics','opened');
  await tracker.flush();tracker.stop();
  assert.deepEqual(calls[0].events.map(e=>e.kind),['check']);assert.equal(storage.length,1);
+});
+
+test('the GitHub Pages copy sends plain-text activity to an allowed separate service',async()=>{
+ const directory=mkdtempSync(join(tmpdir(),'practice-pages-'));
+ try{
+ const pages='https://macss-berkeley.github.io',env={DB:sqliteDatabase(join(directory,'events.sqlite')),CLASS_CODE:'a'.repeat(48),REPORT_KEY:'k',ALLOWED_ORIGINS:pages};
+ const e=event('check','pass'),post=(origin,body={classCode:env.CLASS_CODE,browserKey:'b'.repeat(48),events:[e]})=>pagesWorker.fetch(new Request('https://practice.workers.test/api/activity',{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8',origin,'sec-fetch-site':'cross-site'},body:JSON.stringify(body)}),env);
+ const ok=await post(pages);assert.equal(ok.status,200);assert.equal(ok.headers.get('access-control-allow-origin'),pages);assert.equal((await ok.json()).saved,1);
+ assert.equal((await post('https://evil.test')).status,403);
+ assert.equal((await post(pages,{classCode:env.CLASS_CODE,events:[e]})).status,401);
+ const preflight=await pagesWorker.fetch(new Request('https://practice.workers.test/api/activity',{method:'OPTIONS',headers:{origin:pages}}),env);
+ assert.equal(preflight.status,204);assert.equal(preflight.headers.get('access-control-allow-origin'),pages);
+ assert.equal((await pagesWorker.fetch(new Request('https://practice.workers.test/index.html'),env)).status,404);
+ const stored=await env.DB.prepare('SELECT browser_hash FROM activity_events').first();assert.notEqual(stored.browser_hash,'b'.repeat(48));
+ }finally{rmSync(directory,{recursive:true,force:true});}
+});
+test('the client sends to the configured service and does not track where none is set',async()=>{
+ assert.equal(activityEndpoint('localhost'),null);assert.equal(activityEndpoint('practice.example.site'),'');
+ const calls=[],tracker=createActivityTracker({storage:memoryStorage(),endpoint:'https://api.test',send:async(url,o)=>{calls.push([url,o]);return {ok:true,json:async()=>({saved:1})};}});
+ tracker.join('a'.repeat(48));tracker.record('check','sql-basics','pass');await tracker.flush();tracker.stop();
+ assert.equal(calls[0][0],'https://api.test/api/activity');assert.match(calls[0][1].headers['Content-Type'],/^text\/plain/);assert.equal(JSON.parse(calls[0][1].body).browserKey.length,48);
+ const offline=createActivityTracker({storage:memoryStorage(),endpoint:null,send:async()=>{throw new Error('should not send');}});
+ assert.equal(offline.join('a'.repeat(48)),false);offline.record('check','sql-basics','pass');await offline.flush();assert.equal(offline.enabled(),false);
 });

@@ -1,4 +1,5 @@
-import {createActivityTracker} from './activity-client.mjs';
+import {createActivityTracker} from './activity-client.mjs?v=20260928-pages';
+import {activityEndpoint} from './activity-config.mjs?v=20260928-pages';
 import {flashcards} from './flashcards.mjs?v=20260924-wording';
 import {createFlashcards} from './flashcard-ui.mjs?v=20260924-wording';
 import {createDrills} from './drill-ui.mjs?v=20260928-drills';
@@ -6,7 +7,7 @@ import {course,skills} from './catalog.mjs';
 import {skillChecks,checkSkillAnswer} from './skill-checks.mjs?v=20260924-wording';
 import {activities,commuters,filters,functions,debugs,checkFilter,filterExpected,checkDebug,ratingLabels,freshProgress,validateProgress,mergeProgress} from './exercises.mjs?v=20260928-drills';
 
-const tracker=createActivityTracker({onStatus:text=>{document.querySelector('#activity-status').textContent=text;}});
+const tracker=createActivityTracker({endpoint:activityEndpoint(),onStatus:text=>{document.querySelector('#activity-status').textContent=text;}});
 const classEntry=location.hash.match(/^#class\/([a-f0-9]{48})$/);
 if(classEntry){tracker.join(classEntry[1]);history.replaceState(null,'',location.pathname+'#overview');}
 tracker.start();window.addEventListener('online',tracker.flush);document.addEventListener('visibilitychange',()=>{if(document.hidden)tracker.flush();});

@@ -1,0 +1,15 @@
+# Activity API for the GitHub Pages copy of the studio. See README, "Tracking on GitHub Pages".
+name = "compss-211a-practice"
+main = "worker.mjs"
+compatibility_date = "2026-09-01"
+
+[vars]
+# Sites allowed to send activity. Secrets CLASS_CODE and REPORT_KEY are set with `wrangler secret put`.
+ALLOWED_ORIGINS = "https://macss-berkeley.github.io"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "compss-211a-practice"
+# Paste the database_id printed by `npx wrangler@4 d1 create compss-211a-practice`.
+database_id = "REPLACE_WITH_DATABASE_ID"
+migrations_dir = "drizzle"

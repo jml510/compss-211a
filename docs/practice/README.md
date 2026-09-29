@@ -76,11 +76,41 @@ drill list can show only drills for skills rated yellow or red.
 ## Develop and publish
 
 No build dependencies are required. Run `npm test` for the logic and Python
-checks, and `npm run build` to assemble a static `dist/`, or `npm run build:hosted` for the Sites Worker. Node 18 or newer is required. The root files
+checks, and `npm run build` to assemble a static `dist/`, or `npm run build:hosted` for the Sites Worker. The GitHub Pages copy needs no build. Node 18 or newer is required. The root files
 can also be served as-is under the course's existing GitHub Pages `docs/practice/`
 path. The parent course repository is not pushed by the private Sites deployment.
 
 The Sites deployment collects anonymous activity. The instructor report lives in a private Google Sheet, with no instructor interface on the student website. Its public student audience still requires explicit approval before activation. The GitHub Pages copy remains static and cannot receive activity.
+
+## Tracking on GitHub Pages
+
+GitHub Pages serves the studio at `https://macss-berkeley.github.io/compss-211a/practice/`
+but can't receive data. The Pages copy therefore sends anonymous activity to a small
+Cloudflare Worker (`worker.mjs`, configured in `wrangler.toml`), which runs the same
+`server.mjs` API and report with a Cloudflare D1 database. Only `/api/activity` and
+`/api/report.csv` live there. `activity-config.mjs` picks where activity goes:
+the Worker for github.io, nothing for a local preview, and the same site for the Sites build.
+
+The browser sends plain text with its anonymous key in the body. This is a simple
+cross-site request, so no CORS preflight is needed. The Worker accepts it only from
+the sites in `ALLOWED_ORIGINS`, and all the checks above still apply.
+
+One-time setup (the free Workers plan is enough). Wrangler needs Node 20 or newer; with
+an older Node, prefix each command with `npx -p node@22 -p wrangler@4` in place of `npx wrangler@4`:
+
+1. Create a Cloudflare account, then run `npx wrangler@4 login` in `docs/practice`.
+2. `npx wrangler@4 d1 create compss-211a-practice`, and paste the `database_id` into `wrangler.toml`.
+3. `npx wrangler@4 d1 migrations apply compss-211a-practice --remote`
+4. `npx wrangler@4 secret put CLASS_CODE` and `npx wrangler@4 secret put REPORT_KEY`
+   (48 random hex characters for the class code, for example from `openssl rand -hex 24`).
+5. `npx wrangler@4 deploy`, and put the printed `https://…workers.dev` address in
+   `PAGES_ACTIVITY_URL` in `activity-config.mjs`. Commit and push.
+6. The class link is `https://macss-berkeley.github.io/compss-211a/practice/#class/<CLASS_CODE>`.
+   The Sheet imports `https://…workers.dev/api/report.csv?key=<REPORT_KEY>&days=7`.
+
+Progress is saved per website, so progress from another copy of the studio doesn't
+appear automatically. Students can move it with Backup → Download progress there,
+then restore the file on the Pages copy.
 
 ## Flashcards
 

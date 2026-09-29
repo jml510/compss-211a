@@ -1,6 +1,6 @@
 import './build.mjs';
 import {readFile,mkdir,writeFile,copyFile,rm} from 'node:fs/promises';
-const names=['index.html','styles.css','app.mjs','catalog.mjs','schedule.mjs','flashcards.mjs','flashcard-ui.mjs','exercises.mjs','python-worker.mjs','skill-checks.mjs','activity-client.mjs','drills.mjs','drill-data.mjs','drill-ui.mjs','drill-worker.mjs'];
+const names=['index.html','styles.css','app.mjs','catalog.mjs','schedule.mjs','flashcards.mjs','flashcard-ui.mjs','exercises.mjs','python-worker.mjs','skill-checks.mjs','activity-client.mjs','activity-config.mjs','drills.mjs','drill-data.mjs','drill-ui.mjs','drill-worker.mjs'];
 const assets={};
 for(const name of names){assets['/'+name]={body:await readFile(new URL(name,import.meta.url),'utf8'),type:name.endsWith('.html')?'text/html; charset=utf-8':name.endsWith('.css')?'text/css; charset=utf-8':'text/javascript; charset=utf-8'};}
 await rm(new URL('dist/',import.meta.url),{recursive:true,force:true});
