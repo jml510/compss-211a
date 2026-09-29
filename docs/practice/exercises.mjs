@@ -1,4 +1,4 @@
-import {validateCardReviews} from './flashcards.mjs?v=20260924-wording';
+import {validateCardReviews} from './flashcards.mjs?v=20260929-ux';
 import {drills} from './drills.mjs';
 export const activities = [
   {id:'filter',title:'Filter rows',skill:'select-and-filter',minutes:2},
