@@ -75,8 +75,10 @@ def _sandbox_run_cell(code, namespace, root):
             value = eval(compile(last, "<cell>", "eval"), namespace)
             if value is not None:
                 print(repr(value))
+        return True
     except BaseException:
         _sandbox_report(root, "<cell>")
+        return False
     finally:
         if here in sys.path:
             sys.path.remove(here)
@@ -580,5 +582,12 @@ def _sandbox_run_cell(code, namespace, root):
     });
   }
 
-  window.Sandbox = {python, terminal};
+  /* Lower-level access for pages that build their own interface (e.g. the code drills). */
+  async function capture(fn, onText) {
+    const previous = sink;
+    sink = onText;
+    try { return await fn(); } finally { sink = previous; }
+  }
+
+  window.Sandbox = {python, terminal, runtime: getPython, capture, writeFiles};
 })();
