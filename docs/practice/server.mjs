@@ -36,7 +36,7 @@ export async function api(request,env){
   if(raw.classCode!==env.CLASS_CODE)return json({error:'Use your course’s practice link.'},403);
   const browser=await hash(token),now=Date.now();
   // Acknowledge obsolete events from cached clients without storing them.
-  const tracked=events.filter(e=>['rating','check','flashcard'].includes(e.kind));
+  const tracked=events.filter(e=>['rating','check','flashcard','drill'].includes(e.kind));
   if(tracked.length)await env.DB.batch(tracked.map(e=>env.DB.prepare('INSERT OR IGNORE INTO activity_events (id, browser_hash, skill, kind, value, variant, received_at) VALUES (?, ?, ?, ?, ?, ?, ?)').bind(browser+':'+e.id,browser,e.skill,e.kind,e.value,e.variant,now)));
   return json({saved:events.length});
  }catch(error){console.error('Activity storage failure',error?.name);return json({error:'Activity storage is temporarily unavailable. Please retry.'},503);}

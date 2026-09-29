@@ -22,7 +22,22 @@ test('reports count attempts separately from unique browsers, exclude legacy hin
  const events=[['one','rating','red'],['one','check','fail'],['one','check','pass'],['one','hint','opened'],['two','check','fail'],['one','rating','unrated']].map(([browser_hash,kind,value],i)=>({...event(kind,value),browser_hash,received_at:t+i}));
  const report=activityReport(events,{week:5,now:t+10,days:7}),sql=report.rows.find(s=>s.skill==='SQL basics');
  assert.equal(report.browsers,2);assert.equal(sql.checks,3);assert.equal(sql.incorrect,2);assert.equal(sql.tried,2);assert.equal(sql.latestIncorrect,1);assert.equal(sql.hints,0);assert.equal(sql.rated,0);assert.equal(sql.needsHelp,0);
- assert.ok(!reportCSV(report).includes('browser_hash'));assert.equal(reportCSV(report).split('\r\n')[0].split(',').length,19);
+ assert.ok(!reportCSV(report).includes('browser_hash'));assert.equal(reportCSV(report).split('\r\n')[0].split(',').length,22);
+});
+test('code drill events name a drill that belongs to the skill and never carry code',()=>{
+ const e={id:crypto.randomUUID(),kind:'drill',value:'pass',skill:'join-tables',variant:'merge'};
+ assert.deepEqual(validateEvents([{...e,code:'joined = requests.merge(districts)'}]),[e]);
+ assert.throws(()=>validateEvents([{...e,variant:'groupby-mean'}]));
+ assert.throws(()=>validateEvents([{...e,variant:'skill'}]));
+ assert.throws(()=>validateEvents([{...e,value:'opened'}]));
+});
+test('reports add code drill checks as trailing columns',()=>{
+ const t=Date.now(),drill=(browser_hash,value,i)=>({id:crypto.randomUUID(),kind:'drill',value,skill:'join-tables',variant:'merge',browser_hash,received_at:t+i});
+ const report=activityReport([drill('one','fail',0),drill('one','pass',1),drill('two','fail',2)],{week:5,now:t+10,days:7}),row=report.rows.find(r=>r.skill==='Join tables');
+ assert.equal(row.drillChecks,3);assert.equal(row.drillFails,2);assert.equal(row.drillPassed,1);assert.equal(row.checks,0);
+ const [header,line]=reportCSV(report).split('\r\n').filter(l=>l.startsWith('"Join tables"')||l.startsWith('"Skill"'));
+ assert.deepEqual(header.split(',').slice(-3),['"Code drill checks"','"Code drill checks not passed"','"Browsers passed a code drill"']);
+ assert.deepEqual(line.split(',').slice(-3),['"3"','"2"','"1"']);
 });
 test('durable API deduplicates retries and returns aggregate data only to the private feed key',async()=>{
  const directory=mkdtempSync(join(tmpdir(),'practice-events-'));

@@ -1,8 +1,8 @@
 # COMPSS 211A practice studio
 
 A course page with a cumulative self-check, browser-saved practice, automatic anonymous activity tracking,
-54 skill-specific quick checks, and nine deeper examples across filtering,
-functions, and debugging. The checklist is the home page. All 57 skill titles
+54 skill-specific quick checks, nine deeper examples across filtering,
+functions, and debugging, and 40 code drills. The checklist is the home page. All 57 skill titles
 and their Open practice links lead directly to a stable #skill/<id> route.
 
 ## Weekly maintenance
@@ -44,6 +44,35 @@ failures have a retry path and notebook alternative; a Stop button and six-secon
 execution timeout handle runaway code. Code drafts survive stopping a run.
 Passing an example never sets a self-rating automatically.
 
+## Code drills
+
+Open `#drills` from the navigation, a skill page's “Practise by writing code” list,
+or the “Code drills: n of m done” link on a checklist row. Each drill (`#drill/<id>`)
+has students write real Python on course data: the HW1 commute survey, gapminder,
+and the Week 4–5 SF311 requests with the supervisor-districts table. There are two
+kinds: fill-in-the-code drills with an explanation and a runnable example, and
+“Write it yourself” drills that start from an empty editor and report a list of tests.
+
+`drills.mjs` holds the drills. Each one has a stable `id`, one catalog `skill`, and a
+`week`; it appears when that course week starts, like the checklist. Check runs the
+student's code and the model answer in fresh namespaces, then compares the named
+results. It then runs both again with different inputs (changed starting values, or
+a 60% sample of the table), so typing in the printed result does not pass. After
+adding or editing a drill, run `uv run python docs/practice/scripts/check_drills.py`
+from the repository. It confirms that each model answer passes, each starter fails,
+and each second run changes the answer. `npm test` checks IDs, skills, and weeks.
+
+Drills run in `drill-worker.mjs`, a Web Worker with Pyodide 0.27.7 and pandas 2.2.3
+from jsDelivr (about 30 MB on first use, then cached). This is a separate runtime from
+the function exercise, matching the course interactives.
+A Stop button and a 15-second timeout end runaway code. The tables in
+`drill-data.mjs` load only in the worker.
+
+Passing a drill marks it done (under `drills` in the progress record) and offers the
+skill's self-check. It never sets a rating. Drafts are saved as `drill:<id>`. Backups
+include both, and a merge keeps a drill done if it was done on either device. The
+drill list can show only drills for skills rated yellow or red.
+
 ## Develop and publish
 
 No build dependencies are required. Run `npm test` for the logic and Python
@@ -79,8 +108,8 @@ practice homepage and enables automatic tracking in that browser. A visible
 notice explains tracking before students interact. There is no Share button,
 manual submission, instructor page, or instructor navigation link.
 
-Tracked events: completed checks (pass/fail), self-ratings (including clearing a
-rating), and flashcard difficulty ratings. Hint and solution openings are not
+Tracked events: completed checks (pass/fail), code drill checks (pass/fail, with
+the drill ID), self-ratings (including clearing a rating), and flashcard difficulty ratings. Hint and solution openings are not
 tracked. The client drops queued openings and the server discards them from
 cached clients; earlier opening events are excluded from report aggregates.
 No names, student IDs, code drafts, typed answers, keystrokes, general navigation,
@@ -102,7 +131,9 @@ covered skills plus any later skills with activity.
 The private Google Sheet's Class patterns tab shows self-rating counts, attempt
 and incorrect counts, and browsers whose latest checked example is incorrect.
 Unrated/untried skills are never counted as failures. Retries are attempts, not
-additional participants. Activity feed also contains flashcard measures. Legacy hint and solution
+additional participants. Activity feed also contains flashcard measures. Three code drill columns come last
+(checks, checks not passed, and browsers that passed a drill for the skill), so
+existing Sheet columns keep their positions. Legacy hint and solution
 columns remain zero for compatibility with the existing Sheet importer. Self-ratings use the latest rating recorded inside
 the selected window. Practice results may follow hints and are not grades.
 

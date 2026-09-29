@@ -5,6 +5,8 @@ import {spawnSync} from 'node:child_process';
 import {skills} from '../catalog.mjs';
 import {skillChecks,checkSkillAnswer} from '../skill-checks.mjs';
 import {checkFilter,checkDebug,functions,freshProgress,validateProgress,mergeProgress} from '../exercises.mjs';
+import {drills,drillSetup,drillSetupVariant,drillTopics,variantCode} from '../drills.mjs';
+import {weekReleases as releases} from '../schedule.mjs';
 test('filters handle inclusive/exclusive boundaries, AND, OR and missing values',()=>{
   assert.equal(checkFilter(0,['B','C','E']).passed,true);
   assert.equal(checkFilter(0,['C','E']).passed,false);
@@ -93,4 +95,28 @@ test('every release retains earlier skills and unlocks only its scheduled skills
     previous=current;
   }
   assert.equal(previous.length,57);
+});
+
+test('every code drill has a stable ID, a real skill, a released week and a checkable answer',()=>{
+  assert.equal(new Set(drills.map(d=>d.id)).size,drills.length);
+  for(const d of drills){
+    assert.ok(/^[a-z0-9-]+$/.test(d.id),d.id);
+    assert.ok(skills.some(s=>s.id===d.skill),d.id);
+    assert.ok(d.week>=1&&d.week<=releases.length&&drillTopics[d.week],d.id);
+    assert.ok(Object.hasOwn(drillSetup,d.data)&&Object.hasOwn(drillSetupVariant,d.data),d.id);
+    assert.ok(d.title&&d.task&&d.starter!==undefined&&d.solution&&d.check.exprs.length&&d.hints.length,d.id);
+    if(!d.scratch)assert.ok(d.intro&&d.example,d.id);
+    // Starting lines the checker swaps must be in both the starter and the model answer.
+    for(const [from] of d.check.variants||[]){assert.ok(d.starter.includes(from),d.id);assert.ok(d.solution.includes(from),d.id);}
+    assert.equal(variantCode(d,d.starter).missing,undefined,d.id);
+  }
+});
+test('backups keep drill results and drafts, and a passed drill stays passed after a merge',()=>{
+  const a=freshProgress(),b=freshProgress(),ids=skills.map(s=>s.id);
+  a.drills.merge={passed:true,updatedAt:'2026-10-06T12:00:00Z'};a.drafts['drill:merge']={code:'joined = 1',updatedAt:'2026-10-06T12:00:00Z'};
+  b.drills.merge={passed:false,updatedAt:'2026-10-07T12:00:00Z'};b.drills.unknown={passed:true,updatedAt:'2026-10-07T12:00:00Z'};
+  const restored=validateProgress(JSON.parse(JSON.stringify(b)),ids);assert.equal(restored.drills.unknown,undefined);
+  const merged=mergeProgress(validateProgress(JSON.parse(JSON.stringify(a)),ids),restored);
+  assert.equal(merged.drills.merge.passed,true);assert.equal(merged.drafts['drill:merge'].code,'joined = 1');
+  a.drills.merge.passed='yes';assert.throws(()=>validateProgress(a,ids));
 });

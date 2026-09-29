@@ -108,3 +108,30 @@ h1,h2,h3{font-family:var(--heading)}h1{font-weight:800;letter-spacing:-.015em}
 .square-tooltip>span{display:block;color:#e3ebfa}
 
 .practice-content{min-width:0}.activity-notice,.activity-details{margin:18px 34px 0;font-size:.875rem;line-height:1.55}.activity-notice{padding:12px 16px;background:#f1f4f8;border-left:3px solid #002676}.activity-details{color:#4b5563;margin-top:6px}.activity-details summary{cursor:pointer}.activity-details p{max-width:850px}@media(max-width:700px){.activity-notice,.activity-details{margin-left:18px;margin-right:18px}}
+/* Code drills */
+.drill-progress{font-size:15px;color:var(--muted);margin:4px 0 8px}.drill-progress strong{color:var(--ink)}
+.drill-week{margin:26px 0}.drill-week>h2{font-size:17px;color:var(--blue);margin-bottom:10px}
+.drill-list{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:4px;background:white}
+.drill-item{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;align-items:start;padding:12px 16px;border-bottom:1px solid #E8EDF4}
+.drill-item:last-child{border-bottom:0}
+.drill-tick{width:22px;height:22px;border:1.5px solid #B8C4D6;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;margin-top:2px}
+.drill-item.is-done .drill-tick{background:var(--green);border-color:var(--green);color:white}
+.drill-link{font-weight:600;text-underline-offset:3px;line-height:1.5}
+.drill-tag{display:inline-block;font-size:12px;font-weight:600;color:var(--blue);background:var(--blue-light);border-radius:3px;padding:1px 7px;margin-left:6px;vertical-align:1px}
+.drill-skill{font-size:13px;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:6px}.drill-skill a{color:var(--muted)}
+.drill-rating{display:inline-block;width:9px;height:9px;border-radius:50%;background:#C9D3E1;flex:none;margin-right:6px}
+.drill-rating[data-color=green]{background:var(--green)}.drill-rating[data-color=yellow]{background:#BC8500}.drill-rating[data-color=red]{background:var(--red)}
+.drill-chip{display:inline-block;font-size:13px;font-weight:600;margin-top:8px;text-underline-offset:3px}
+.skill-drills{margin-top:22px;max-width:760px}.skill-drills h2{font-size:18px;color:var(--blue);margin-bottom:10px}.skill-drills .micro{margin-top:10px}
+.drill-intro{color:var(--muted);font-size:15px;max-width:650px;line-height:1.6}.drill-intro code,.drill-task code,.drill-loaded code,.drill-tests code{font:.88em var(--mono);background:#EDF1F8;padding:1px 4px;border-radius:3px}
+.drill-h{font-size:15px;margin:22px 0 8px}.workspace>.drill-h:first-child{margin-top:0}
+.drill-task{border-left:4px solid var(--gold);background:#FFFBEF;padding:13px 16px;font-size:15px;line-height:1.6}
+.drill-loaded{font-size:14px;color:var(--muted);margin:14px 0 4px}
+.drill-small-actions{margin-top:0}
+.drill-output{margin:8px 0 0;padding:14px 16px;border:1px solid var(--line);border-radius:4px;background:#FBFCFE;font:13px/1.55 var(--mono);white-space:pre;overflow:auto;max-height:380px}
+.drill-err{color:var(--red)}.drill-dim{color:var(--muted)}
+.drill-tests{list-style:none;padding-left:0!important}.drill-tests li{margin-bottom:5px}
+.drill-done{color:var(--green);font-weight:600}
+.drill-answer{font-size:12.5px;white-space:pre;overflow:auto}
+.drill-pager{display:flex;justify-content:space-between;gap:16px;margin:20px 0 0;font-size:14px;font-weight:600}
+.drill-rate-note{margin:26px 0 -10px;font-size:15px}

@@ -1,4 +1,4 @@
-const trackedKinds=new Set(['rating','check','flashcard']);
+const trackedKinds=new Set(['rating','check','flashcard','drill']);
 const KEY='compss-211a-activity-v1',EVENT=KEY+':event:';
 // Explicit events only: callers must never pass student code, answers, or other free text.
 export function createActivityTracker({storage,send=fetch,onStatus=()=>{}}={}){
