@@ -2,7 +2,7 @@
 // GitHub Pages only serves files, so the Pages copy sends activity to the Cloudflare Worker (worker.mjs, wrangler.toml).
 // Set PAGES_ACTIVITY_URL to the Worker's address after deploying it, for example
 // 'https://compss-211a-practice.<your-subdomain>.workers.dev'. Until then, the Pages copy doesn't track.
-export const PAGES_ACTIVITY_URL=null;
+export const PAGES_ACTIVITY_URL='https://compss-211a-practice.compss211a.workers.dev';
 
 export function activityEndpoint(host=globalThis.location?.hostname||''){
   if(host.endsWith('github.io'))return PAGES_ACTIVITY_URL;

@@ -1,5 +1,5 @@
-import {createActivityTracker} from './activity-client.mjs?v=20260928-pages';
-import {activityEndpoint} from './activity-config.mjs?v=20260928-pages';
+import {createActivityTracker} from './activity-client.mjs?v=20260928-worker';
+import {activityEndpoint} from './activity-config.mjs?v=20260928-worker';
 import {flashcards} from './flashcards.mjs?v=20260924-wording';
 import {createFlashcards} from './flashcard-ui.mjs?v=20260924-wording';
 import {createDrills} from './drill-ui.mjs?v=20260928-drills';

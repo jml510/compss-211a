@@ -1,6 +1,8 @@
 # Activity API for the GitHub Pages copy of the studio. See README, "Tracking on GitHub Pages".
 name = "compss-211a-practice"
 main = "worker.mjs"
+workers_dev = true
+preview_urls = false
 compatibility_date = "2026-09-01"
 
 [vars]
@@ -11,5 +13,5 @@ ALLOWED_ORIGINS = "https://macss-berkeley.github.io"
 binding = "DB"
 database_name = "compss-211a-practice"
 # Paste the database_id printed by `npx wrangler@4 d1 create compss-211a-practice`.
-database_id = "REPLACE_WITH_DATABASE_ID"
+database_id = "940c1885-9d6f-4f51-8ae0-f2bed0f4d229"
 migrations_dir = "drizzle"
