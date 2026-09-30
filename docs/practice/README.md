@@ -27,10 +27,35 @@ SQL remains in the catalog; its current notebook link is provisional.
 
 Students return to the same URL. Their ratings stay in localStorage under
 `compss-211a-practice-v1`. The course link enables automatic anonymous activity tracking. It records fixed outcome labels and self-ratings; code drafts and typed answers never leave the browser.
-Progress does not automatically move between browsers or website origins.
-Students can export a JSON backup and merge it on another device; newer ratings
+Progress moves between browsers or website origins only if the student turns on
+sync (below) or exports a JSON backup and merges it on another device; newer ratings
 and code drafts win, and practice results are combined. The app does not collect
 student names, IDs, or grades. Normal host/CDN access logging still applies.
+
+## Progress sync
+
+Students who use more than one device can turn on sync under **Backup & sync**.
+The browser creates a random 16-character sync code (for example `7KQ3-M9TX-4HRP-2WZB`)
+and the Worker stores one copy of the progress per code in the D1 table `progress_sync`,
+keyed by a SHA-256 hash of the code. Entering the code on another device merges both
+copies. Ratings, practice results, code drill results, and flashcard schedules are synced.
+Code drafts are never sent, and the Worker keeps only fixed labels, booleans, numbers,
+and dates (`syncedProgress` in `progress-sync.mjs`). Sync copies are separate from the
+activity table and the class report, and there is no API that lists them.
+
+Each copy has a revision number. A browser with no unsent changes takes a newer copy
+as it is, so clearing a rating on one device clears it on the others. Unsent changes are
+merged with the newer copy, and a write based on an old revision is refused and merged
+again. The first check after a page opens always merges, so a browser that lost its
+saved progress gets it back. Stopping sync, or clearing progress on the Backup page,
+disconnects that browser but leaves the synced copy for reconnecting.
+
+Anyone with a sync code can read and change that copy, and the page tells students
+to keep the code private. The Worker refuses new codes after 5,000 copies. To remove
+all copies at the end of the term, run
+`npx wrangler@4 d1 execute compss-211a-practice --remote --command "DELETE FROM progress_sync"`.
+Sync is unavailable on a plain local preview; `scripts/preview.mjs` serves its own API
+and points the page at it.
 
 ## Exercise behavior
 
@@ -100,7 +125,8 @@ an older Node, prefix each command with `npx -p node@22 -p wrangler@4` in place 
 
 1. Create a Cloudflare account, then run `npx wrangler@4 login` in `docs/practice`.
 2. `npx wrangler@4 d1 create compss-211a-practice`, and paste the `database_id` into `wrangler.toml`.
-3. `npx wrangler@4 d1 migrations apply compss-211a-practice --remote`
+3. `npx wrangler@4 d1 migrations apply compss-211a-practice --remote` (run it again after adding a migration,
+   such as `0002_progress_sync.sql` for progress sync, then redeploy the Worker)
 4. `npx wrangler@4 secret put CLASS_CODE` and `npx wrangler@4 secret put REPORT_KEY`
    (48 random hex characters for the class code, for example from `openssl rand -hex 24`).
 5. `npx wrangler@4 deploy`, and put the printed `https://…workers.dev` address in

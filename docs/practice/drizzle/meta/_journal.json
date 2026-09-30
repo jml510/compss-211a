@@ -15,6 +15,13 @@
       "when": 1790287819666,
       "tag": "0001_giant_sugar_man",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1790794024755,
+      "tag": "0002_progress_sync",
+      "breakpoints": true
     }
   ]
 }

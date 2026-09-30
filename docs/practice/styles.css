@@ -143,3 +143,9 @@ h1,h2,h3{font-family:var(--heading)}h1{font-weight:800;letter-spacing:-.015em}
 .activity-bar .activity-details p{margin:6px 0 2px}
 @media(max-width:760px){.activity-bar{margin:12px 18px 0}}
 .skill-drill-link{margin:-6px 0 18px}
+/* Sync panel on the Backup & sync page */
+.panel .sync-code{font:600 21px/1.3 var(--mono);letter-spacing:.06em;color:var(--ink);margin:14px 0 12px;overflow-wrap:anywhere}
+.panel .sync-note{font-size:14px;margin:16px 0 10px}
+.sync-connect{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.sync-connect input{flex:1 1 200px;min-width:0;padding:10px 12px;border:1px solid #aab5c4;border-radius:4px;font:15px var(--mono);letter-spacing:.04em;text-transform:uppercase}
+.sync-connect input::placeholder{text-transform:none;color:#8b96a6}

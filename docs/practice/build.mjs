@@ -15,5 +15,5 @@ for(const c of flashcards)if(!skills.some(s=>s.id===c.skill)||!c.prompt||(!c.ans
 for(const d of drills)if(!skills.some(s=>s.id===d.skill))throw new Error('Code drill has no matching skill: '+d.id);
 if(new Set(drills.map(d=>d.id)).size!==drills.length)throw new Error('Duplicate code drill IDs');
 await mkdir(join(root,'dist'),{recursive:true});
-for(const name of ['index.html','styles.css','app.mjs','catalog.mjs','schedule.mjs','flashcards.mjs','flashcard-ui.mjs','exercises.mjs','python-worker.mjs','skill-checks.mjs','activity-client.mjs','activity-config.mjs','drills.mjs','drill-data.mjs','drill-ui.mjs','drill-worker.mjs'])await copyFile(join(root,name),join(root,'dist',name));
+for(const name of ['index.html','styles.css','app.mjs','catalog.mjs','schedule.mjs','flashcards.mjs','flashcard-ui.mjs','exercises.mjs','python-worker.mjs','skill-checks.mjs','activity-client.mjs','activity-config.mjs','progress-sync.mjs','drills.mjs','drill-data.mjs','drill-ui.mjs','drill-worker.mjs'])await copyFile(join(root,name),join(root,'dist',name));
 console.log('Built practice studio: 57 directly accessible skills, 54 quick checks, 9 interactive examples, '+drills.length+' code drills.');

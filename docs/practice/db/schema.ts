@@ -20,3 +20,11 @@ export const activityEvents=sqliteTable('activity_events',{
   variant:text('variant').notNull(),
   receivedAt:integer('received_at').notNull(),
 },table=>[index('idx_activity_received').on(table.receivedAt)]);
+
+// Optional cross-device progress, keyed by a hash of the student's sync code. Code drafts are never stored.
+export const progressSync=sqliteTable('progress_sync',{
+  codeHash:text('code_hash').primaryKey(),
+  snapshot:text('snapshot').notNull(),
+  revision:integer('revision').notNull(),
+  updatedAt:integer('updated_at').notNull(),
+});
