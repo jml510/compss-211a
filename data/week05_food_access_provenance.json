@@ -1,0 +1,42 @@
+{
+  "retrieved_on": "2026-09-30",
+  "sources": [
+    {
+      "name": "USDA ERS 2025 SNAP-authorized Retailer Access Map; released July 2026",
+      "url": "https://www.ers.usda.gov/media/29395/2025-snap-authorized-retailer-access-map-sram-data.zip?v=73485",
+      "sha256": "8e8ccda55aa478dd5907050249c28157d445568d242db8b5f85231b82c8afdbf"
+    },
+    {
+      "name": "Census Bureau 2020 national county gazetteer",
+      "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2020_Gazetteer/2020_Gaz_counties_national.zip",
+      "sha256": "02ef546e4c4f9c032c19616eabb9526caa016f778f41ede3b8c9755dacce20ef"
+    }
+  ],
+  "scope": "Every California row published in these USDA tables, and every California county in the Census lookup. No sampling or imputation.",
+  "transformations": [
+    "Filter USDA State=California and Census USPS=CA.",
+    "Pad USDA general-characteristics tract IDs to 11 characters; verify a one-to-one join to the driving-distance table.",
+    "Derive county_fips from the first five tract ID characters; validate against Census county codes and source county names.",
+    "Select and rename columns; Urban 1/0 becomes Urban/Rural. Keep source values and blanks otherwise unchanged; sort by identifier."
+  ],
+  "field_mapping": {
+    "tract_id": "CensusTract20, normalized to 11-character text",
+    "county_fips": "first five characters of CensusTract20; Census GEOID in lookup",
+    "area_type": "Urban: 1=Urban, 0=Rural",
+    "population_2020": "POP2020",
+    "low_access": "DD_SRAM_LA1and10",
+    "low_income_low_access": "DD_SRAM_LILATracts_1And10",
+    "county_name": "Census NAME"
+  },
+  "missingness": "12 source low_access blanks retained; no missing county matches. Published combined flag preserved independently, not recomputed from low_access.",
+  "outputs": {
+    "week05_food_access_tracts.csv": {
+      "rows": 9109,
+      "sha256": "4cd5478237f97a57c3feb8e250d6ab353821ea208c72421bdd8e6885bd108d08"
+    },
+    "week05_ca_counties.csv": {
+      "rows": 58,
+      "sha256": "8b17d858e446ae288bed41a271131156ed09af76a4810d62aa287333db32c82b"
+    }
+  }
+}
