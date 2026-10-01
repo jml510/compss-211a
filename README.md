@@ -49,8 +49,9 @@ use the live workspace for the 120-minute lesson and linked slides.
 ## Course data
 
 The local fixtures required by homework and lab notebooks are committed under
-[`data/`](data/). Sources, labels, and interpretation
-limits are documented in [`data/README.md`](data/README.md).
+[`data/`](data/). Several of the real datasets have a `*_provenance.json` file
+beside them that records the source, the request, and the retrieval date. The
+notebook that uses a file explains what it can and cannot show.
 
 ## Google Colab
 
