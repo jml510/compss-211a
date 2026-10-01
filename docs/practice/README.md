@@ -2,7 +2,7 @@
 
 A course page with a cumulative self-check, browser-saved practice, automatic anonymous activity tracking,
 54 skill-specific quick checks, nine deeper examples across filtering,
-functions, and debugging, and 40 code drills. The checklist is the home page. All 57 skill titles
+functions, and debugging, and 47 code drills. The checklist is the home page. All 57 skill titles
 and their Open practice links lead directly to a stable #skill/<id> route.
 
 ## Weekly maintenance
@@ -16,7 +16,11 @@ within a minute of a release and when the student returns to the tab.
 August 31 and lasts two calendar weeks; Week 2 begins September 14. Week 4 opens
 September 28, and subsequent course weeks open each Monday at midnight Berkeley
 time through Week 13 on November 30. Adjust that list for a revised calendar or
-another semester. **Entire course** remains available for looking ahead; future
+another semester. To preview before a release, add `?preview` to the address (every
+week) or `?preview=5` (the course as of Week 5); the interactives homepage has the same
+`?preview` switch and passes it on to the studio. Preview shows drills and skills early
+and doesn't record activity for the class report. It is a display switch, not a lock.
+**Entire course** remains available for looking ahead; future
 skills are labeled. This is a display filter, not an access restriction. It uses
 the device clock. No “First introduced” filter remains.
 
@@ -92,6 +96,14 @@ from jsDelivr (about 30 MB on first use, then cached). This is a separate runtim
 the function exercise, matching the course interactives.
 A Stop button and a 15-second timeout end runaway code. The tables in
 `drill-data.mjs` load only in the worker.
+
+Seven Week 5 drills practise SQL (`sql-basics`). They use the `sf311sql` setup, which
+mirrors the Week 5 notebook: it leaves out the Test request, loads `requests` and
+`districts` into an in-memory SQLite database, and defines `sql(query)`, which returns
+a pandas table. Students fill in or write queries inside `sql("""...""")`, and the check
+compares the resulting tables. The worker loads Pyodide's `sqlite3` package the first
+time a SQL drill runs. `"sql": true` in a drill's check makes the row-count hint mention
+`LEFT JOIN` instead of `groupby`.
 
 Passing a drill marks it done (under `drills` in the progress record) and offers the
 skill's self-check. It never sets a rating. Drafts are saved as `drill:<id>`. Backups

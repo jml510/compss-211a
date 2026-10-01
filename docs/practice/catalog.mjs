@@ -1,7 +1,7 @@
-import {getCourseWeek} from './schedule.mjs';
+import {getCourseWeek,previewWeek} from './schedule.mjs';
 // Keep IDs stable: ratings are attached to IDs, never row positions.
 // Edit schedule.mjs to change release dates; descriptions and links can change independently.
-export const course = { title: 'COMPSS 211A', get currentWeek(){return getCourseWeek();}, semester: 'Fall 2026' };
+export const course = { title: 'COMPSS 211A', get currentWeek(){return previewWeek()??getCourseWeek();}, semester: 'Fall 2026' };
 export const skills = [
   {
     "id": "variables-and-assignment",
@@ -253,7 +253,7 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "Lab 5 — Load four representations, normalize them, and identify a mismatch.",
+    "practice": "Optional format extension — Compare four representations of synthetic campus-edge data; separate from the Week 5 SQL lesson.",
     "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lab/lab05_data_formats_reconciliation.ipynb"
   },
   {
@@ -275,8 +275,8 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "HW3 — Repair XML numeric types, preserve case IDs, and convert date_opened.",
-    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/homework/hw3_campus_edge.ipynb"
+    "practice": "Week 5 — Convert district lookup keys, preserve request IDs as text, and explain why types matter.",
+    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lessons/week05_relational-data/week05_live_workspace.ipynb"
   },
   {
     "id": "join-tables",
@@ -286,8 +286,8 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "HW3 snapshot comparison — Join on case_id; inspect unmatched IDs and row counts.",
-    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/homework/hw3_campus_edge.ipynb"
+    "practice": "Week 5 — Left join district labels, preserve request IDs, and inspect unmatched requests.",
+    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lessons/week05_relational-data/week05_live_workspace.ipynb"
   },
   {
     "id": "web-apis",
@@ -308,8 +308,8 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "Week 5 §1 — Check what a row means, IDs, types, missing text, and repeated IDs.",
-    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lessons/week05_structured-data/week05_live_workspace.ipynb"
+    "practice": "Week 5 — Inspect SF311 request IDs, types, missing channels, categories, and dates.",
+    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lessons/week05_relational-data/week05_live_workspace.ipynb"
   },
   {
     "id": "clean-and-document",
@@ -319,8 +319,8 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "HW3 format checks — Normalize blank dates, compare missing counts, and explain the repair.",
-    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/homework/hw3_campus_edge.ipynb"
+    "practice": "Week 5 — Document the provisional Test exclusion while retaining missing channels.",
+    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lessons/week05_relational-data/week05_live_workspace.ipynb"
   },
   {
     "id": "dates-and-times",
@@ -337,12 +337,12 @@ export const skills = [
     "id": "sql-basics",
     "category": "Working with data",
     "title": "SQL basics",
-    "description": "Write SELECT, WHERE, GROUP BY, ORDER BY, and JOIN queries, and check the result against the same question answered in pandas.",
+    "description": "Adapt SELECT, WHERE, GROUP BY, and ORDER BY queries in Python. Read an optional SQL join and compare results with pandas.",
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "SQL reference (provisional) — Query the service-program database; updated SQL-week link pending.",
-    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/homework/optional_sql_in_python.ipynb"
+    "practice": "Week 5 — Run SQLite queries from Python; count Phone requests by district and check missing groups.",
+    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lessons/week05_relational-data/week05_live_workspace.ipynb"
   },
   {
     "id": "public-data-and-survey-weights",

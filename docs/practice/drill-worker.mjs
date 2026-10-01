@@ -92,6 +92,8 @@ self.onmessage=async({data})=>{
     const d=drills.find(d=>d.id===drillId);
     if(!d)throw new Error('This drill no longer exists. Reload the page.');
     const py=await python(id);
+    // SQL drills use Python's sqlite3 module, which Pyodide ships as a separate small package.
+    if(drillSetup[d.data].includes('import sqlite3'))await py.loadPackage(['sqlite3'],{messageCallback:()=>{}});
     self.postMessage({id,type:'running'});
     const output=[];
     if(mode==='example'){const r=run(py,drillSetup[d.data],d.example,output);r.ns.destroy();self.postMessage({id,type:'result',mode,output});return;}

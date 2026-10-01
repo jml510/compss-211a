@@ -1,16 +1,19 @@
 import {createActivityTracker} from './activity-client.mjs?v=20260929-ux';
 import {activityEndpoint} from './activity-config.mjs?v=20260928-worker';
 import {createProgressSync,SYNC_STATE_KEY} from './progress-sync.mjs?v=20260930-sync';
+import {previewWeek} from './schedule.mjs';
 import {flashcards} from './flashcards.mjs?v=20260929-ux';
 import {createFlashcards} from './flashcard-ui.mjs?v=20260929-ux';
-import {createDrills} from './drill-ui.mjs?v=20260929-ux';
+import {createDrills} from './drill-ui.mjs?v=20261001-sql';
 import {course,skills} from './catalog.mjs';
 import {skillChecks,checkSkillAnswer} from './skill-checks.mjs?v=20260924-wording';
 import {activities,commuters,filters,functions,debugs,checkFilter,filterExpected,checkDebug,ratingLabels,freshProgress,validateProgress,mergeProgress} from './exercises.mjs?v=20260929-ux';
 
-const tracker=createActivityTracker({endpoint:activityEndpoint(),onStatus:text=>{document.querySelector('#activity-status').textContent=text;}});
+const previewing=previewWeek()!==null;
+const tracker=createActivityTracker({endpoint:activityEndpoint(),onStatus:text=>{document.querySelector('#activity-status').textContent=previewing?'Preview: later weeks are shown early, and nothing you do here is added to the class report.':text;}});
+if(previewing)tracker.record=()=>{};
 const classEntry=location.hash.match(/^#class\/([a-f0-9]{48})$/);
-if(classEntry){tracker.join(classEntry[1]);history.replaceState(null,'',location.pathname+'#overview');}
+if(classEntry){if(!previewing)tracker.join(classEntry[1]);history.replaceState(null,'',location.pathname+location.search+'#overview');}
 tracker.start();window.addEventListener('online',tracker.flush);document.addEventListener('visibilitychange',()=>{if(document.hidden)tracker.flush();});
 const KEY='compss-211a-practice-v1',main=document.querySelector('#main');
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

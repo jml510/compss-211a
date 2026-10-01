@@ -14,6 +14,13 @@ export function getCourseWeek(now = new Date()) {
   const today = `${parts.year}-${parts.month}-${parts.day}`;
   return weekReleases.filter(date => date <= today).length;
 }
+// Instructor preview: ?preview in the address shows every week early, and ?preview=5 shows the course as of Week 5.
+// Display only, like the homepage's ?preview. The page doesn't record activity while previewing.
+export function previewWeek(search = globalThis.location?.search || '') {
+  const match = /[?&]preview(?:=(\d+))?(?:&|$)/.exec(search);
+  if (!match) return null;
+  return match[1] ? Math.min(Math.max(Number(match[1]), 1), weekReleases.length) : weekReleases.length;
+}
 export function nextWeekRelease(now = new Date()) {
   const current = getCourseWeek(now);
   if (current === weekReleases.length) return null;

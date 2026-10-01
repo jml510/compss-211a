@@ -263,6 +263,10 @@ footer{background:var(--berkeley);color:rgba(255,255,255,.85);margin:44px calc(5
   document.querySelectorAll(".card[data-open]").forEach(function (card) {
     if (preview || now >= new Date(card.getAttribute("data-open"))) card.classList.add("is-open");
   });
+  /* The practice studio has the same switch: carry the preview over, without joining the class report. */
+  if (preview) document.querySelectorAll('a.card[href*="/practice/"]').forEach(function (card) {
+    card.setAttribute("href", "practice/?preview");
+  });
 })();
 </script>
 </body>

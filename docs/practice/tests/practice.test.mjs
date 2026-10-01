@@ -1,4 +1,4 @@
-import {getCourseWeek,nextWeekRelease,weekReleases} from '../schedule.mjs';
+import {getCourseWeek,nextWeekRelease,weekReleases,previewWeek} from '../schedule.mjs';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
@@ -83,6 +83,13 @@ test('weekly release follows Berkeley midnight and the two-week opening week',()
   assert.equal(week('2027-01-01T00:00:00Z'),13);
   assert.deepEqual(nextWeekRelease(new Date('2026-09-24T12:00:00Z')),{week:4,date:'2026-09-28'});
   assert.equal(nextWeekRelease(new Date('2026-12-01T12:00:00Z')),null);
+});
+test('?preview shows every week or a chosen week, and is off without it',()=>{
+  assert.equal(previewWeek(''),null);assert.equal(previewWeek('?previews=1'),null);assert.equal(previewWeek('?x=preview'),null);
+  assert.equal(previewWeek('?preview'),weekReleases.length);assert.equal(previewWeek('?a=1&preview'),weekReleases.length);
+  assert.equal(previewWeek('?preview=5'),5);assert.equal(previewWeek('?preview=5&a=1'),5);
+  assert.equal(previewWeek('?preview=0'),1);assert.equal(previewWeek('?preview=99'),weekReleases.length);
+  assert.equal(previewWeek(),null,'no preview outside a browser, so the report uses the real week');
 });
 test('every release retains earlier skills and unlocks only its scheduled skills',()=>{
   let previous=[];
