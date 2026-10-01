@@ -7,7 +7,12 @@
 .vscode/
 wandb/
 *.wandb
-/course-planning
+# Instructor-only preparation scripts and working source notes belong here,
+# outside student lesson folders and GitHub.
+/course-planning/
+# Prevent preparation helpers and working source notes from being re-added to lessons.
+/lessons/**/prepare_*.py
+/lessons/**/*_sources.md
 /generated/
 .agents/skills/bcourses-admin/
 /output/
