@@ -7,36 +7,34 @@
 <meta name="description" content="Follow six requests through pandas and SQL to see how missing values, group counts, and joins can change your results.">
 <style>
 :root{--navy:#002676;--gold:#FDBA12;--ink:#1A1A1A;--muted:#465973;--line:#CBD4E1;--pale:#EEF3FA;--paper:#fff;--mark:#FFF1CC;--good:#17643C;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}a{color:var(--navy)}button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.55}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold);outline-offset:3px}button{border:1px solid var(--navy);border-radius:4px;padding:9px 16px;color:var(--navy);background:white;font-weight:600}button:hover:not(:disabled){background:var(--pale)}.primary{background:var(--navy);color:white}.primary:hover:not(:disabled){background:#173F91}.wrap{max-width:1100px;margin:auto;padding:0 24px}.mast{background:var(--navy);color:white}.mast .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:13px;padding-bottom:13px;font-size:.88rem}.mast a{color:white}.brand{font:700 1.05rem Georgia,serif;color:var(--gold);margin-right:12px}header{background:var(--navy);color:white;border-bottom:5px solid var(--gold);padding:28px 0 32px}h1{font-size:clamp(1.9rem,4.5vw,2.85rem);line-height:1.15;letter-spacing:-.025em;max-width:850px;margin:0 0 16px}header p{max-width:690px;margin:0 0 12px}.meta{font-size:.9rem;color:#DFE8FF}main{padding-top:28px!important}h2{color:var(--navy);font-size:1.4rem;line-height:1.3;margin:0 0 10px}h3{margin:0;color:var(--navy);font-size:1.05rem}p{max-width:75ch;margin:10px 0 16px}.small{font-size:.88rem;color:var(--muted)}.table-wrap{overflow:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:.91rem;text-align:left}caption{text-align:left;color:var(--muted);font-size:.88rem;margin-bottom:8px}th{background:var(--pale);font-weight:600;color:var(--navy);white-space:nowrap}th,td{padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}tbody tr.highlight{background:var(--mark)}.source td:not(:first-child){font-family:var(--mono);font-size:.85rem}.row-id{padding:2px 7px;font-family:var(--mono);font-size:.85rem}.row-id[aria-pressed=true]{background:var(--gold)}.missing{color:var(--muted);font-style:italic}.source-section{margin-bottom:30px}.step-nav{display:flex;gap:8px;flex-wrap:wrap;padding:20px 0;border-top:1px solid var(--line)}.step-nav button[aria-current=step]{background:var(--navy);color:white}.step-nav .done::after{content:" ✓"}.exercise{scroll-margin-top:16px}.question{font-size:1.07rem;max-width:75ch}.panels{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0}.panel{min-width:0;border:1px solid var(--line);border-radius:4px;overflow:hidden}.panel h3{padding:12px 16px;background:var(--pale)}pre{background:#101F48;color:#F0F4FF;font:13px/1.65 var(--mono);padding:16px;margin:0;overflow:auto;min-height:155px}code{font-family:var(--mono);font-size:.88em}pre code{font-size:inherit}.result{padding:12px 15px}.placeholder{color:var(--muted);font-size:.93rem}.metric{font-weight:650;color:var(--navy);margin:0 0 12px}.trace{color:#674B00;background:var(--mark);padding:10px 14px;font-size:.9rem;min-height:44px}.members{font-family:var(--mono);white-space:nowrap}.prediction{margin:20px 0;border:1px solid var(--line);border-radius:4px;padding:14px 18px}.prediction legend{padding:0 6px;color:var(--navy);font-weight:600}.choices{display:flex;flex-wrap:wrap;gap:12px 24px}.choices label{cursor:pointer;display:flex;align-items:center;gap:7px}.choices input{accent-color:var(--navy)}.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.feedback{border-left:4px solid var(--gold);background:var(--pale);padding:15px 18px;margin:20px 0}.feedback p{margin:0 0 10px}.feedback p:last-child{margin-bottom:0}.feedback strong{color:var(--navy)}.join-controls{padding:12px 16px;background:var(--pale);margin:16px 0}.join-controls label{display:flex;align-items:flex-start;gap:9px;cursor:pointer}.join-controls input{margin-top:6px;accent-color:var(--navy)}.lookup{max-width:460px}.counts{border-top:1px solid var(--line);padding-top:16px;margin-top:16px}.counts ul{padding-left:22px}.bottom{border-top:1px solid var(--line);margin-top:28px;padding-top:22px}details{margin:20px 0}summary{cursor:pointer;color:var(--navy);font-weight:600}footer{background:var(--navy);color:#E1E9FC;padding:22px 0;margin-top:40px;font-size:.85rem}footer a{color:white}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}[hidden]{display:none!important}#step-title:focus{outline:none}.status{font-size:.9rem;color:var(--muted)}
-@media(max-width:720px){.wrap{padding-left:16px;padding-right:16px}.panels{grid-template-columns:1fr}pre{min-height:0;font-size:12px}th,td{padding:7px 9px}.choices{flex-direction:column;gap:9px}.step-nav button{flex:1;padding:9px 8px;font-size:.9rem}h1{font-size:2rem}.source{min-width:460px}}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}a{color:var(--navy)}button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.55}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold);outline-offset:3px}button{border:1px solid var(--navy);border-radius:4px;padding:9px 16px;color:var(--navy);background:white;font-weight:600}button:hover:not(:disabled){background:var(--pale)}.primary{background:var(--navy);color:white}.primary:hover:not(:disabled){background:#173F91}.quiet{border-color:transparent;text-decoration:underline;font-weight:400;padding-left:6px;padding-right:6px}.wrap{max-width:1100px;margin:auto;padding:0 24px}.mast{background:var(--navy);color:white}.mast .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:13px;padding-bottom:13px;font-size:.88rem}.mast a{color:white}.brand{font:700 1.05rem Georgia,serif;color:var(--gold);margin-right:12px}header{background:var(--navy);color:white;border-bottom:5px solid var(--gold);padding:24px 0 26px}h1{font-size:clamp(1.7rem,4vw,2.4rem);line-height:1.15;letter-spacing:-.025em;max-width:850px;margin:0 0 12px}header p{max-width:690px;margin:0 0 10px}.meta{font-size:.9rem;color:#DFE8FF}main{padding-top:24px!important}h2{color:var(--navy);font-size:1.4rem;line-height:1.3;margin:0 0 10px}h3{margin:0;color:var(--navy);font-size:1.05rem}p{max-width:75ch;margin:10px 0 16px}.small{font-size:.88rem;color:var(--muted)}.steps{display:flex;flex-wrap:wrap;gap:4px 28px;list-style:none;counter-reset:step;padding:0 0 14px;margin:0 0 22px;border-bottom:1px solid var(--line);font-size:.92rem;color:var(--muted)}.steps li{counter-increment:step}.steps li::before{content:counter(step) ". "}.steps li[aria-current=step]{color:var(--navy);font-weight:700}.steps li.done::after{content:" ✓";color:var(--good)}.table-wrap{overflow:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:.91rem;text-align:left}caption{text-align:left;color:var(--muted);font-size:.88rem;margin-bottom:8px}th{background:var(--pale);font-weight:600;color:var(--navy);white-space:nowrap}th,td{padding:7px 12px;border-bottom:1px solid var(--line);vertical-align:top}tbody tr.highlight{background:var(--mark)}.source td{font-family:var(--mono);font-size:.85rem}.missing{color:var(--muted);font-style:italic}.data{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:8px 28px;align-items:start;margin-bottom:6px}.data.single{grid-template-columns:minmax(0,640px)}.exercise{scroll-margin-top:16px}.question{font-size:1.07rem;max-width:75ch}.panels{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:14px 0 20px}.panel{min-width:0;border:1px solid var(--line);border-radius:4px;overflow:hidden}.panel h3{padding:10px 16px;background:var(--pale)}pre{background:#101F48;color:#F0F4FF;font:13px/1.65 var(--mono);padding:16px;margin:0;overflow:auto;min-height:140px}code{font-family:var(--mono);font-size:.88em}pre code{font-size:inherit}.result{padding:12px 15px}.result:empty{display:none}.metric{font-weight:650;color:var(--navy);margin:0 0 12px}.members{font-family:var(--mono);white-space:nowrap}.prediction{margin:20px 0 16px;border:1px solid var(--line);border-radius:4px;padding:14px 18px}.prediction legend{padding:0 6px;color:var(--navy);font-weight:600}.choices{display:flex;flex-wrap:wrap;gap:12px 24px}.choices label{cursor:pointer;display:flex;align-items:center;gap:7px}.choices input{accent-color:var(--navy)}.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.feedback{border-left:4px solid var(--gold);background:var(--pale);padding:15px 18px;margin:20px 0}.feedback p{margin:0 0 10px}.feedback p:last-child,.feedback ul:last-child{margin-bottom:0}.feedback ul{margin:0 0 10px;padding-left:22px}.feedback strong{color:var(--navy)}.join-controls{padding:12px 16px;background:var(--pale);margin:16px 0}.join-controls label{display:flex;align-items:flex-start;gap:9px;cursor:pointer}.join-controls input{margin-top:6px;accent-color:var(--navy)}.counts{border-top:1px solid var(--line);padding-top:16px;margin-top:16px}.counts ul{padding-left:22px}.bottom{border-top:1px solid var(--line);margin-top:28px;padding-top:18px}details{margin:20px 0}summary{cursor:pointer;color:var(--navy);font-weight:600}footer{background:var(--navy);color:#E1E9FC;padding:22px 0;margin-top:40px;font-size:.85rem}footer a{color:white}[hidden]{display:none!important}#step-title:focus{outline:none}.status{font-size:.9rem;color:var(--muted);min-height:1.4em;margin:8px 0 0}
+@media(max-width:720px){.wrap{padding-left:16px;padding-right:16px}.panels,.data{grid-template-columns:1fr}pre{min-height:0;font-size:12px}th,td{padding:7px 8px}.source th,.source td{padding:7px 5px}.choices{flex-direction:column;gap:9px}h1{font-size:1.8rem}}
 </style>
 </head>
 <body>
 <div class="mast"><div class="wrap"><span><span class="brand">UC Berkeley</span>COMPSS 211A · Computing I</span><a href="../index.html">All interactives</a></div></div>
-<header><div class="wrap"><h1>Do these queries answer the same question?</h1><p>Compare pandas and SQL queries on six requests. Predict the results, then fix how the queries handle missing values and joins.</p><div class="meta">Week 5 · Relational data · About 8–10 minutes</div></div></header>
+<header><div class="wrap"><h1>Do these queries answer the same question?</h1><p>Three short questions. Each one shows a pandas query and a SQL query that look alike. Predict whether they treat the same rows the same way, then check.</p><div class="meta">Week 5 · Relational data · About 8–10 minutes</div></div></header>
 <main class="wrap">
-<section class="source-section" aria-labelledby="source-title">
-<h2 id="source-title">The six requests</h2>
-<p>Each exercise uses all six requests. Click an ID to highlight it in both results.</p>
-<div class="table-wrap" role="region" aria-label="Source requests, scroll horizontally if needed" tabindex="0"><table class="source"><caption>“Missing” means no value was recorded. Zero is a recorded value.</caption><thead><tr><th scope="col">request_id</th><th scope="col">channel</th><th scope="col">district</th><th scope="col">hours_to_close</th></tr></thead><tbody id="source-body"></tbody></table></div>
-<p class="small">Here, pandas uses <code>NaN</code> for missing channels in an <code>object</code> column. SQL uses <code>NULL</code>.</p>
-</section>
-<nav class="step-nav" aria-label="Exercise steps"><button data-step="filter" aria-current="step">1. Filter rows</button><button data-step="group">2. Count groups</button><button data-step="join">3. Join a lookup table</button></nav>
+<ol class="steps" aria-label="Progress"><li data-step="filter">Filter rows</li><li data-step="group">Count groups</li><li data-step="join">Join a lookup table</li></ol>
 <section class="exercise" aria-labelledby="step-title">
 <h2 id="step-title" tabindex="-1"></h2><p class="question" id="question"></p>
-<div id="lookup-box" hidden><div class="table-wrap lookup"><table><caption>District labels</caption><thead><tr><th scope="col">district</th><th scope="col">label</th></tr></thead><tbody id="lookup-body"></tbody></table></div></div>
-<div class="panels">
-<article class="panel"><h3>Pandas</h3><pre><code id="pandas-code"></code></pre><div class="result" id="pandas-result"><p class="placeholder">Make a prediction, then show the results.</p></div></article>
-<article class="panel"><h3>SQL</h3><pre><code id="sql-code"></code></pre><div class="result" id="sql-result"><p class="placeholder">Make a prediction, then show the results.</p></div></article>
+<div class="data single" id="data">
+<div class="table-wrap" role="region" aria-label="The six requests, scroll horizontally if needed" tabindex="0"><table class="source"><caption>The six requests. “Missing” means no value was recorded. Zero is a recorded value.</caption><thead><tr><th scope="col">request_id</th><th scope="col">channel</th><th scope="col">district</th><th scope="col">hours_to_close</th></tr></thead><tbody id="source-body"></tbody></table></div>
+<div id="lookup-box" hidden><div class="table-wrap"><table class="source"><caption>The district table.</caption><thead><tr><th scope="col">district</th><th scope="col">label</th></tr></thead><tbody id="lookup-body"></tbody></table></div></div>
 </div>
-<fieldset class="prediction" id="prediction"><legend>Which query returns more rows?</legend><div class="choices"><label><input type="radio" name="prediction" value="pandas">Pandas</label><label><input type="radio" name="prediction" value="same">Same number</label><label><input type="radio" name="prediction" value="sql">SQL</label></div></fieldset>
-<div class="actions"><button class="primary" id="reveal">Show results</button><button id="repair" hidden></button><button id="reset">Reset this exercise</button></div>
-<p id="notice" role="status" class="status"></p>
+<p class="small">Pandas shows a missing value as <code>NaN</code>. SQL calls it <code>NULL</code>.</p>
+<div class="panels">
+<article class="panel"><h3>Pandas</h3><pre><code id="pandas-code"></code></pre><div class="result" id="pandas-result"></div></article>
+<article class="panel"><h3>SQL</h3><pre><code id="sql-code"></code></pre><div class="result" id="sql-result"></div></article>
+</div>
+<fieldset class="prediction" id="prediction"><legend id="ask"></legend><div class="choices"><label><input type="radio" name="prediction" value="both">Both</label><label><input type="radio" name="prediction" value="pandas">Only pandas</label><label><input type="radio" name="prediction" value="sql">Only SQL</label></div></fieldset>
 <div class="feedback" id="feedback" hidden><p id="verdict"></p><p id="explanation"></p></div>
-<div id="trace" class="trace" hidden></div>
 <div id="counts" class="counts" hidden><h3>Counting rows vs. counting recorded values</h3><p>For all six requests:</p><ul><li><code>COUNT(*)</code> / <code>len(requests)</code>: <strong>6 rows</strong>.</li><li><code>COUNT(hours_to_close)</code> / <code>requests["hours_to_close"].count()</code>: <strong>4 recorded durations</strong>.</li></ul><p>B’s zero counts as a recorded duration. C and F have no duration, so only the row count includes them.</p></div>
-<div id="duplicate-controls" class="join-controls" hidden><label><input type="checkbox" id="duplicate">Add a second lookup row for district 2</label><p class="small">How many rows will each left join return if district 2 has two labels? Predict, then check the box.</p><p id="duplicate-note"></p></div>
-<div class="bottom"><button id="next" class="primary">Next: count groups</button><p id="progress" class="small"></p></div>
+<div id="duplicate-controls" class="join-controls" hidden><label><input type="checkbox" id="duplicate">Add a second row for district 2 to the district table</label><p class="small">How many rows will each left join return if district 2 has two labels? Predict, then check the box.</p><p id="duplicate-note"></p></div>
+<div class="feedback" id="finish" hidden><p><strong>That’s all three.</strong> What to check in your own queries:</p><ul><li>In SQL, <code>WHERE x != 'value'</code> drops the rows where <code>x</code> is missing. Pandas keeps them.</li><li>In pandas, <code>groupby</code> drops missing keys unless you add <code>dropna=False</code>. SQL keeps them as one group.</li><li>An inner join drops rows with no match. A left join keeps them, and a repeated key in the lookup table repeats rows.</li></ul></div>
+<div class="actions"><button class="primary" id="reveal">Check my prediction</button><button class="primary" id="repair" hidden></button><button class="primary" id="next" hidden>Next question</button><button class="quiet" id="reset" hidden>Try this question again</button></div>
+<p id="notice" role="status" class="status"></p>
+<div class="bottom" id="bottom" hidden><button id="back">Back to the previous question</button></div>
 </section>
 <details><summary>Using this in the notebook</summary><p>Compare request IDs and group counts to check which rows each query includes. Before joining a lookup table, check for duplicate keys.</p><p>In pandas, add <code>validate="many_to_one"</code> to <code>merge()</code> to reject duplicate lookup keys. In SQL, find them with:</p><pre><code>SELECT district, COUNT(*) AS rows_per_key
 FROM districts
@@ -71,83 +69,82 @@ function resultsFor(step,fixed=false,duplicate=false){
 }
 // MODEL END
 const steps=['filter','group','join'];
-const state={step:'filter',selected:null,filter:{revealed:false,fixed:false,answer:null},group:{revealed:false,fixed:false,answer:null},join:{revealed:false,fixed:false,answer:null,duplicate:false}};
+const fresh=()=>({revealed:false,fixed:false,answer:null,duplicate:false});
+const state={step:'filter',filter:fresh(),group:fresh(),join:fresh()};
+// watch: the requests each question is about. They are highlighted in the data and in the results.
 const content={
- filter:{title:'Filter out Test requests',question:'Keep every request except those with channel Test. Will both queries keep B, whose channel is missing?',repair:'Fix SQL to keep missing channels',expected:'pandas',
+ filter:{title:'Filter out Test requests',question:'Both queries should keep every request except the ones with channel Test. Request B has no channel recorded.',ask:'Which query keeps B?',watch:['B'],repair:'Fix the SQL so it keeps B',expected:'pandas',
  pandas:'result = requests.loc[\n    requests["channel"] != "Test",\n    ["request_id", "channel"]\n]',
  sql:'SELECT request_id, channel\nFROM requests\nWHERE channel != \'Test\'\nORDER BY request_id;',
  sqlFixed:'SELECT request_id, channel\nFROM requests\nWHERE channel != \'Test\'\n   OR channel IS NULL\nORDER BY request_id;',
  explanation:'Pandas keeps B because NaN != "Test" is true in this object column. In SQL, NULL != \'Test\' is unknown, so WHERE drops B. Both queries drop D, whose channel is Test.',
  repaired:'Adding OR channel IS NULL keeps B. Both queries now return A, B, C, E, and F.'},
- group:{title:'Count requests by district',question:'Will both queries count C and F, whose districts are missing?',repair:'Include missing districts in pandas',expected:'sql',
+ group:{title:'Count requests by district',question:'Both queries count the requests in each district. Requests C and F have no district recorded.',ask:'Which query counts C and F?',watch:['C','F'],repair:'Fix the pandas so it counts C and F',expected:'sql',
  pandas:'result = (\n    requests.groupby("district")\n    .size().rename("requests")\n    .reset_index()\n)',
  pandasFixed:'result = (\n    requests.groupby("district", dropna=False)\n    .size().rename("requests")\n    .reset_index()\n)',
  sql:'SELECT district, COUNT(*) AS requests\nFROM requests\nGROUP BY district\nORDER BY district IS NULL, district;',
  explanation:'SQL includes a NULL group for C and F: three groups, six requests. Pandas drops missing districts by default: two groups, four requests.',
  repaired:'With dropna=False, pandas includes C and F in a missing-district group. Both queries now count all six requests across three groups.'},
- join:{title:'Add a district label and keep every request',question:'Will both joins keep C and F, whose districts are missing?',repair:'Use LEFT JOIN in SQL',expected:'pandas',
+ join:{title:'Add a district label and keep every request',question:'Both queries add a label from the district table. Requests C and F have no district recorded.',ask:'Which query keeps C and F?',watch:['C','F'],repair:'Fix the SQL so it keeps C and F',expected:'pandas',
  pandas:'result = requests.merge(\n    districts, on="district", how="left"\n)[["request_id", "label"]]',
  sql:'SELECT r.request_id, d.label\nFROM requests AS r\nINNER JOIN districts AS d\n    ON r.district = d.district\nORDER BY r.request_id;',
  sqlFixed:'SELECT r.request_id, d.label\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\nORDER BY r.request_id;',
- explanation:'The pandas left join keeps all six requests. The SQL inner join drops C and F because they have no matching district in the lookup table.',
+ explanation:'The pandas left join keeps all six requests. The SQL inner join drops C and F because they have no matching district in the district table.',
  repaired:'LEFT JOIN keeps C and F with missing labels. Both queries now return all six requests.'}
 };
 const $=id=>document.getElementById(id);
 const escapeText=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const valueCell=value=>value===null?'<span class="missing">Missing</span>':escapeText(value);
-function tableHTML(rows,step){
+function tableHTML(rows,step,watch){
  const keys=step==='filter'?['id','channel']:step==='group'?['district','requests']:['id','label'];
  const labels={id:'request_id',channel:'channel',district:'district',requests:'requests',label:'label'};
- return '<div class="table-wrap"><table><thead><tr>'+keys.map(k=>'<th scope="col">'+labels[k]+'</th>').join('')+(step==='group'?'<th scope="col">Request IDs¹</th>':'')+'</tr></thead><tbody>'+rows.map(r=>'<tr'+(state.selected&&r.members.includes(state.selected)?' class="highlight"':'')+'>'+keys.map(k=>'<td>'+valueCell(r[k])+'</td>').join('')+(step==='group'?'<td class="members">'+r.members.join(', ')+'</td>':'')+'</tr>').join('')+'</tbody></table></div>';
+ return '<div class="table-wrap"><table><thead><tr>'+keys.map(k=>'<th scope="col">'+labels[k]+'</th>').join('')+(step==='group'?'<th scope="col">Request IDs¹</th>':'')+'</tr></thead><tbody>'+rows.map(r=>'<tr'+(r.members.some(id=>watch.includes(id))?' class="highlight"':'')+'>'+keys.map(k=>'<td>'+valueCell(r[k])+'</td>').join('')+(step==='group'?'<td class="members">'+r.members.join(', ')+'</td>':'')+'</tr>').join('')+'</tbody></table></div>';
 }
-function sourceHTML(){return records.map(r=>'<tr'+(state.selected===r.id?' class="highlight"':'')+'><td><button class="row-id" data-id="'+r.id+'" aria-label="Trace request '+r.id+'" aria-pressed="'+(state.selected===r.id)+'">'+r.id+'</button></td><td>'+valueCell(r.channel)+'</td><td>'+valueCell(r.district)+'</td><td>'+valueCell(r.hours)+'</td></tr>').join('');}
+function sourceHTML(watch){return records.map(r=>'<tr'+(watch.includes(r.id)?' class="highlight"':'')+'><td>'+r.id+'</td><td>'+valueCell(r.channel)+'</td><td>'+valueCell(r.district)+'</td><td>'+valueCell(r.hours)+'</td></tr>').join('');}
 function render(){
- const s=state[state.step],c=content[state.step];
- // Keep source controls in place after initialization so keyboard focus survives tracing.
- if(!$('source-body').children.length)$('source-body').innerHTML=sourceHTML();
- document.querySelectorAll('[data-id]').forEach(b=>{b.setAttribute('aria-pressed',String(state.selected===b.dataset.id));b.closest('tr').classList.toggle('highlight',state.selected===b.dataset.id);});
- document.querySelectorAll('[data-step]').forEach(b=>{b.classList.toggle('done',state[b.dataset.step].fixed);if(b.dataset.step===state.step)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
- $('step-title').textContent=c.title;$('question').textContent=c.question;
+ const s=state[state.step],c=content[state.step],n=steps.indexOf(state.step);
+ document.querySelectorAll('.steps [data-step]').forEach(li=>{li.classList.toggle('done',state[li.dataset.step].fixed);if(li.dataset.step===state.step)li.setAttribute('aria-current','step');else li.removeAttribute('aria-current');});
+ $('step-title').textContent='Question '+(n+1)+' of 3: '+c.title;$('question').textContent=c.question;$('ask').textContent=c.ask;
+ $('source-body').innerHTML=sourceHTML(c.watch);
+ $('lookup-box').hidden=state.step!=='join';$('data').classList.toggle('single',state.step!=='join');
+ $('lookup-body').innerHTML=lookupRows(s.duplicate).map(r=>'<tr><td>'+r.district+'</td><td>'+r.label+'</td></tr>').join('');
  $('pandas-code').textContent=s.fixed&&c.pandasFixed?c.pandasFixed:c.pandas;
  $('sql-code').textContent=s.fixed&&c.sqlFixed?c.sqlFixed:c.sql;
- $('lookup-box').hidden=state.step!=='join';
- $('lookup-body').innerHTML=lookupRows(s.duplicate).map(r=>'<tr><td>'+r.district+'</td><td>'+r.label+'</td></tr>').join('');
- $('prediction').hidden=s.revealed;$('reveal').hidden=s.revealed;
+ $('prediction').hidden=s.revealed;
  document.querySelectorAll('input[name=prediction]').forEach(r=>r.checked=s.answer===r.value);
+ // One main button at a time: check, then fix, then move on.
+ $('reveal').hidden=s.revealed;
  $('repair').hidden=!s.revealed||s.fixed;$('repair').textContent=c.repair;
- $('feedback').hidden=!s.revealed;$('trace').hidden=!s.revealed;
+ $('next').hidden=!s.fixed||n===2;
+ $('reset').hidden=!s.revealed;
+ $('bottom').hidden=n===0;
+ $('feedback').hidden=!s.revealed;
  $('counts').hidden=state.step!=='group'||!s.revealed;
  $('duplicate-controls').hidden=state.step!=='join'||!s.fixed;
  $('duplicate').checked=Boolean(s.duplicate);
+ $('finish').hidden=!(n===2&&s.fixed);
  if(s.revealed){
   const out=resultsFor(state.step,s.fixed,s.duplicate);
   for(const tool of ['pandas','sql']){
    const rows=out[tool],ids=new Set(rows.flatMap(r=>r.members));
    const count=state.step==='group'?rows.reduce((a,r)=>a+r.requests,0):rows.length;
    const metric=state.step==='group'?`${rows.length} group rows · ${count} requests counted`:`${rows.length} output rows · ${ids.size} different requests`;
-   $(tool+'-result').innerHTML='<p class="metric">'+metric+'</p>'+tableHTML(rows,state.step)+(state.step==='group'?'<p class="small">¹ Request IDs show group membership and are not query output.</p>':'');
+   $(tool+'-result').innerHTML='<p class="metric">'+metric+'</p>'+tableHTML(rows,state.step,c.watch)+(state.step==='group'?'<p class="small">¹ Request IDs show group membership and are not query output.</p>':'');
   }
-  $('verdict').textContent=s.fixed?'The results now match.':s.answer===c.expected?'Correct.':'Compare the row counts and request IDs.';
+  $('verdict').innerHTML='<strong>'+(s.fixed?'The results now match.':s.answer===c.expected?'Correct.':'Not quite.')+'</strong>';
   $('explanation').textContent=s.fixed?c.repaired:c.explanation;
-  if(state.selected){
-   const describe=tool=>{const n=out[tool].filter(r=>r.members.includes(state.selected)).length;return n?state.step==='group'?`is counted in ${n} group`:`appears ${n} ${n===1?'time':'times'}`:'is dropped';};
-   $('trace').textContent=`Request ${state.selected}: pandas ${describe('pandas')}; SQL ${describe('sql')}.`;
-  }else $('trace').textContent='Click a source request ID to trace it through both results.';
  }else{
-  $('pandas-result').innerHTML=$('sql-result').innerHTML='<p class="placeholder">Make a prediction, then show the results.</p>';
+  $('pandas-result').innerHTML=$('sql-result').innerHTML='';
  }
- $('duplicate-note').textContent=s.duplicate?'Both joins return eight rows for six requests. D and E each match two labels and appear twice. Counting output rows would overcount requests.':'Each district has one lookup row. Both left joins return six rows for six requests.';
- const n=steps.indexOf(state.step);$('next').hidden=n===2;$('next').textContent=n===0?'Next: count groups':'Next: join a lookup table';
- $('progress').textContent=steps.filter(k=>state[k].fixed).length+' of 3 exercises complete.';
+ $('duplicate-note').textContent=s.duplicate?'Both joins return eight rows for six requests. D and E each match two labels and appear twice. Counting output rows would overcount requests.':'Each district has one row in the district table. Both left joins return six rows for six requests.';
 }
 function changeStep(step){state.step=step;$('notice').textContent='';render();$('step-title').focus();}
-document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>changeStep(b.dataset.step)));
-$('source-body').addEventListener('click',e=>{const b=e.target.closest('[data-id]');if(!b)return;state.selected=state.selected===b.dataset.id?null:b.dataset.id;render();});
-$('reveal').addEventListener('click',()=>{const picked=document.querySelector('input[name=prediction]:checked');if(!picked){$('notice').textContent='Pick a prediction first.';document.querySelector('input[name=prediction]').focus();return;}Object.assign(state[state.step],{revealed:true,answer:picked.value});$('notice').textContent='Results shown. Compare the row counts and request IDs.';render();$('repair').focus();});
-$('repair').addEventListener('click',()=>{state[state.step].fixed=true;render();$('notice').textContent='The results now match.';(state.step==='join'?$('duplicate'):$('next')).focus();});
-$('reset').addEventListener('click',()=>{state[state.step]={revealed:false,fixed:false,answer:null,duplicate:false};$('notice').textContent='Exercise reset. Make a new prediction.';render();document.querySelector('input[name=prediction]').focus();});
-$('duplicate').addEventListener('change',e=>{state.join.duplicate=e.target.checked;render();$('notice').textContent=state.join.duplicate?'District 2 now appears twice in the lookup table. Both results have eight rows for six requests.':'The second district 2 row is gone. Both results have six rows.';});
+$('reveal').addEventListener('click',()=>{const picked=document.querySelector('input[name=prediction]:checked');if(!picked){$('notice').textContent='Choose an answer first.';document.querySelector('input[name=prediction]').focus();return;}Object.assign(state[state.step],{revealed:true,answer:picked.value});$('notice').textContent='';render();$('repair').focus();});
+$('repair').addEventListener('click',()=>{state[state.step].fixed=true;render();(state.step==='join'?$('duplicate'):$('next')).focus();});
+$('reset').addEventListener('click',()=>{state[state.step]=fresh();$('notice').textContent='';render();document.querySelector('input[name=prediction]').focus();});
+$('duplicate').addEventListener('change',e=>{state.join.duplicate=e.target.checked;render();$('notice').textContent=state.join.duplicate?'District 2 now appears twice in the district table. Both results have eight rows for six requests.':'The second district 2 row is gone. Both results have six rows.';});
 $('next').addEventListener('click',()=>changeStep(steps[steps.indexOf(state.step)+1]));
+$('back').addEventListener('click',()=>changeStep(steps[steps.indexOf(state.step)-1]));
 render();
 </script>
 </body>
