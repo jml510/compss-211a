@@ -24,3 +24,20 @@ URL and repository URL somewhere your team can find them later.
 Choose one realistic follow-up action: rerun the project from a clean start,
 improve one figure, turn one repeated notebook task into a script, document a
 limitation more clearly, or apply the same workflow to a new question.
+
+## What analyst hiring asks for
+
+Hiring for analyst jobs differs by sector. This table lists what employers often
+ask for and what you have from this course that answers it.
+
+| Often asked for | Where | What you have |
+| --- | --- | --- |
+| A SQL test | Private-sector analyst jobs | Week 5, HW3, and the [SQL interview practice](https://macss-berkeley.github.io/compss-211a/interactives/week05-sql-practice.html) page |
+| A take-home exercise: a data file, a few questions, a short write-up | Private sector and research organizations | HW3 to HW5, and the [take-home practice](https://macss-berkeley.github.io/compss-211a/interactives/week12-take-home-practice.html) page |
+| A coding sample | Research and policy organizations | Your project repository, or a homework notebook you can explain line by line |
+| A writing sample | Research and policy organizations | Your project website, or a methods note from a homework |
+| A walkthrough of a past project and how you checked it | Most interviews | Your final presentation and its Q&A |
+| An experience questionnaire and a structured interview | Government | Two or three specific examples of an analysis you ran and checked |
+
+The project is a team product. Be ready to say which parts you did. Your
+Individual Appendix already lists them.
