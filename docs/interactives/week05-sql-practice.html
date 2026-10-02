@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SQL Interview Practice · COMPSS 211A</title>
-<meta name="description" content="Ten practice SQL questions in the style of an analyst job interview, on a sample of San Francisco 311 data. Queries run in your browser and are checked automatically.">
+<meta name="description" content="Fourteen SQL practice questions of the kind used in screening tests for data analyst jobs, on a sample of San Francisco 311 data. Queries run in your browser and are checked automatically.">
 <style>
 :root{--navy:#002676;--gold:#FDBA12;--ink:#1A1A1A;--muted:#465973;--line:#CBD4E1;--pale:#EEF3FA;--paper:#fff;--mark:#FFF1CC;--good:#17643C;--bad:#9B1C1C;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 *{box-sizing:border-box}
@@ -28,7 +28,8 @@ header p{max-width:720px;margin:0 0 10px}
 .meta{font-size:.9rem;color:#DFE8FF}
 main.wrap{padding-top:24px;padding-bottom:40px}
 .layout{display:grid;grid-template-columns:290px minmax(0,1fr);gap:32px;align-items:start}
-h2{color:var(--navy);font-size:1.3rem;line-height:1.35;margin:4px 0 14px;font-weight:600}
+h2{color:var(--ink);font-size:1.2rem;line-height:1.4;margin:4px 0 14px;font-weight:400}
+h2 b{color:var(--navy);font-weight:700}
 h2:focus{outline:none}
 h3{margin:14px 0 2px;color:var(--navy);font-size:1rem;font-family:var(--mono)}
 p{max-width:75ch;margin:10px 0 14px}
@@ -76,8 +77,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:.85rem;col
 <div class="mast"><div class="wrap"><span><span class="brand">UC Berkeley</span>COMPSS 211A · Computing I</span><a href="../index.html">All interactives</a></div></div>
 <header><div class="wrap">
 <h1>SQL interview practice</h1>
-<p>Ten practice questions in the style of an analyst job interview, on a sample of the San Francisco 311 data from Week 5. Write a query, run it, and check the result. Queries run in your browser and are not saved or sent anywhere.</p>
-<div class="meta">Week 5 · Optional · 30–45 minutes · Needs an internet connection</div>
+<p>Fourteen SQL practice questions of the kind used in screening tests for data analyst jobs. These tests are common in private-sector hiring. The data is a sample of the San Francisco 311 requests from Week 5. Queries run in your browser and are not saved or sent anywhere.</p>
+<div class="meta">Week 5 · Optional · 45–60 minutes · Needs an internet connection</div>
 </div></header>
 
 <main class="wrap layout">
@@ -102,7 +103,15 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:.85rem;col
   </ul>
   <h3>districts_v2</h3>
   <p class="small">A copy of <code>districts</code> with a mistake in it. Used in question 9.</p>
+  <h3>days</h3>
+  <p class="small">7 rows. One row is one day of the sample week.</p>
+  <ul>
+    <li><code>day</code>: date, such as <code>2026-08-03</code></li>
+    <li><code>weekday</code>: name of the day</li>
+    <li><code>is_weekend</code>: 1 for Saturday and Sunday, otherwise 0</li>
+  </ul>
   <p class="small" style="margin-top:12px">To see the first rows of a table, run <code>SELECT * FROM requests LIMIT 5;</code></p>
+  <p class="small">This page runs SQLite. PostgreSQL and MySQL write some functions differently, mostly date functions.</p>
 </details>
 </aside>
 
@@ -204,7 +213,35 @@ const QUESTIONS = [
    answer: "SELECT district, COUNT(*) AS times\nFROM districts_v2\nGROUP BY district\nHAVING COUNT(*) > 1;",
    pandas: "counts = districts_v2[\"district\"].value_counts()\ncounts[counts > 1]",
    ordered: false},
-  {topic: "Window functions (harder)",
+  {topic: "Join three tables",
+   prompt: "Count the requests opened on a <b>weekend</b> for each supervisor name. Use the <code>days</code> and <code>districts</code> tables. Keep the requests with no district as their own row. Most requests first.",
+   followup: "Which of your two joins has to be a left join, and why? Would a left join to <code>days</code> change the result?",
+   hint: "Join <code>days</code> on the date: <code>ON DATE(r.opened_at) = y.day</code>. Keep the rows where <code>y.is_weekend = 1</code>. Then <code>LEFT JOIN districts</code> and group by supervisor.",
+   answer: "SELECT d.supervisor, COUNT(*) AS requests\nFROM requests AS r\nJOIN days AS y\n  ON DATE(r.opened_at) = y.day\nLEFT JOIN districts AS d\n  ON r.district = d.district\nWHERE y.is_weekend = 1\nGROUP BY d.supervisor\nORDER BY requests DESC, d.supervisor;",
+   pandas: "with_day = requests.assign(day=requests[\"opened_at\"].str[:10]).merge(days, on=\"day\")\nweekend = with_day[with_day[\"is_weekend\"] == 1]\n(weekend.merge(districts, on=\"district\", how=\"left\")\n    .groupby(\"supervisor\", dropna=False).size()\n    .sort_values(ascending=False))",
+   ordered: true},
+  {topic: "Join a table to itself",
+   prompt: "Some requests were opened at <b>exactly the same time</b>. List each pair once: the two request IDs with the smaller ID first, and the time. Order by time.",
+   followup: "Why <code>a.request_id &lt; b.request_id</code>? What do you get with <code>&lt;&gt;</code>, or with no condition on the IDs?",
+   hint: "Use <code>requests</code> twice, with two short names: <code>FROM requests AS a JOIN requests AS b ON a.opened_at = b.opened_at</code>. Add <code>AND a.request_id &lt; b.request_id</code> so each pair appears once.",
+   answer: "SELECT a.request_id AS first_id, b.request_id AS second_id, a.opened_at\nFROM requests AS a\nJOIN requests AS b\n  ON a.opened_at = b.opened_at\n AND a.request_id < b.request_id\nORDER BY a.opened_at;",
+   pandas: "pairs = requests.merge(requests, on=\"opened_at\", suffixes=(\"_a\", \"_b\"))\npairs = pairs[pairs[\"request_id_a\"] < pairs[\"request_id_b\"]]\npairs[[\"request_id_a\", \"request_id_b\", \"opened_at\"]].sort_values(\"opened_at\")",
+   ordered: true},
+  {topic: "Compare each row with the one before (LAG)",
+   prompt: "For each day, show the date, the number of requests opened, and the <b>change from the day before</b>. The first day has no change. Earliest day first.",
+   followup: "What does your query show for the first day, and why? What would it show if one day had no requests at all?",
+   hint: "Count per day in a <code>WITH</code> query. Then <code>LAG(requests) OVER (ORDER BY day)</code> gives the previous day's count.",
+   answer: "WITH daily AS (\n  SELECT DATE(opened_at) AS day, COUNT(*) AS requests\n  FROM requests\n  GROUP BY day\n)\nSELECT day, requests,\n       requests - LAG(requests) OVER (ORDER BY day) AS change\nFROM daily\nORDER BY day;",
+   pandas: "daily = requests[\"opened_at\"].str[:10].value_counts().sort_index()\npd.DataFrame({\"requests\": daily, \"change\": daily.diff()})",
+   ordered: true},
+  {topic: "Rank with ties (RANK)",
+   prompt: "Rank the categories by number of requests, most first. Categories with the same count share a rank, and the next rank is skipped: two categories ranked 9 are followed by rank 11. Show the category, its count, and its rank for every category <b>ranked 10 or better</b>. Order by rank, then category.",
+   followup: "How many rows would you get with <code>DENSE_RANK()</code> or with <code>ROW_NUMBER()</code>, and why?",
+   hint: "Count per category in a <code>WITH</code> query, then add <code>RANK() OVER (ORDER BY requests DESC)</code>. Filter on the rank in an outer query, because <code>WHERE</code> cannot use a window function directly.",
+   answer: "WITH counts AS (\n  SELECT category, COUNT(*) AS requests\n  FROM requests\n  GROUP BY category\n),\nranked AS (\n  SELECT category, requests,\n         RANK() OVER (ORDER BY requests DESC) AS category_rank\n  FROM counts\n)\nSELECT category, requests, category_rank\nFROM ranked\nWHERE category_rank <= 10\nORDER BY category_rank, category;",
+   pandas: "counts = requests.groupby(\"category\").size().reset_index(name=\"requests\")\ncounts[\"category_rank\"] = counts[\"requests\"].rank(method=\"min\", ascending=False).astype(int)\ncounts[counts[\"category_rank\"] <= 10].sort_values([\"category_rank\", \"category\"])",
+   ordered: true},
+  {topic: "Top row in each group (ROW_NUMBER)",
    prompt: "For each district (leave out requests with no district), find the <b>single most common category</b> and its count. If two categories tie, choose the one that comes first alphabetically. Order by district.",
    followup: "Why doesn't <code>GROUP BY district</code> with <code>MAX(...)</code> tell you <i>which</i> category had the most?",
    hint: "First count requests per district and category (a <code>WITH</code> query helps). Then number the rows within each district with <code>ROW_NUMBER() OVER (PARTITION BY district ORDER BY count DESC, category)</code> and keep row 1.",
@@ -212,6 +249,10 @@ const QUESTIONS = [
    pandas: "counts = (requests.dropna(subset=[\"district\"])\n    .groupby([\"district\", \"category\"]).size().reset_index(name=\"requests\"))\n(counts.sort_values([\"district\", \"requests\", \"category\"], ascending=[True, False, True])\n    .groupby(\"district\").head(1))",
    ordered: true},
 ];
+
+// One row per day of the sample week. August 3, 2026 is a Monday.
+const DAYS = [["2026-08-03", "Monday", 0], ["2026-08-04", "Tuesday", 0], ["2026-08-05", "Wednesday", 0], ["2026-08-06", "Thursday", 0],
+              ["2026-08-07", "Friday", 0], ["2026-08-08", "Saturday", 1], ["2026-08-09", "Sunday", 1]];
 
 let SQL = null, db = null, current = 0;
 const solved = new Set();
@@ -224,6 +265,10 @@ function buildDatabase() {
   const insert = db.prepare("INSERT INTO requests VALUES (?,?,?,?,?,?,?)");
   for (const row of DATA.rows) insert.run(row);
   insert.free();
+  db.run("CREATE TABLE days (day TEXT, weekday TEXT, is_weekend INTEGER)");
+  const day = db.prepare("INSERT INTO days VALUES (?,?,?)");
+  for (const row of DAYS) day.run(row);
+  day.free();
   for (const table of ["districts", "districts_v2"]) {
     db.run(`CREATE TABLE ${table} (district INTEGER, supervisor TEXT)`);
     const ins = db.prepare(`INSERT INTO ${table} VALUES (?,?)`);
@@ -297,7 +342,7 @@ function renderQuestions() {
       <details><summary>Hint</summary><p>${q.hint}</p></details>
       <details><summary>One possible answer</summary><pre class="answer">${esc(q.answer)}</pre><p class="small">Other queries can be correct. The checker compares results, not code.</p></details>
       <details class="pd" data-q="${i}"><summary>Answer it in pandas (optional)</summary>
-        <p class="small">The three tables are loaded as DataFrames with the same names. Pandas leaves out missing values in <code>groupby</code> unless you add <code>dropna=False</code>.</p>
+        <p class="small">The tables are loaded as DataFrames with the same names. Pandas leaves out missing values in <code>groupby</code> unless you add <code>dropna=False</code>.</p>
         <div id="q${i}-pd"></div>
         <details><summary>One possible pandas answer</summary><pre class="answer">${esc(q.pandas)}</pre></details>
       </details>
@@ -363,11 +408,13 @@ const PD_SETUP = [
   'requests["district"] = requests["district"].astype("Int64")',
   "districts = pd.DataFrame(json.load(open('districts.json')), columns=['district', 'supervisor'])",
   'districts_v2 = pd.concat([districts, districts[districts["district"] == 5]], ignore_index=True)',
+  "days = pd.DataFrame(json.load(open('days.json')), columns=['day', 'weekday', 'is_weekend'])",
 ].join("\n");
 const PD_FILES = {
   "requests.json": JSON.stringify(DATA.rows),
   "columns.json": JSON.stringify(DATA.columns),
   "districts.json": JSON.stringify(DATA.districts),
+  "days.json": JSON.stringify(DAYS),
 };
 document.querySelectorAll("details.pd").forEach(d => d.addEventListener("toggle", () => {
   const i = Number(d.dataset.q), el = $(`q${i}-pd`);
@@ -378,7 +425,7 @@ document.querySelectorAll("details.pd").forEach(d => d.addEventListener("toggle"
     root: `/home/you/sql-q${i + 1}`,
     files: PD_FILES,
     setup: PD_SETUP,
-    code: `# Question ${i + 1} in pandas. The tables are ready: requests, districts, districts_v2.\n\nrequests.head()\n`,
+    code: `# Question ${i + 1} in pandas. The tables are ready: requests, districts, districts_v2, days.\n\nrequests.head()\n`,
   });
 }));
 if (typeof initSqlJs !== "function") {
