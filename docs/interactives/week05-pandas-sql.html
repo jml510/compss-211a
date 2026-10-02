@@ -19,10 +19,10 @@
 <section class="exercise" aria-labelledby="step-title">
 <h2 id="step-title" tabindex="-1"></h2><p class="question" id="question"></p>
 <div class="data single" id="data">
-<div class="table-wrap" role="region" aria-label="The six requests, scroll horizontally if needed" tabindex="0"><table class="source"><caption>The six requests. “Missing” means no value was recorded. Zero is a recorded value.</caption><thead><tr><th scope="col">request_id</th><th scope="col">channel</th><th scope="col">district</th><th scope="col">hours_to_close</th></tr></thead><tbody id="source-body"></tbody></table></div>
+<div class="table-wrap" role="region" aria-label="The six requests, scroll horizontally if needed" tabindex="0"><table class="source"><caption id="source-caption"></caption><thead><tr><th scope="col">request_id</th><th scope="col">channel</th><th scope="col">district</th><th scope="col">hours_to_close</th></tr></thead><tbody id="source-body"></tbody></table></div>
 <div id="lookup-box" hidden><div class="table-wrap"><table class="source"><caption>The district table.</caption><thead><tr><th scope="col">district</th><th scope="col">label</th></tr></thead><tbody id="lookup-body"></tbody></table></div></div>
 </div>
-<p class="small">Pandas shows a missing value as <code>NaN</code>. SQL calls it <code>NULL</code>.</p>
+<p class="small">“Missing” means no value was recorded. Zero is a recorded value. Pandas shows a missing value as <code>NaN</code>, and SQL calls it <code>NULL</code>.</p>
 <div class="panels">
 <article class="panel"><h3>Pandas</h3><pre><code id="pandas-code"></code></pre><div class="result" id="pandas-result"></div></article>
 <article class="panel"><h3>SQL</h3><pre><code id="sql-code"></code></pre><div class="result" id="sql-result"></div></article>
@@ -73,17 +73,17 @@ const fresh=()=>({revealed:false,fixed:false,answer:null,duplicate:false});
 const state={step:'filter',filter:fresh(),group:fresh(),join:fresh()};
 // watch: the requests each question is about. They are highlighted in the data and in the results.
 const content={
- filter:{title:'Filter out Test requests',question:'Both queries should keep every request except the ones with channel Test. Request B has no channel recorded.',ask:'Which query keeps B?',watch:['B'],repair:'Fix the SQL so it keeps B',expected:'pandas',
+ filter:{title:'Filter out Test requests',question:'Both queries keep the requests whose channel is not Test, so both drop D. B is the unclear case: it has no channel recorded. Does a missing channel count as “not Test”?',ask:'Which query keeps B?',watch:['B'],repair:'Fix the SQL so it keeps B',expected:'pandas',
  pandas:'result = requests.loc[\n    requests["channel"] != "Test",\n    ["request_id", "channel"]\n]',
  sql:'SELECT request_id, channel\nFROM requests\nWHERE channel != \'Test\'\nORDER BY request_id;',
  sqlFixed:'SELECT request_id, channel\nFROM requests\nWHERE channel != \'Test\'\n   OR channel IS NULL\nORDER BY request_id;',
- explanation:'Pandas keeps B because NaN != "Test" is true in this object column. In SQL, NULL != \'Test\' is unknown, so WHERE drops B. Both queries drop D, whose channel is Test.',
- repaired:'Adding OR channel IS NULL keeps B. Both queries now return A, B, C, E, and F.'},
+ explanation:'Both queries ask the same thing of every row: is the channel different from Test? B has no channel, so there is nothing to compare. Pandas answers yes and keeps B. SQL answers “unknown”, and WHERE keeps only the rows where the answer is yes, so SQL drops B.',
+ repaired:'OR channel IS NULL tells SQL to also keep the rows with no channel. Both queries now return A, B, C, E, and F.'},
  group:{title:'Count requests by district',question:'Both queries count the requests in each district. Requests C and F have no district recorded.',ask:'Which query counts C and F?',watch:['C','F'],repair:'Fix the pandas so it counts C and F',expected:'sql',
  pandas:'result = (\n    requests.groupby("district")\n    .size().rename("requests")\n    .reset_index()\n)',
  pandasFixed:'result = (\n    requests.groupby("district", dropna=False)\n    .size().rename("requests")\n    .reset_index()\n)',
  sql:'SELECT district, COUNT(*) AS requests\nFROM requests\nGROUP BY district\nORDER BY district IS NULL, district;',
- explanation:'SQL includes a NULL group for C and F: three groups, six requests. Pandas drops missing districts by default: two groups, four requests.',
+ explanation:'SQL gives C and F a group of their own, for the missing district: three groups, six requests. Pandas leaves out rows with a missing district unless you tell it otherwise: two groups, four requests.',
  repaired:'With dropna=False, pandas includes C and F in a missing-district group. Both queries now count all six requests across three groups.'},
  join:{title:'Add a district label and keep every request',question:'Both queries add a label from the district table. Requests C and F have no district recorded.',ask:'Which query keeps C and F?',watch:['C','F'],repair:'Fix the SQL so it keeps C and F',expected:'pandas',
  pandas:'result = requests.merge(\n    districts, on="district", how="left"\n)[["request_id", "label"]]',
@@ -106,6 +106,7 @@ function render(){
  document.querySelectorAll('.steps [data-step]').forEach(li=>{li.classList.toggle('done',state[li.dataset.step].fixed);if(li.dataset.step===state.step)li.setAttribute('aria-current','step');else li.removeAttribute('aria-current');});
  $('step-title').textContent='Question '+(n+1)+' of 3: '+c.title;$('question').textContent=c.question;$('ask').textContent=c.ask;
  $('source-body').innerHTML=sourceHTML(c.watch);
+ $('source-caption').textContent='The six requests. This question is about the highlighted '+(c.watch.length===1?'row':'rows')+': '+c.watch.join(' and ')+'.';
  $('lookup-box').hidden=state.step!=='join';$('data').classList.toggle('single',state.step!=='join');
  $('lookup-body').innerHTML=lookupRows(s.duplicate).map(r=>'<tr><td>'+r.district+'</td><td>'+r.label+'</td></tr>').join('');
  $('pandas-code').textContent=s.fixed&&c.pandasFixed?c.pandasFixed:c.pandas;
