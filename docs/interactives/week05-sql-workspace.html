@@ -156,7 +156,7 @@ const TABLES = [
 // One entry per step. A step with no task shows only its example.
 // view: the view a step builds; the check compares its rows with expect, a query on the base tables.
 // starter: what the box starts with; scaffold: a starting point with blanks, offered in the hint.
-// startFrom: a step whose query this step's box starts from. accept: a check that replaces comparing with the answer.
+// startFrom: a step whose query this step's box starts from. accept: a test for other results that also count as correct. wrong: what to say when the values differ.
 // pyPre, rPre: code from earlier steps that the Python and R boxes run first. extra: not counted in the progress.
 // example: a query that is shown and can be run, with the pandas and R lines that do the same job.
 // starter: what the query box starts with. answer: the model query the result is compared with.
@@ -171,6 +171,8 @@ const STEPS = [
    task: 'Preview five rows of the <b>districts</b> table.',
    starter: 'SELECT *\nFROM ____\nLIMIT 5;',
    answer: 'SELECT *\nFROM districts\nLIMIT 5;', ordered: false,
+   accept: mine => { const all = new Set(run('SELECT * FROM districts').values.map(rowKey)), keys = mine.values.map(r => all.has(rowKey(r)) ? rowKey(r) : rowKey([...r].reverse()));
+     return mine.columns.length === 2 && new Set(keys).size === 5 && keys.every(k => all.has(k)); },
    pyStart: '____.head(5)',
    rStart: 'head(____, 5)',
    py: 'districts.head(5)',
@@ -196,6 +198,7 @@ const STEPS = [
    task: 'Show <code>request_id</code>, <code>status</code> and <code>hours_to_close</code> for the first ten <b>Web</b> requests, sorted by request ID.',
    starter: 'SELECT request_id, ____, ____\nFROM requests\nWHERE channel = \'____\'\nORDER BY request_id\nLIMIT ____;',
    answer: 'SELECT request_id, status, hours_to_close\nFROM requests\nWHERE channel = \'Web\'\nORDER BY request_id\nLIMIT 10;', ordered: true,
+   wrong: 'Some values differ. Check the channel in WHERE, and that ORDER BY sorts by request_id from smallest to largest.',
    pyStart: 'requests.loc[\n    requests["channel"] == "____",\n    ["request_id", "____", "____"],\n].sort_values("request_id").head(____)',
    rStart: 'requests |>\n  filter(channel == "____") |>\n  select(request_id, ____, ____) |>\n  arrange(request_id) |>\n  head(____)',
    py: 'requests.loc[\n    requests["channel"] == "Web",\n    ["request_id", "status", "hours_to_close"],\n].sort_values("request_id").head(10)',
@@ -209,6 +212,7 @@ const STEPS = [
    task: 'How many <b>Phone</b> requests came from each district? Show the largest count first.',
    starter: 'SELECT ____, COUNT(*) AS requests\nFROM requests\nWHERE channel = \'Phone\'\nGROUP BY ____\nORDER BY requests ____, district ASC;',
    answer: 'SELECT district, COUNT(*) AS requests\nFROM requests\nWHERE channel = \'Phone\'\nGROUP BY district\nORDER BY requests DESC, district ASC;', ordered: {column: 'requests', direction: 'desc'},
+   wrong: 'Some values differ. Count the rows in each group with COUNT(*), and keep only the Phone requests with WHERE.',
    pyStart: '(\n    requests[requests["channel"] == "Phone"]\n    .groupby("____", dropna=False)\n    .size()\n    .reset_index(name="requests")\n    .sort_values(["requests", "district"], ascending=[____, True])\n)',
    rStart: 'requests |>\n  filter(channel == "Phone") |>\n  count(____, name = "requests") |>\n  arrange(____(requests), district)',
    py: '(\n    requests[requests["channel"] == "Phone"]\n    .groupby("district", dropna=False)\n    .size()\n    .reset_index(name="requests")\n    .sort_values(["requests", "district"], ascending=[False, True])\n)',
@@ -223,6 +227,7 @@ const STEPS = [
    task: 'How many requests have <b>no district</b>?',
    starter: 'SELECT COUNT(*) AS requests\nFROM requests\nWHERE district ____;',
    answer: 'SELECT COUNT(*) AS requests\nFROM requests\nWHERE district IS NULL;', ordered: false,
+   wrong: 'The number differs. Test for a missing value with IS NULL, and count the rows with COUNT(*).',
    pyStart: 'requests["district"].____().sum()',
    rStart: 'sum(____(requests$district))',
    py: 'requests["district"].isna().sum()',
@@ -237,6 +242,10 @@ const STEPS = [
    task: '<code>is_open</code> is 1 for an open request and 0 for a closed one. How many requests are <b>open</b>, and what <b>share</b> of all requests is that?',
    starter: 'SELECT ____(is_open) AS open_requests,\n       ____(is_open) AS share_open\nFROM requests;',
    answer: 'SELECT SUM(is_open) AS open_requests,\n       AVG(is_open) AS share_open\nFROM requests;', ordered: false,
+   accept: mine => { if (mine.values.length !== 1 || mine.columns.length !== 2) return false;
+     const [open, share] = run('SELECT SUM(is_open), AVG(is_open) FROM requests').values[0], v = mine.values[0];
+     return [[0, 1], [1, 0]].some(([n, p]) => v[n] === open && (Math.abs(parseFloat(v[p]) - share) < 0.005 || Math.abs(parseFloat(v[p]) - 100 * share) < 0.5)); },
+   wrong: 'Some values differ. SUM(is_open) adds up the 1s and AVG(is_open) gives their share. COUNT counts the 0s too, and dividing one whole number by another gives a whole number.',
    pyStart: 'requests["is_open"].____(), requests["is_open"].____()',
    rStart: '____(requests$is_open)\n____(requests$is_open)',
    py: 'requests["is_open"].sum(), requests["is_open"].mean()',
@@ -250,6 +259,7 @@ const STEPS = [
    task: 'Add the <b>district name</b> to each request. Keep every request.',
    starter: 'SELECT r.request_id, r.category, r.district, d.district_name\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.____ = d.____\nORDER BY r.request_id;',
    answer: 'SELECT r.request_id, r.category, r.district, d.district_name\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\nORDER BY r.request_id;', ordered: true,
+   wrong: 'Some values differ. Match the district number in requests with the district number in districts.',
    pyStart: '(\n    requests[["request_id", "category", "district"]]\n    .merge(districts, on="____", how="left")\n    .sort_values("request_id")\n)',
    rStart: 'requests |>\n  select(request_id, category, district) |>\n  left_join(districts, by = "____") |>\n  arrange(request_id)',
    py: '(\n    requests[["request_id", "category", "district"]]\n    .merge(districts, on="district", how="left")\n    .sort_values("request_id")\n)',
@@ -262,6 +272,7 @@ const STEPS = [
    starter: 'SELECT \nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\n',
    scaffold: 'SELECT d.district_name, COUNT(*) AS requests\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\nGROUP BY ____\nORDER BY ____;',
    answer: 'SELECT d.district_name, COUNT(*) AS requests\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\nGROUP BY d.district_name\nORDER BY requests DESC;', ordered: {column: 'requests', direction: 'desc'},
+   wrong: 'Some values differ. Show the name from districts, and count rows with COUNT(*). Counting a column from districts skips the requests that have no match.',
    pyStart: 'joined = requests.merge(districts, on="district", how="left")\njoined.groupby("____", dropna=False).size().sort_values(ascending=____)',
    rStart: 'requests |>\n  left_join(districts, by = "district") |>\n  count(____) |>\n  arrange(desc(n))',
    py: 'joined = requests.merge(districts, on="district", how="left")\njoined.groupby("district_name", dropna=False).size().sort_values(ascending=False)',
@@ -319,6 +330,7 @@ const R_SETUP = [
   'requests <- as_tibble(raw[is.na(raw$channel) | raw$channel != "Test", ]) |> mutate(is_open = as.integer(status == "Open"))',
   'districts <- read.csv("sf_supervisor_districts.csv") |> transmute(district = sup_dist, district_name = sup_dist_name) |> as_tibble()',
   'rm(raw)',
+  '.week05 <- list(requests = requests, districts = districts)  # the tables as loaded',
 ].join('\n');
 const WEBR_URL = 'https://webr.r-wasm.org/v0.6.0/webr.mjs';
 
@@ -413,6 +425,8 @@ function rCell(el, starter, pre) {
     try {
       const webR = await getR(setStatus);
       setStatus('Running…');
+      // Every run starts from the tables as loaded, so a line such as requests <- head(requests) in one box does not change the others.
+      await webR.evalRVoid('requests <- .week05$requests; districts <- .week05$districts');
       if (pre) await webR.evalRVoid(pre);
       const shelter = await new webR.Shelter();
       try {
@@ -460,15 +474,15 @@ function guardBlanks(box) {
 }
 
 function renderSchema() {
-  const views = db.exec("SELECT name FROM sqlite_master WHERE type = 'view' ORDER BY name")[0];
-  const viewList = (views ? views.values.map(([name]) => {
+  const views = db.exec(`SELECT name, type FROM sqlite_master WHERE type IN ('view', 'table') AND name NOT IN (${TABLES.map(t => `'${t.name}'`).join(', ')}) ORDER BY name`)[0];
+  const viewList = (views ? views.values.map(([name, type]) => {
     let columns = [];
     try { const st = db.prepare(`SELECT * FROM ${name} LIMIT 0`); columns = st.getColumnNames(); st.free(); } catch (error) { /* a view whose tables are gone */ }
-    return `<h3><button type="button" class="name" data-name="${name}">${name}</button></h3><p class="small">A view you made.</p><ul>${columns.map(c => `<li><button type="button" class="name" data-name="${c}">${c}</button></li>`).join('')}</ul>`;
+    return `<h3><button type="button" class="name" data-name="${name}">${name}</button></h3><p class="small">A ${type} you made.</p><ul>${columns.map(c => `<li><button type="button" class="name" data-name="${c}">${c}</button></li>`).join('')}</ul>`;
   }) : []).join('');
   $('schema').innerHTML = TABLES.map(t => `<h3><button type="button" class="name" data-name="${t.name}">${t.name}</button></h3><p class="small">${t.rows.toLocaleString('en-US')} rows. ${esc(t.note)}</p><ul>${t.columns.map(([name]) => `<li><button type="button" class="name" data-name="${name}">${name}</button></li>`).join('')}</ul>`).join('') + viewList;
 }
-// After a query that makes or removes a view, list the views again.
+// After a query that makes or removes a view or a table, list them again.
 const changesViews = query => /\b(create|drop)\b/i.test(query);
 
 function runScratch() {
@@ -479,15 +493,45 @@ function runScratch() {
   save();
 }
 
+// The query without comments, and with the text in single quotes emptied.
+const bare = query => query.replace(/--[^\n]*/g, '').replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/'(?:[^']|'')*'/g, "''");
+// The page's own tables are for reading. A statement that would change or remove one is stopped before it runs.
+const CHANGES_LOADED = new RegExp('\\b(?:insert(?:\\s+or\\s+\\w+)?\\s+into|replace\\s+into|update(?:\\s+or\\s+\\w+)?|delete\\s+from|drop\\s+table(?:\\s+if\\s+exists)?|alter\\s+table)\\s+(?:main\\s*\\.\\s*)?["`\\[]?(' + TABLES.map(t => t.name).join('|') + ')\\b', 'i');
+// SQLite reads "Web" as text when no table or column has that name. DuckDB and most other databases give an error, so the page does too.
+// A name in double quotes after AS, a bracket or another name is a label for a column, and is left alone.
+const BEFORE_VALUE = /^(?:select|distinct|where|and|or|not|like|glob|in|is|then|else|when|case|between|by|having|on)$/i;
+function doubleQuotedText(query) {
+  const text = bare(query);
+  let names = null;
+  for (const m of text.matchAll(/"([^"]*)"/g)) {
+    const word = (text.slice(0, m.index).match(/(\w+|\))\s*$/) || [])[1];
+    if (word && !BEFORE_VALUE.test(word)) continue;
+    if (!names) {
+      names = new Set([...text.matchAll(/\bas\s+"?(\w+)/gi)].map(a => a[1].toLowerCase()));
+      const made = db.exec("SELECT name FROM sqlite_master WHERE type IN ('table', 'view')")[0];
+      for (const [name] of made ? made.values : []) {
+        names.add(name.toLowerCase());
+        try { const st = db.prepare(`SELECT * FROM "${name}" LIMIT 0`); st.getColumnNames().forEach(c => names.add(c.toLowerCase())); st.free(); } catch (error) { /* a view whose tables are gone */ }
+      }
+    }
+    if (!names.has(m[1].toLowerCase())) return m[1];
+  }
+  return null;
+}
 function run(query) {
+  const target = bare(query).match(CHANGES_LOADED);
+  if (target) throw new Error('read-only: ' + target[1].toLowerCase());
+  const text = doubleQuotedText(query);
+  if (text !== null) throw new Error('double-quoted text: ' + text);
   const results = db.exec(query);
-  if (!results.length) return {columns: [], values: []};
+  // statement: the last statement makes or changes something, so it has no rows to show.
+  if (!results.length) return {columns: [], values: [], statement: /^\s*(create|drop|insert|replace|update|delete|alter)\b/i.test(statements(query).pop() || '')};
   return results[results.length - 1];
 }
 
 const shown = v => typeof v === 'number' && !Number.isInteger(v) ? Math.round(v * 10000) / 10000 : v;
 function renderTable(result) {
-  if (!result.columns.length) return '<p class="small">The query ran but returned no rows.</p>';
+  if (!result.columns.length) return `<p class="small">${result.statement ? 'Done. This statement returns no rows.' : 'The query ran but returned no rows.'}</p>`;
   const rows = result.values.slice(0, 50);
   const head = result.columns.map(c => `<th>${esc(c)}</th>`).join('');
   const cell = v => v === null ? '<td class="null">NULL</td>' : `<td>${esc(shown(v))}</td>`;
@@ -612,6 +656,8 @@ function explainError(message) {
   const tables = TABLES.map(t => t.name), columns = TABLES.flatMap(t => t.columns.map(c => c[0]));
   const owners = name => TABLES.filter(t => t.columns.some(c => c[0] === name)).map(t => t.name);
   let m, plain = '';
+  if ((m = message.match(/^read-only: (\w+)$/))) return esc(`${m[1]} is one of this page's tables, and the page only reads them. To try INSERT, UPDATE or DELETE, make your own table with CREATE TABLE first.`);
+  if ((m = message.match(/^double-quoted text: ([\s\S]*)$/))) return esc(`Put text in single quotes: '${m[1]}'. Double quotes are for table and column names. DuckDB and most other databases give an error here.`);
   if ((m = message.match(/^no such column: (.+)$/))) {
     const full = m[1], word = full.split('.').pop(), near = closest(word, columns);
     if (full.includes('.') && !columns.includes(word) && near) plain = `There is no column called ${word}. Did you mean ${near}?`;
@@ -680,13 +726,31 @@ function permutations(n) {
   return out;
 }
 // Compare results, not code. Columns may be in a different order, and names are not checked.
-function compare(mine, expected, ordered) {
+// What to look at when the number of rows is wrong: the first part of the query that explains the difference.
+function rowsAdvice(query, answer, got, want) {
+  const top = text => mask(bare(statements(text).pop() || ''), true).toLowerCase();   // without quoted text or anything inside brackets
+  const q = top(query), a = top(answer);
+  const has = (text, part) => new RegExp('\\b' + part + '\\b').test(text);
+  const limit = q.match(/\blimit\s+(\d+)/);
+  if (got === 1 && want > 1 && /\b(count|sum|avg|min|max|total)\s*\(/.test(q) && !has(q, 'group\\s+by')) return 'Without GROUP BY, a function such as COUNT gives one row for the whole table.';
+  if (got > want && has(q, 'join') && !has(q, 'on') && !has(q, 'using')) return 'A join needs ON. Without it, every row is matched with every row of the other table.';
+  if (limit && has(a, 'limit') && Number(limit[1]) === got) return 'Check the number after LIMIT.';
+  if (limit && !has(a, 'limit') && got < want) return 'Your LIMIT cuts off rows that the answer keeps.';
+  if (got > want && has(a, 'limit') && !limit) return 'Use LIMIT to keep that many rows.';
+  if (got > want && has(a, 'distinct') && !has(q, 'distinct') && !has(q, 'group\\s+by')) return 'To show each value once, use SELECT DISTINCT.';
+  if (got > want && has(q, 'group\\s+by') && !has(a, 'group\\s+by')) return 'The answer is one row for the whole table, so it has no GROUP BY.';
+  if (got > want && has(a, 'where') && !has(q, 'where') && !has(q, 'having')) return 'Your query has no WHERE, so it keeps every row.';
+  if (got < want && has(q, 'join') && !has(q, 'left\\s+(outer\\s+)?join') && has(a, 'left\\s+join')) return 'A plain JOIN drops the rows that have no match. LEFT JOIN keeps them.';
+  if (got < want && has(q, 'where') && !has(a, 'where')) return 'Your WHERE leaves out rows that the answer keeps.';
+  return 'Check your filters, and whether you kept or dropped missing values.';
+}
+function compare(mine, expected, ordered, query, answer) {
   if (!mine.columns.length)
     return {ok: false, msg: `Your query returned no rows; the answer has ${expected.values.length.toLocaleString('en-US')}. Check your WHERE test. Text in quotes must match exactly, including capital letters. To list the values in a column, use SELECT DISTINCT in the scratch query box.`};
   if (mine.columns.length !== expected.columns.length)
     return {ok: false, msg: `Your result has ${mine.columns.length} column${mine.columns.length === 1 ? '' : 's'}; the answer has ${expected.columns.length}.`};
   if (mine.values.length !== expected.values.length)
-    return {ok: false, msg: `Your result has ${mine.values.length.toLocaleString('en-US')} row${mine.values.length === 1 ? '' : 's'}; the answer has ${expected.values.length.toLocaleString('en-US')}. Check your filters, and whether you kept or dropped missing values.`};
+    return {ok: false, msg: `Your result has ${mine.values.length.toLocaleString('en-US')} row${mine.values.length === 1 ? '' : 's'}; the answer has ${expected.values.length.toLocaleString('en-US')}. ${query ? rowsAdvice(query, answer, mine.values.length, expected.values.length) : 'Check your filters, and whether you kept or dropped missing values.'}`};
   const exp = expected.values.map(rowKey), expSorted = [...exp].sort();
   const byName = expected.columns.map(c => mine.columns.indexOf(c));
   const perms = mine.columns.length <= 4 ? permutations(mine.columns.length) : [byName.includes(-1) ? mine.columns.map((_, i) => i) : byName];
@@ -833,6 +897,7 @@ document.addEventListener('click', e => {
   const fb = $(`s${i}-fb`), out = $(`s${i}-out`);
   const query = $(`s${i}-sql`).value.trim();
   if (query.includes('____')) { setFeedback(fb, 'bad', 'Replace every <code>____</code> first.'); out.innerHTML = ''; return; }
+  if (!statements(query).length) { setFeedback(fb, 'bad', 'Write a query first.'); out.innerHTML = ''; return; }
   let mine;
   try { mine = run(query); }
   catch (error) { setFeedback(fb, 'bad', explainError(error.message)); out.innerHTML = ''; return; }
@@ -841,7 +906,7 @@ document.addEventListener('click', e => {
   if (b.dataset.act === 'run') { fb.className = 'feedback'; save(); return; }
   // A step that builds a view is checked on the view's rows. expect is the model result, written without the student's views.
   let result;
-  try { result = s.accept ? s.accept(mine) : compare(s.view ? run(`SELECT * FROM ${s.view}`) : mine, run(s.expect || s.answer), s.ordered); }
+  try { result = s.accept && s.accept(mine) ? {ok: true} : compare(s.view ? run(`SELECT * FROM ${s.view}`) : mine, run(s.expect || s.answer), s.ordered, query, s.answer); }
   catch (error) { setFeedback(fb, 'bad', explainError(error.message)); return; }
   if (!result.ok && s.wrong && result.msg.startsWith('The result has the right number')) result.msg = s.wrong;
   if (result.ok) {
