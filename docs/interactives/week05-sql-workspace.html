@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Week 5 SQL Workspace · COMPSS 211A</title>
-<meta name="description" content="Start with nine SQL practice steps. Finish the lesson with a paired investigation in DuckDB.">
+<meta name="description" content="Practice SQL with San Francisco 311 requests.">
 <style>
 :root{--navy:#002676;--gold:#FDBA12;--ink:#1A1A1A;--muted:#465973;--line:#CBD4E1;--pale:#EEF3FA;--paper:#fff;--mark:#FFF1CC;--good:#17643C;--bad:#9B1C1C;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 *{box-sizing:border-box}
@@ -98,7 +98,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:.85rem;col
 <div class="mast"><div class="wrap"><span><span class="brand">UC Berkeley</span>COMPSS 211A · Computing I</span><a href="../index.html">All interactives</a></div></div>
 <header><div class="wrap">
 <h1>Week 5 SQL workspace</h1>
-<p>Start with nine SQL practice steps. Finish the lesson with a paired investigation in DuckDB.</p>
+<p>Practice SQL with San Francisco 311 requests.</p>
 <div class="meta">Week 5 · In class · Needs an internet connection</div>
 <p style="margin-top:12px"><a style="color:white" href="https://github.com/macss-berkeley/compss-211a/tree/main/lessons/week05_relational-data">End-of-class activity: food access in pairs, in DuckDB →</a></p>
 </div></header>
@@ -278,8 +278,8 @@ const DUCK_SETUP = [
   `CREATE TABLE requests AS SELECT * FROM read_csv('${CSV_BASE}sf311_requests.csv', types={'request_id': 'VARCHAR'}) WHERE channel IS DISTINCT FROM 'Test'`,
   `CREATE TABLE districts AS SELECT sup_dist AS district, sup_dist_name AS district_name FROM '${CSV_BASE}sf_supervisor_districts.csv'`,
 ];
-// The fallback for the paired activity: the DuckDB web shell with tracts and counties loaded.
-const FOOD_FALLBACK = "https://shell.duckdb.org/#queries=v0,CREATE-OR-REPLACE-TABLE-tracts-AS-SELECT-*-FROM-read_csv('https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_food_access_tracts.csv'%2C-types-%3D-%7B'tract_id'%3A-'VARCHAR'%2C-'county_fips'%3A-'VARCHAR'%7D)~,CREATE-OR-REPLACE-TABLE-counties-AS-SELECT-*-FROM-read_csv('https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_ca_counties.csv'%2C-types-%3D-%7B'county_fips'%3A-'VARCHAR'%7D)~,SHOW-TABLES~";
+// The fallback for the paired activity: the DuckDB web shell with the four tables loaded.
+const FOOD_FALLBACK = "https://shell.duckdb.org/#queries=v0,CREATE-OR-REPLACE-TABLE-tracts-AS-SELECT-*-FROM-read_csv('https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_food_access_tracts.csv'%2C-types-%3D-%7B'tract_id'%3A-'VARCHAR'%2C-'county_fips'%3A-'VARCHAR'%7D)~,CREATE-OR-REPLACE-TABLE-counties-AS-SELECT-*-FROM-read_csv('https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_ca_counties.csv'%2C-types-%3D-%7B'county_fips'%3A-'VARCHAR'%7D)~,CREATE-OR-REPLACE-TABLE-requests-AS-SELECT-*-FROM-read_csv('https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fsf311_requests.csv'%2C-types-%3D-%7B'request_id'%3A-'VARCHAR'%7D)-WHERE-channel-IS-DISTINCT-FROM-'Test'~,CREATE-OR-REPLACE-TABLE-districts-AS-SELECT-sup_dist-AS-district%2C-sup_dist_name-AS-district_name-FROM-read_csv('https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fsf_supervisor_districts.csv')~,SHOW-TABLES~";
 // The shell reads its queries from the address. In its format a space is written as -, a hyphen as a space, and ; as ~.
 function duckLink(queries) {
   const swap = {' ': '-', '-': ' ', ';': '~', '~': ';'};
@@ -456,24 +456,10 @@ function renderSchema() {
     try { const st = db.prepare(`SELECT * FROM ${name} LIMIT 0`); columns = st.getColumnNames(); st.free(); } catch (error) { /* a view whose tables are gone */ }
     return `<h3><button type="button" class="name" data-name="${name}">${name}</button></h3><p class="small">A view you made.</p><ul>${columns.map(c => `<li><button type="button" class="name" data-name="${c}">${c}</button></li>`).join('')}</ul>`;
   }) : []).join('');
-  $('schema').innerHTML = TABLES.map(t => `<h3><button type="button" class="name" data-name="${t.name}">${t.name}</button></h3><p class="small">${t.rows.toLocaleString('en-US')} rows. ${esc(t.note)} <button type="button" class="quiet" data-csv="${t.name}">Download CSV</button></p><ul>${t.columns.map(([name]) => `<li><button type="button" class="name" data-name="${name}">${name}</button></li>`).join('')}</ul>`).join('') + viewList;
+  $('schema').innerHTML = TABLES.map(t => `<h3><button type="button" class="name" data-name="${t.name}">${t.name}</button></h3><p class="small">${t.rows.toLocaleString('en-US')} rows. ${esc(t.note)}</p><ul>${t.columns.map(([name]) => `<li><button type="button" class="name" data-name="${name}">${name}</button></li>`).join('')}</ul>`).join('') + viewList;
 }
 // After a query that makes or removes a view, list the views again.
 const changesViews = query => /\b(create|drop)\b/i.test(query);
-
-// Save a table as a CSV file, as it is loaded on this page.
-function tableCSV(name) {
-  const field = v => v === null ? '' : /[",\n]/.test(String(v)) ? '"' + String(v).replace(/"/g, '""') + '"' : String(v);
-  const table = db.exec(`SELECT * FROM ${name}`)[0];
-  return [table.columns, ...table.values].map(row => row.map(field).join(',')).join('\n') + '\n';
-}
-function downloadCSV(name) {
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(new Blob([tableCSV(name)], {type: 'text/csv'}));
-  link.download = name + '.csv';
-  link.click();
-  setTimeout(() => URL.revokeObjectURL(link.href), 1000);
-}
 
 function runScratch() {
   const fb = $('scratch-fb'), out = $('scratch-out'), query = $('scratch').value.trim();
@@ -723,7 +709,7 @@ function renderSteps() {
     const example = s.example ? `<div class="examples">${s.example.sql ? `<div class="example main"><div class="label">SQL example</div><pre>${esc(s.example.sql)}</pre></div>` : ''}${s.example.pandas ? `<div class="example"><div class="label">The same in pandas</div><pre>${esc(s.example.pandas)}</pre></div>` : ''}${s.example.r ? `<div class="example"><div class="label">The same in R</div><pre>${esc(s.example.r)}</pre></div>` : ''}</div>${s.example.sql ? `<div class="actions"><button data-act="example" data-q="${i}" disabled>Run the example</button></div><div id="s${i}-example"></div>` : ''}` : '';
     const work = s.handoff ? `<p>The task is in <code>food_access.sql</code> and the instructions are in <code>README.md</code>, both in the <code>lessons/week05_relational-data</code> folder of the course repo. Open them in VS Code.</p>
       <p><a class="button" href="https://github.com/macss-berkeley/compss-211a/tree/main/lessons/week05_relational-data" target="_blank" rel="noopener">See the folder on GitHub</a></p>
-      <p class="small">If DuckDB does not run on your laptop or your partner’s, <a href="${esc(FOOD_FALLBACK)}" target="_blank" rel="noopener">use DuckDB in your browser with the two tables loaded</a>.</p>
+      <p class="small">If DuckDB does not run on your laptop or your partner’s, <a href="${esc(FOOD_FALLBACK)}" target="_blank" rel="noopener">use DuckDB in your browser with the tables loaded</a>.</p>
       <p class="small">More practice with the 311 data is at the end of <code>food_access.sql</code>.</p>`
       : s.outside ? `<p>The <code>requests</code> table on this page is a saved copy. The city keeps the live table on DataSF, its open data site. DataSF accepts SoQL, a SQL-like query language, in a web address.</p>
       <pre class="answer">${esc(DATASF_QUERY)}</pre>
@@ -829,13 +815,6 @@ document.addEventListener('click', e => {
     }
     return;
   }
-  const csv = e.target.closest('[data-csv]');
-  if (csv && db) {
-    const fb = csv.closest('.q') && csv.closest('.q').querySelector('.feedback');
-    try { downloadCSV(csv.dataset.csv); if (fb) fb.className = 'feedback'; }
-    catch (error) { if (fb) setFeedback(fb, 'bad', `${esc(csv.dataset.csv)} does not exist yet. Do the steps that build it first.`); }
-    return;
-  }
   const b = e.target.closest('button[data-act]');
   if (!b || !db) return;
   if (b.dataset.act === 'scratch') { runScratch(); return; }
@@ -898,7 +877,7 @@ if (typeof initSqlJs !== 'function') {
     await loadTables();
     STEPS.forEach((s, i) => { if (s.view && solved.has(i)) { try { db.exec($(`s${i}-sql`).value); } catch (error) { /* the student can run the step again */ } } });
     renderSchema();
-    document.querySelectorAll('button[data-act], button[data-tab], button[data-csv]').forEach(b => b.disabled = false);
+    document.querySelectorAll('button[data-act], button[data-tab]').forEach(b => b.disabled = false);
     $('engineStatus').className = 'status ready';
     show(current, false);
   }).catch(error => fail('The tables could not load. Check your internet connection and reload the page. (' + error.message + ')'));
