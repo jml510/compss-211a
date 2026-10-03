@@ -44,7 +44,7 @@ copy the entire practice folder as described on the lesson page: you will edit a
 Python script as well as the notebook.
 
 For [Week 5: Relational Data and SQL](lessons/week05_relational-data/README.md),
-the lesson page lists the SQL workspace and the DuckDB worksheet.
+the lesson page lists the SQL workspace, the DuckDB worksheet and Friday's lab.
 
 ## Course data
 

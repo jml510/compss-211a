@@ -275,8 +275,8 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "Week 5 — Convert district lookup keys, preserve request IDs as text, and explain why types matter.",
-    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lessons/week05_relational-data/week05_live_workspace.ipynb"
+    "practice": "Lab 5 — Convert district lookup keys, preserve request IDs as text, and explain why types matter.",
+    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lab/lab05_sql_from_python.ipynb"
   },
   {
     "id": "join-tables",
@@ -286,8 +286,8 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "Week 5 — Left join district labels, preserve request IDs, and inspect unmatched requests.",
-    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lessons/week05_relational-data/week05_live_workspace.ipynb"
+    "practice": "Lab 5 — Left join district labels, preserve request IDs, and inspect unmatched requests.",
+    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lab/lab05_sql_from_python.ipynb"
   },
   {
     "id": "web-apis",
@@ -308,8 +308,8 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "Week 5 — Inspect SF311 request IDs, types, missing channels, categories, and dates.",
-    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lessons/week05_relational-data/week05_live_workspace.ipynb"
+    "practice": "Lab 5 — Inspect SF311 request IDs, types, missing channels, categories, and dates.",
+    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lab/lab05_sql_from_python.ipynb"
   },
   {
     "id": "clean-and-document",
@@ -319,8 +319,8 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "Week 5 — Document the provisional Test exclusion while retaining missing channels.",
-    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lessons/week05_relational-data/week05_live_workspace.ipynb"
+    "practice": "Lab 5 — Document the provisional Test exclusion while retaining missing channels.",
+    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lab/lab05_sql_from_python.ipynb"
   },
   {
     "id": "dates-and-times",
@@ -341,8 +341,8 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "Week 5 — Run SQLite queries from Python; count Phone requests by district and check missing groups.",
-    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lessons/week05_relational-data/week05_live_workspace.ipynb"
+    "practice": "Lab 5 — Run SQLite queries from Python; count Phone requests by district and check missing groups.",
+    "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lab/lab05_sql_from_python.ipynb"
   },
   {
     "id": "public-data-and-survey-weights",
