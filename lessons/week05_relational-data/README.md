@@ -41,19 +41,25 @@ Other ways to install are on the [DuckDB install page](https://duckdb.org/instal
 
 1. In GitHub Desktop, pull the latest course files.
 2. In VS Code, open `food_access.sql` in this folder. Save a copy as `food_access_mine.sql` in the same folder (File > Save As). Work in your copy.
-3. Open the VS Code terminal and go to this folder:
+3. Open the VS Code terminal, go to this folder, start DuckDB and load your copy:
 
    ```bash
    cd lessons/week05_relational-data
+   duckdb
    ```
 
-4. Run your copy:
+   ```sql
+   .read food_access_mine.sql
+   ```
+
+4. Write each query in your copy. Then copy that one query, up to and including its semicolon, paste it at the DuckDB prompt and press Enter. Paste one query at a time: if you paste several at once, DuckDB can lose part of the second.
+5. When you finish, type `.quit`, then check that the whole file runs on its own:
 
    ```bash
    duckdb -f food_access_mine.sql
    ```
 
-   Run the same command again after each change. If DuckDB says `No files found`, you are in a different folder: run the `cd` command above first.
+If DuckDB says `cannot open "food_access_mine.sql"` or `No files found`, you started it in a different folder: type `.quit`, run the `cd` command above, and start again.
 
 Git ignores `food_access_mine.sql` and the `county_summary.csv` file it makes, so pulling course updates does not change them.
 

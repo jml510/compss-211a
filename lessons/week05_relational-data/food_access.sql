@@ -4,17 +4,22 @@
 -- result should look like before you run it. Swap after part 2.
 --
 -- Work in a copy of this file called food_access_mine.sql, in this folder.
--- Run the whole file from the VS Code terminal, in this folder:
+-- In the VS Code terminal, go to this folder, start DuckDB and load your copy:
+--
+--     cd lessons/week05_relational-data
+--     duckdb
+--     .read food_access_mine.sql
+--
+-- Loading prints nothing, because the setup only creates the tables.
+-- Write each query in your copy, under its question. Then copy that one query,
+-- up to and including its semicolon, paste it at the DuckDB prompt and press
+-- Enter. Paste one query at a time. If a query has an error, DuckDB shows
+-- where the problem is: fix it in your copy and paste it again.
+-- Lines that start with -- are comments. DuckDB skips them.
+--
+-- When you finish, type .quit, then check that the whole file runs on its own:
 --
 --     duckdb -f food_access_mine.sql
---
--- Run the same command again after every change. Each run starts again from
--- the CSV files, so the file has to run from top to bottom. If a query has an
--- error, DuckDB stops there and shows where the problem is.
--- The first run prints nothing, because the setup only creates the tables.
--- If DuckDB says "No files found", go to this folder first:
---     cd lessons/week05_relational-data
--- Lines that start with -- are comments. DuckDB skips them.
 --
 -- The question: a food-access nonprofit wants to know which three California
 -- counties to look at first.
@@ -23,6 +28,10 @@
 -- residents. low_income_low_access is 1 when USDA flags the tract as
 -- low-income and far from a store that accepts SNAP benefits, and 0 if not.
 -- counties has one row per county, with its code (county_fips) and its name.
+--
+-- Because the flag is 1 or 0, its sum is the number of flagged tracts and its
+-- average is the share of tracts that are flagged. For four tracts flagged
+-- 1, 0, 1, 0: SUM gives 2 and AVG gives 0.5.
 
 
 -- SETUP: load the two CSV files from the course data folder.
@@ -89,8 +98,8 @@ LEFT JOIN counties AS c
 
 -- 4. SAVE THE SUMMARY AS A CSV FILE
 
--- Remove the -- at the start of the next two lines, then run the file.
--- It writes county_summary.csv to this folder.
+-- Remove the -- at the start of the next two lines, then paste them at the
+-- prompt. They write county_summary.csv to this folder.
 
 -- COPY (SELECT * FROM county_summary ORDER BY county_name)
 -- TO 'county_summary.csv' (HEADER);
