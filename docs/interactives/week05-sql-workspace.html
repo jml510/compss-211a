@@ -278,8 +278,8 @@ const DUCK_SETUP = [
   `CREATE TABLE requests AS SELECT * FROM read_csv('${CSV_BASE}sf311_requests.csv', types={'request_id': 'VARCHAR'}) WHERE channel IS DISTINCT FROM 'Test'`,
   `CREATE TABLE districts AS SELECT sup_dist AS district, sup_dist_name AS district_name FROM '${CSV_BASE}sf_supervisor_districts.csv'`,
 ];
-// The fallback for the paired activity: the DuckDB web shell with the four tables loaded.
-const FOOD_FALLBACK = "https://shell.duckdb.org/#queries=v0,CREATE-OR-REPLACE-TABLE-tracts-AS-SELECT-*-FROM-read_csv('https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_food_access_tracts.csv'%2C-types-%3D-%7B'tract_id'%3A-'VARCHAR'%2C-'county_fips'%3A-'VARCHAR'%7D)~,CREATE-OR-REPLACE-TABLE-counties-AS-SELECT-*-FROM-read_csv('https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_ca_counties.csv'%2C-types-%3D-%7B'county_fips'%3A-'VARCHAR'%7D)~,CREATE-OR-REPLACE-TABLE-requests-AS-SELECT-*-FROM-read_csv('https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fsf311_requests.csv'%2C-types-%3D-%7B'request_id'%3A-'VARCHAR'%7D)-WHERE-channel-IS-DISTINCT-FROM-'Test'~,CREATE-OR-REPLACE-TABLE-districts-AS-SELECT-sup_dist-AS-district%2C-sup_dist_name-AS-district_name-FROM-read_csv('https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fsf_supervisor_districts.csv')~,SHOW-TABLES~";
+// The fallback for the paired activity: the DuckDB web shell with the tracts and counties tables loaded.
+const FOOD_FALLBACK = "https://shell.duckdb.org/#queries=v0,CREATE-TABLE-tracts-AS-SELECT-*-FROM-'https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_food_access_tracts.csv'~,CREATE-TABLE-counties-AS-SELECT-*-FROM-'https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_ca_counties.csv'~,SHOW-TABLES~";
 // The shell reads its queries from the address. In its format a space is written as -, a hyphen as a space, and ; as ~.
 function duckLink(queries) {
   const swap = {' ': '-', '-': ' ', ';': '~', '~': ';'};
@@ -707,10 +707,10 @@ function setFeedback(el, kind, html) { el.className = `feedback show ${kind}`; e
 function renderSteps() {
   $('steps').innerHTML = STEPS.map((s, i) => {
     const example = s.example ? `<div class="examples">${s.example.sql ? `<div class="example main"><div class="label">SQL example</div><pre>${esc(s.example.sql)}</pre></div>` : ''}${s.example.pandas ? `<div class="example"><div class="label">The same in pandas</div><pre>${esc(s.example.pandas)}</pre></div>` : ''}${s.example.r ? `<div class="example"><div class="label">The same in R</div><pre>${esc(s.example.r)}</pre></div>` : ''}</div>${s.example.sql ? `<div class="actions"><button data-act="example" data-q="${i}" disabled>Run the example</button></div><div id="s${i}-example"></div>` : ''}` : '';
-    const work = s.handoff ? `<p>The task is in <code>food_access.sql</code> and the instructions are in <code>README.md</code>, both in the <code>lessons/week05_relational-data</code> folder of the course repo. Open them in VS Code.</p>
+    const work = s.handoff ? `<p>The instructions are in <code>README.md</code>, in the <code>lessons/week05_relational-data</code> folder of the course repo. Open it in VS Code.</p>
       <p><a class="button" href="https://github.com/macss-berkeley/compss-211a/tree/main/lessons/week05_relational-data" target="_blank" rel="noopener">See the folder on GitHub</a></p>
-      <p class="small">If DuckDB does not run on your laptop or your partner’s, <a href="${esc(FOOD_FALLBACK)}" target="_blank" rel="noopener">use DuckDB in your browser with the tables loaded</a>.</p>
-      <p class="small">More practice with the 311 data is at the end of <code>food_access.sql</code>.</p>`
+      <p class="small">If DuckDB does not run on your laptop or your partner’s, <a href="${esc(FOOD_FALLBACK)}" target="_blank" rel="noopener">use DuckDB in your browser with the two tables loaded</a>.</p>
+`
       : s.outside ? `<p>The <code>requests</code> table on this page is a saved copy. The city keeps the live table on DataSF, its open data site. DataSF accepts SoQL, a SQL-like query language, in a web address.</p>
       <pre class="answer">${esc(DATASF_QUERY)}</pre>
       <p><a class="button" href="${esc(DATASF_URL)}" target="_blank" rel="noopener">Run this query on DataSF</a></p>

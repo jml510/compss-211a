@@ -30,64 +30,78 @@ echo 'export PATH="$HOME/.duckdb/cli/latest:$PATH"' >> ~/.zshrc
 
 Other ways to install are on the [DuckDB install page](https://duckdb.org/install/?environment=cli).
 
-## In class
+## Food access in pairs
 
-1. In GitHub Desktop, pull the latest course files.
-2. In VS Code, open `food_access.sql` in this folder. Save a copy as `food_access_mine.sql` in the same folder (File > Save As). Work in your copy.
-3. Open the VS Code terminal, go to this folder, start DuckDB and load your copy:
+A food-access nonprofit wants to know which California counties to look at first. Two CSV files in the course `data` folder can help:
 
-   ```bash
-   cd lessons/week05_relational-data
-   duckdb
-   ```
+- `week05_food_access_tracts.csv` has one row per census tract, a small area with a few thousand residents. `low_income_low_access` is 1 when USDA flags the tract as low-income and far from a store that accepts SNAP benefits, and 0 if not.
+- `week05_ca_counties.csv` has one row per county, with its code (`county_fips`) and its name.
 
-   ```sql
-   .read food_access_mine.sql
-   ```
+Because the flag is 1 or 0, its sum is the number of flagged tracts and its average is the share of tracts that are flagged. For four tracts flagged 1, 0, 1, 0, `SUM` gives 2 and `AVG` gives 0.5.
 
-4. Write each query in your copy. Then copy that one query, up to and including its semicolon, paste it at the DuckDB prompt and press Enter. Paste one query at a time: if you paste several at once, DuckDB can lose part of the second.
-5. When you finish, type `.quit`, then check that the whole file runs on its own:
+Work in pairs on one laptop. One person types. The other says what the result should be before it runs. Swap after question 2.
 
-   ```bash
-   duckdb -f food_access_mine.sql
-   ```
+### 1. Start DuckDB and load the data
 
-If DuckDB says `cannot open "food_access_mine.sql"` or `No files found`, you started it in a different folder: type `.quit`, run the `cd` command above, and start again.
+In GitHub Desktop, pull the latest course files. Then open the VS Code terminal, go to this folder and start DuckDB:
 
-Git ignores `food_access_mine.sql` and the `county_summary.csv` file it makes, so pulling course updates does not change them.
+```bash
+cd lessons/week05_relational-data
+duckdb
+```
+
+At the DuckDB prompt, load each CSV file as a table. DuckDB reads a CSV file when you put its path in quotes after `FROM`, and `CREATE TABLE ... AS` saves the result under a name. Paste one line at a time and press Enter:
+
+```sql
+CREATE TABLE tracts AS SELECT * FROM '../../data/week05_food_access_tracts.csv';
+CREATE TABLE counties AS SELECT * FROM '../../data/week05_ca_counties.csv';
+```
+
+Then look at a few rows of each table, for example `SELECT * FROM tracts LIMIT 5;`.
+
+At the prompt, end each query with a semicolon and press Enter. The up arrow brings back your last query so you can fix it. `.quit` closes DuckDB. If DuckDB says `No files found`, you started it in another folder: type `.quit`, run the `cd` command above, and start again.
+
+### 2. Answer three questions
+
+1. How many tracts are there, and how many of them are flagged? You should get 9,109 and 426.
+2. Which five counties have the most flagged tracts? The county names are in `counties`, so you need both tables. The first is Riverside County, with 67.
+3. Which five counties have the largest share of their tracts flagged? Show how many tracts each one has. Which of the two lists would you give the nonprofit, and why? Be ready to say.
+
+### 3. Save your answer as a script
+
+Open `food_access.sql` in VS Code and save a copy as `food_access_mine.sql` in this folder. Paste your query from question 2 or 3 at the end of your copy and save it. In the terminal, type `.quit`, then run:
+
+```bash
+duckdb -f food_access_mine.sql
+```
+
+The script loads the data and runs your query from the start, as `run_report.py` did last week. Anyone with the course files can run it and get the same result. Git ignores `food_access_mine.sql`, so pulling course updates does not change it.
+
+### If you finish early
+
+- Count the people who live in flagged tracts in each county, with `SUM(population_2020 * low_income_low_access)`. Which five counties have the most?
+- Are rural tracts flagged more often than urban ones? `area_type` is Rural or Urban.
 
 ## If DuckDB does not run on your laptop
 
-Use your partner's laptop. If DuckDB runs on neither, open [DuckDB in your browser with the tables loaded](https://shell.duckdb.org/#queries=v0,CREATE-OR-REPLACE-TABLE-tracts-AS-SELECT-*-FROM-read_csv%28'https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_food_access_tracts.csv'%2C-types-%3D-%7B'tract_id'%3A-'VARCHAR'%2C-'county_fips'%3A-'VARCHAR'%7D%29~,CREATE-OR-REPLACE-TABLE-counties-AS-SELECT-*-FROM-read_csv%28'https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_ca_counties.csv'%2C-types-%3D-%7B'county_fips'%3A-'VARCHAR'%7D%29~,CREATE-OR-REPLACE-TABLE-requests-AS-SELECT-*-FROM-read_csv%28'https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fsf311_requests.csv'%2C-types-%3D-%7B'request_id'%3A-'VARCHAR'%7D%29-WHERE-channel-IS-DISTINCT-FROM-'Test'~,CREATE-OR-REPLACE-TABLE-districts-AS-SELECT-sup_dist-AS-district%2C-sup_dist_name-AS-district_name-FROM-read_csv%28'https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fsf_supervisor_districts.csv'%29~,SHOW-TABLES~). The tables are already loaded there, so leave out the lines that load the CSV files (`SET` and `CREATE OR REPLACE TABLE`). Paste one query at a time, up to and including its semicolon, and press Enter if it does not run. If you paste several queries at once, only the first runs. Part 4 cannot save a file to your laptop from there.
+Use your partner's laptop. If DuckDB runs on neither, open [DuckDB in your browser with the two tables loaded](https://shell.duckdb.org/#queries=v0,CREATE-TABLE-tracts-AS-SELECT-*-FROM-'https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_food_access_tracts.csv'~,CREATE-TABLE-counties-AS-SELECT-*-FROM-'https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_ca_counties.csv'~,SHOW-TABLES~). Skip the two `CREATE TABLE` lines, because the tables are already there. Paste one query at a time and press Enter if it does not run; if you paste several queries at once, only the first runs. Part 3 needs DuckDB on a laptop.
 
 ## Hints
 
-<details><summary>Part 1</summary>
+<details><summary>Question 1</summary>
 
 `COUNT(*)` counts rows. `SUM(low_income_low_access)` adds up the 1s, so it counts the flagged tracts.
 
 </details>
 
-<details><summary>Part 2</summary>
+<details><summary>Question 2</summary>
 
-Use `COUNT(*)`, `SUM` and `AVG` on `low_income_low_access`, from `tracts_named`, with `GROUP BY county_name`. The average of a column of 1s and 0s is the share of 1s. To check the view, select `COUNT(*)`, `SUM(tracts)` and `SUM(flagged)` from `county_summary`.
-
-</details>
-
-<details><summary>Part 3</summary>
-
-Select from `county_summary`, sort with `ORDER BY flagged DESC` or `ORDER BY share DESC`, and keep three rows with `LIMIT 3`. Add `county_name` to the `ORDER BY` to break ties.
+Join `counties` to `tracts` on `county_fips`, as in step 8 of the SQL workspace. Then group by `county_name`, add up the flag with `SUM`, sort with `ORDER BY ... DESC`, and keep five rows with `LIMIT 5`.
 
 </details>
 
-<details><summary>If you finish early</summary>
+<details><summary>Question 3</summary>
 
-Multiplying the population by the flag keeps the population of a flagged tract and gives 0 for the others. For rural and urban tracts, group `tracts` by `area_type` and take the average of the flag.
-
-</details>
-
-<details><summary>More practice with the 311 data</summary>
-
-These are steps 5 and 8 of the SQL workspace again. For c, filter with `WHERE status = 'Open'`, group by `category`, sort by the count and keep five rows. For d, join `districts` to `requests` on `district` with a `LEFT JOIN`, keep the Phone requests, and group by `district_name`.
+Start from your query for question 2. Add `COUNT(*)` for the number of tracts and `AVG(low_income_low_access)` for the share, and sort by the share.
 
 </details>

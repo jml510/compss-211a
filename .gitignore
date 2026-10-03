@@ -28,7 +28,5 @@ wandb/
 *-mine.ipynb
 * copy.ipynb
 
-# Week 5: students' copies of the SQL worksheet and the CSV file it writes
+# Week 5: students' copies of the SQL script
 *_mine.sql
-/lessons/week05_relational-data/county_summary.csv
-/county_summary.csv
