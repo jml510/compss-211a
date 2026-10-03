@@ -256,17 +256,18 @@ const STEPS = [
    r: 'requests |>\n  select(request_id, category, district) |>\n  left_join(districts, by = "district") |>\n  arrange(request_id)',
    hint: 'Both tables call the shared column <code>district</code>.',
    after: 'The result has 16,865 rows, one per request. <code>LEFT JOIN</code> keeps every request, and each district matches at most one lookup row. If a district appeared twice in the lookup, its requests would appear twice too.'},
-  {topic: 'Check a join',
-   intro: 'After a left join, a row with no match has <code>NULL</code> in the columns that come from the second table.',
-   task: 'How many requests have <b>no matching district name</b> after the join?',
-   starter: 'SELECT COUNT(*) AS unmatched\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\nWHERE ____;',
-   answer: 'SELECT COUNT(*) AS unmatched\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\nWHERE d.district_name IS NULL;', ordered: false,
-   pyStart: 'joined = requests.merge(districts, on="district", how="left")\njoined["____"].isna().sum()',
-   rStart: 'requests |>\n  left_join(districts, by = "district") |>\n  filter(____) |>\n  nrow()',
-   py: 'joined = requests.merge(districts, on="district", how="left")\njoined["district_name"].isna().sum()',
-   r: 'requests |>\n  left_join(districts, by = "district") |>\n  filter(is.na(district_name)) |>\n  nrow()',
-   hint: 'Test the column that comes from <code>districts</code>: <code>d.district_name IS NULL</code>.',
-   after: 'It is the same 110 requests that have no district.'},
+  {topic: 'Join, then group',
+   intro: 'The join is part of <code>FROM</code>, so <code>WHERE</code>, <code>GROUP BY</code> and <code>ORDER BY</code> come after it. After a left join, a row with no match has <code>NULL</code> in the columns that come from the second table.',
+   task: 'How many requests came from each <b>district name</b>? Show the largest count first. The box has the join from step 8; write the rest.',
+   starter: 'SELECT \nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\n',
+   scaffold: 'SELECT d.district_name, COUNT(*) AS requests\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\nGROUP BY ____\nORDER BY ____;',
+   answer: 'SELECT d.district_name, COUNT(*) AS requests\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\nGROUP BY d.district_name\nORDER BY requests DESC;', ordered: {column: 'requests', direction: 'desc'},
+   pyStart: 'joined = requests.merge(districts, on="district", how="left")\njoined.groupby("____", dropna=False).size().sort_values(ascending=____)',
+   rStart: 'requests |>\n  left_join(districts, by = "district") |>\n  count(____) |>\n  arrange(desc(n))',
+   py: 'joined = requests.merge(districts, on="district", how="left")\njoined.groupby("district_name", dropna=False).size().sort_values(ascending=False)',
+   r: 'requests |>\n  left_join(districts, by = "district") |>\n  count(district_name) |>\n  arrange(desc(n))',
+   hint: 'Step 5 has the same <code>GROUP BY</code> and <code>ORDER BY</code> lines. Here you group by <code>d.district_name</code>.',
+   after: 'One row has no name: the 110 requests with no district, which match nothing in <code>districts</code>. The counts add up to 16,865, so the join kept every request.'},
   {topic: 'Now work in pairs in DuckDB', handoff: true,
    intro: 'The guided SQL practice ends here. For the rest of the class, work in pairs with DuckDB on your laptop.'},
   {topic: 'The city’s live 311 table', outside: true, extra: true}
@@ -321,7 +322,7 @@ const R_SETUP = [
 ].join('\n');
 const WEBR_URL = 'https://webr.r-wasm.org/v0.6.0/webr.mjs';
 
-const STORE = 'compss211a-week05-sql-workspace-oct5';
+const STORE = 'compss211a-week05-sql-workspace-oct5b';
 let SQL = null, db = null, current = 0;
 const solved = new Set();
 const $ = id => document.getElementById(id);

@@ -107,7 +107,7 @@ Use your partner's laptop. If DuckDB runs on neither, open [DuckDB in your brows
 
 <details><summary>Question 2</summary>
 
-Join `counties` to `tracts` on `county_fips`, as in step 8 of the SQL workspace. Then group by `county_name`, add up the flag with `SUM`, sort with `ORDER BY ... DESC`, and keep five rows with `LIMIT 5`.
+Step 9 of the SQL workspace has the same shape: a join, then `GROUP BY`. Join `counties` to `tracts` on `county_fips`, group by `county_name`, add up the flag with `SUM`, sort with `ORDER BY ... DESC`, and keep five rows with `LIMIT 5`.
 
 </details>
 
