@@ -43,8 +43,8 @@ For [Week 4: Building Reproducible Analyses](lessons/week04_reproducible-analyse
 copy the entire practice folder as described on the lesson page: you will edit a
 Python script as well as the notebook.
 
-For [Week 5: Relational Data in Python](lessons/week05_relational-data/week05_live_workspace.ipynb),
-use the live workspace for the 120-minute lesson and linked slides.
+For [Week 5: Relational Data and SQL](lessons/week05_relational-data/README.md),
+the lesson page lists Monday's SQL workspace and DuckDB worksheet, and Friday's notebook.
 
 ## Course data
 
