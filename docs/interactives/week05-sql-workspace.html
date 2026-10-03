@@ -142,9 +142,11 @@ LIMIT 5;</textarea>
 'use strict';
 // The tables. Each file sits in data/week05/ next to this page.
 // keep: an optional test that decides which rows of the file are loaded.
+// A column's third entry is its name in the file, or a function that computes it from the row.
 const TABLES = [
-  {name: 'requests', file: 'sf311_requests.csv', note: 'One row per 311 request.',
-   columns: [['request_id', 'TEXT'], ['opened_at', 'TEXT'], ['closed_at', 'TEXT'], ['status', 'TEXT'], ['category', 'TEXT'], ['channel', 'TEXT'], ['district', 'INTEGER'], ['hours_to_close', 'REAL'], ['duration_note', 'TEXT']],
+  {name: 'requests', file: 'sf311_requests.csv', note: 'One row per 311 request. is_open is 1 if the status is Open, otherwise 0.',
+   columns: [['request_id', 'TEXT'], ['opened_at', 'TEXT'], ['closed_at', 'TEXT'], ['status', 'TEXT'], ['category', 'TEXT'], ['channel', 'TEXT'], ['district', 'INTEGER'], ['hours_to_close', 'REAL'], ['duration_note', 'TEXT'],
+             ['is_open', 'INTEGER', row => row.status === 'Open' ? 1 : 0]],
    keep: row => row.channel !== 'Test'},
   {name: 'districts', file: 'sf_supervisor_districts.csv', note: 'One row per supervisor district.',
    columns: [['district', 'INTEGER', 'sup_dist'], ['district_name', 'TEXT', 'sup_dist_name']]},
@@ -227,19 +229,20 @@ const STEPS = [
    r: 'sum(is.na(requests$district))',
    hint: 'The blank is <code>IS NULL</code>.',
    after: 'Now change <code>IS NULL</code> to <code>= NULL</code> and run it. The count is 0: comparing with <code>NULL</code> gives an unknown result, and <code>WHERE</code> keeps only true conditions. Use <code>IS NULL</code> to test for missing values.'},
-  {topic: 'Count rows or count values',
-   intro: '<code>COUNT(*)</code> counts rows. <code>COUNT(column)</code> counts recorded values, including zero. <code>AVG(column)</code> averages recorded values. Both skip <code>NULL</code>.',
+  {topic: 'Count, add up and average',
+   intro: '<code>COUNT(*)</code> counts rows. <code>COUNT(column)</code> counts recorded values, including zero. <code>SUM(column)</code> adds up recorded values and <code>AVG(column)</code> averages them. All three skip <code>NULL</code>.',
    example: {sql: 'SELECT COUNT(*) AS requests,\n       COUNT(hours_to_close) AS with_time,\n       AVG(hours_to_close) AS mean_hours\nFROM requests;',
              pandas: 'len(requests)\nrequests["hours_to_close"].count()\nrequests["hours_to_close"].mean()',
              r: 'nrow(requests)\nsum(!is.na(requests$hours_to_close))\nmean(requests$hours_to_close, na.rm = TRUE)'},
-   task: 'How many requests have a recorded <b>channel</b>?',
-   starter: 'SELECT ____ AS with_channel\nFROM requests;',
-   answer: 'SELECT COUNT(channel) AS with_channel\nFROM requests;', ordered: false,
-   pyStart: 'requests["channel"].____()',
-   rStart: 'sum(!is.na(____))',
-   py: 'requests["channel"].count()',
-   r: 'sum(!is.na(requests$channel))',
-   hint: '<code>COUNT(channel)</code> counts the rows where <code>channel</code> is not missing.'},
+   task: '<code>is_open</code> is 1 for an open request and 0 for a closed one. How many requests are <b>open</b>, and what <b>share</b> of all requests is that?',
+   starter: 'SELECT ____(is_open) AS open_requests,\n       ____(is_open) AS share_open\nFROM requests;',
+   answer: 'SELECT SUM(is_open) AS open_requests,\n       AVG(is_open) AS share_open\nFROM requests;', ordered: false,
+   pyStart: 'requests["is_open"].____(), requests["is_open"].____()',
+   rStart: '____(requests$is_open)\n____(requests$is_open)',
+   py: 'requests["is_open"].sum(), requests["is_open"].mean()',
+   r: 'sum(requests$is_open)\nmean(requests$is_open)',
+   hint: '<code>SUM(is_open)</code> adds up the 1s. <code>AVG(is_open)</code> divides that sum by the number of requests.',
+   after: 'Because <code>is_open</code> is 1 or 0, its sum is a count and its average is a share: 1,113 open requests, about 7% of all requests.'},
   {topic: 'Join two tables',
    intro: 'A join matches rows from two tables on a shared column. <code>LEFT JOIN</code> keeps every row of the first table, even when nothing matches. <code>r</code> and <code>d</code> are short names for the two tables.',
    example: {pandas: 'requests.merge(districts, on="district", how="left")',
@@ -302,7 +305,8 @@ const PY_SETUP = [
   'pd.set_option("display.width", 200)',
   'pd.set_option("display.max_columns", 20)',
   'raw = pd.read_csv("sf311_requests.csv", dtype={"request_id": "string", "district": "Int64"})',
-  'requests = raw[raw["channel"] != "Test"]',
+  'requests = raw[raw["channel"] != "Test"].copy()',
+  'requests["is_open"] = (requests["status"] == "Open").astype(int)',
   'districts = pd.read_csv("sf_supervisor_districts.csv")',
   'districts = districts.rename(columns={"sup_dist": "district", "sup_dist_name": "district_name"})[["district", "district_name"]]',
 ].join('\n');
@@ -311,13 +315,13 @@ const R_SETUP = [
   'suppressPackageStartupMessages(library(dplyr))',
   'options(width = 110)',
   'raw <- read.csv("sf311_requests.csv", colClasses = c(request_id = "character"), na.strings = "")',
-  'requests <- as_tibble(raw[is.na(raw$channel) | raw$channel != "Test", ])',
+  'requests <- as_tibble(raw[is.na(raw$channel) | raw$channel != "Test", ]) |> mutate(is_open = as.integer(status == "Open"))',
   'districts <- read.csv("sf_supervisor_districts.csv") |> transmute(district = sup_dist, district_name = sup_dist_name) |> as_tibble()',
   'rm(raw)',
 ].join('\n');
 const WEBR_URL = 'https://webr.r-wasm.org/v0.6.0/webr.mjs';
 
-const STORE = 'compss211a-week05-sql-workspace-paired';
+const STORE = 'compss211a-week05-sql-workspace-oct5';
 let SQL = null, db = null, current = 0;
 const solved = new Set();
 const $ = id => document.getElementById(id);
@@ -348,7 +352,7 @@ async function loadTables() {
     const text = await response.text();
     FILES[table.file] = text;
     const [header, ...rows] = parseCSV(text);
-    const position = table.columns.map(([name, , source]) => header.indexOf(source || name));
+    const position = table.columns.map(([name, , source]) => typeof source === 'function' ? null : header.indexOf(source || name));
     if (position.includes(-1)) throw new Error('Unexpected columns in ' + table.file);
     db.run(`CREATE TABLE ${table.name} (${table.columns.map(([name, type]) => name + ' ' + type).join(', ')})`);
     const insert = db.prepare(`INSERT INTO ${table.name} VALUES (${table.columns.map(() => '?').join(',')})`);
@@ -356,9 +360,14 @@ async function loadTables() {
     table.rows = 0;
     for (const row of rows) {
       if (row.length < header.length) continue;
-      if (table.keep && !table.keep(Object.fromEntries(header.map((h, i) => [h, row[i]])))) continue;
+      const record = Object.fromEntries(header.map((h, i) => [h, row[i]]));
+      if (table.keep && !table.keep(record)) continue;
       // An empty field is a missing value. Numbers are stored as numbers, everything else as text.
-      insert.run(table.columns.map(([, type], i) => { const v = row[position[i]]; return v === '' ? null : type === 'TEXT' ? v : Number(v); }));
+      insert.run(table.columns.map(([, type, source], i) => {
+        if (typeof source === 'function') return source(record);
+        const v = row[position[i]];
+        return v === '' ? null : type === 'TEXT' ? v : Number(v);
+      }));
       table.rows++;
     }
     db.run('COMMIT');

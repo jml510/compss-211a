@@ -34,48 +34,59 @@ Other ways to install are on the [DuckDB install page](https://duckdb.org/instal
 
 A food-access nonprofit wants to know which California counties to look at first. Two CSV files in the course `data` folder can help:
 
-- `week05_food_access_tracts.csv` has one row per census tract, a small area with a few thousand residents. `low_income_low_access` is 1 when USDA flags the tract as low-income and far from a store that accepts SNAP benefits, and 0 if not.
-- `week05_ca_counties.csv` has one row per county, with its code (`county_fips`) and its name.
+- `week05_food_access_tracts.csv` has one row per census tract. A tract is a small area the Census Bureau uses for statistics, usually with 1,200 to 8,000 residents.
+- `week05_ca_counties.csv` has one row per county, with its code (`county_fips`) and its name. Each tract has its county's code too.
 
-Because the flag is 1 or 0, its sum is the number of flagged tracts and its average is the share of tracts that are flagged. For four tracts flagged 1, 0, 1, 0, `SUM` gives 2 and `AVG` gives 0.5.
+The tract column to use is `low_income_low_access`. USDA sets it to 1, a flagged tract, when both of these are true:
 
-Work in pairs on one laptop. One person types. The other says what the result should be before it runs. Swap after question 2.
+- The tract is low-income: at least 20% of its residents live in poverty, or its median family income is at most 80% of the median for the state or metro area.
+- Many residents live far from a store that accepts SNAP benefits (government help for buying food): at least 500 people, or a third of the tract, live more than 1 mile away in a city or more than 10 miles away in a rural area.
+
+Otherwise it is 0. The full definitions are in [USDA's reference guide](https://www.ers.usda.gov/data-products/food-access-research-atlas/documentation/snap-authorized-retailer-access-map-reference-guide).
+
+The flag works like `is_open` in step 7 of the SQL workspace: its sum is the number of flagged tracts, and its average is the share of tracts that are flagged.
+
+Work in pairs.
 
 ### 1. Start DuckDB and load the data
 
-In GitHub Desktop, pull the latest course files. Then open the VS Code terminal, go to this folder and start DuckDB:
+In GitHub Desktop, pull the latest course files. In VS Code, open `food_access.sql` in this folder and save a copy as `food_access_mine.sql` in the same folder. You will write your queries in this copy. Git ignores it, so pulling course updates does not change it.
+
+Then open the VS Code terminal, go to this folder and start DuckDB:
 
 ```bash
 cd lessons/week05_relational-data
 duckdb
 ```
 
-At the DuckDB prompt, load each CSV file as a table. DuckDB reads a CSV file when you put its path in quotes after `FROM`, and `CREATE TABLE ... AS` saves the result under a name. Paste one line at a time and press Enter:
+The first two lines of your file load each CSV file as a table. DuckDB reads a CSV file when you put its path in quotes after `FROM`, and `CREATE TABLE ... AS` saves the result under a name:
 
 ```sql
 CREATE TABLE tracts AS SELECT * FROM '../../data/week05_food_access_tracts.csv';
 CREATE TABLE counties AS SELECT * FROM '../../data/week05_ca_counties.csv';
 ```
 
-Then look at a few rows of each table, for example `SELECT * FROM tracts LIMIT 5;`.
+Copy them from your file and paste them at the DuckDB prompt one at a time, pressing Enter after each. Then look at a few rows of each table, for example `SELECT * FROM tracts LIMIT 5;`. You can type a short query like this one straight at the prompt.
 
-At the prompt, end each query with a semicolon and press Enter. The up arrow brings back your last query so you can fix it. `.quit` closes DuckDB. If DuckDB says `No files found`, you started it in another folder: type `.quit`, run the `cd` command above, and start again.
+End each query with a semicolon. `.quit` closes DuckDB. If DuckDB says `No files found`, you started it in another folder: type `.quit`, run the `cd` command above, and start again.
 
 ### 2. Answer three questions
+
+Write each query in `food_access_mine.sql`, under the question it answers. To run it, copy it from the file, paste it at the DuckDB prompt and press Enter. If it gives an error or an unexpected result, fix it in the file and paste it again.
 
 1. How many tracts are there, and how many of them are flagged? You should get 9,109 and 426.
 2. Which five counties have the most flagged tracts? The county names are in `counties`, so you need both tables. The first is Riverside County, with 67.
 3. Which five counties have the largest share of their tracts flagged? Show how many tracts each one has. Which of the two lists would you give the nonprofit, and why? Be ready to say.
 
-### 3. Save your answer as a script
+### 3. Run your file as a script
 
-Open `food_access.sql` in VS Code and save a copy as `food_access_mine.sql` in this folder. Paste your query from question 2 or 3 at the end of your copy and save it. In the terminal, type `.quit`, then run:
+Save the file. In the terminal, type `.quit`, then run:
 
 ```bash
 duckdb -f food_access_mine.sql
 ```
 
-The script loads the data and runs your query from the start, as `run_report.py` did last week. Anyone with the course files can run it and get the same result. Git ignores `food_access_mine.sql`, so pulling course updates does not change it.
+DuckDB loads the data and runs your queries from the start, as `run_report.py` did last week. Anyone with the course files can run it and get the same results. If DuckDB stops at an error, fix that query in the file and run the command again.
 
 ### If you finish early
 
@@ -84,7 +95,7 @@ The script loads the data and runs your query from the start, as `run_report.py`
 
 ## If DuckDB does not run on your laptop
 
-Use your partner's laptop. If DuckDB runs on neither, open [DuckDB in your browser with the two tables loaded](https://shell.duckdb.org/#queries=v0,CREATE-TABLE-tracts-AS-SELECT-*-FROM-'https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_food_access_tracts.csv'~,CREATE-TABLE-counties-AS-SELECT-*-FROM-'https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_ca_counties.csv'~,SHOW-TABLES~). Skip the two `CREATE TABLE` lines, because the tables are already there. Paste one query at a time and press Enter if it does not run; if you paste several queries at once, only the first runs. Part 3 needs DuckDB on a laptop.
+Use your partner's laptop. If DuckDB runs on neither, open [DuckDB in your browser with the two tables loaded](https://shell.duckdb.org/#queries=v0,CREATE-TABLE-tracts-AS-SELECT-*-FROM-'https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_food_access_tracts.csv'~,CREATE-TABLE-counties-AS-SELECT-*-FROM-'https%3A%2F%2Fraw.githubusercontent.com%2Fmacss%20berkeley%2Fcompss%20211a%2Fmain%2Fdata%2Fweek05_ca_counties.csv'~,SHOW-TABLES~). Skip the two `CREATE TABLE` lines, because the tables are already there. Write your queries in your file as above and paste them there one at a time; press Enter if a query does not run. If you paste several queries at once, only the first runs. Step 3 needs DuckDB on a laptop.
 
 ## Hints
 
