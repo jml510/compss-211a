@@ -109,7 +109,7 @@ The command-line, Git, and local-environment exercises still require the local s
 
 Don't edit the course notebooks directly. Before you start working in one,
 duplicate it and add `_mine` to the end of the name, before `.ipynb`:
-`week05_live_workspace.ipynb` becomes `week05_live_workspace_mine.ipynb`. Keep
+`week04_reproducible_analysis.ipynb` becomes `week04_reproducible_analysis_mine.ipynb`. Keep
 the copy in the same folder so its data paths keep working.
 
 Git ignores `_mine` copies, so they never appear in GitHub Desktop's

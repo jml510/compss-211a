@@ -36,7 +36,7 @@ opens the complete repository in VS Code.
 
 Work in your own copies of course notebooks, not the originals: duplicate a
 notebook in the same folder and add `_mine` to the end of its name (for example
-`week05_live_workspace_mine.ipynb`). Git ignores these copies, so pulling never
+`week04_reproducible_analysis_mine.ipynb`). Git ignores these copies, so pulling never
 causes a conflict. See [Working on your own copies](SETUP.md#working-on-your-own-copies).
 
 For [Week 4: Building Reproducible Analyses](lessons/week04_reproducible-analyses/README.md),
@@ -44,7 +44,7 @@ copy the entire practice folder as described on the lesson page: you will edit a
 Python script as well as the notebook.
 
 For [Week 5: Relational Data and SQL](lessons/week05_relational-data/README.md),
-the lesson page lists Monday's SQL workspace and DuckDB worksheet, and Friday's notebook.
+the lesson page lists the SQL workspace and the DuckDB worksheet.
 
 ## Course data
 

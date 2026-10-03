@@ -5,8 +5,6 @@ On Monday:
 1. The [Week 5 SQL workspace](https://macss-berkeley.github.io/compss-211a/interactives/week05-sql-workspace.html), in your browser.
 2. At the end of class, in pairs: [food_access.sql](food_access.sql), with DuckDB on your laptop.
 
-On Friday: [week05_live_workspace.ipynb](week05_live_workspace.ipynb) runs the same SQL from Python, next to pandas. HW3 uses the same setup.
-
 ## Before class: install DuckDB
 
 DuckDB is a free SQL database that runs on your laptop. Install the command-line version.
