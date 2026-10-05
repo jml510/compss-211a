@@ -310,9 +310,9 @@ footer{background:var(--berkeley);color:rgba(255,255,255,.85);margin:44px calc(5
       <button class="btn btn-ghost" id="chkTypes">Run</button>
       <div style="flex:1">
         <h3>Check 3 · Column types</h3>
-        <p>Compare the type pandas gives each column when you load the file without any options.</p>
+        <p>Compare the type pandas gives each column when you load the CSV and the JSON without any options.</p>
         <div id="outTypes"></div>
-        <button class="btn" id="fixTypes" style="display:none;margin-top:10px">Re-read with <span style="font-family:var(--mono);font-weight:500">dtype={"case_id": str}</span></button>
+        <button class="btn" id="fixTypes" style="display:none;margin-top:10px">Re-read both with <span style="font-family:var(--mono);font-weight:500">dtype={"case_id": str}</span></button>
       </div>
       <span class="status" id="stTypes" hidden></span>
     </div>
@@ -333,6 +333,7 @@ footer{background:var(--berkeley);color:rgba(255,255,255,.85);margin:44px calc(5
       <li>Fix it: change the first line to <code>pd.read_csv("cases.csv", dtype={"case_id": str})</code> and run it again.</li>
       <li>Load the JSON file too: <code>json_rows = pd.read_json("cases.json", dtype={"case_id": str})</code>. Compare <code>csv_rows.isna().sum()</code> with <code>json_rows.isna().sum()</code>. Do both files agree on what's missing?</li>
       <li>Look at a raw file: <code>print(open("cases.csv").read())</code>. Find the quotes around the description with a comma in it.</li>
+      <li>Load the other two files: <code>pd.read_csv("cases.tsv", sep="\t")</code> and <code>pd.read_xml("cases.xml", parser="etree")</code>. Without <code>parser="etree"</code>, <code>read_xml</code> needs an extra package that is not installed here.</li>
     </ol>
     <div id="formats-python"></div>
   </div>
@@ -345,7 +346,7 @@ footer{background:var(--berkeley);color:rgba(255,255,255,.85);margin:44px calc(5
     <ul>
       <li>Every format has its own rules for quotes, commas, and nesting. Use a real reader such as <code style="font-family:var(--mono);font-size:.8rem">pd.read_csv</code>, not your own splitting code.</li>
       <li><strong>CSV and TSV don't store types.</strong> After loading, check <code style="font-family:var(--mono);font-size:.8rem">.dtypes</code>, and load ID columns such as <code style="font-family:var(--mono);font-size:.8rem">case_id</code> as text.</li>
-      <li><strong>JSON</strong> can tell <code style="font-family:var(--mono);font-size:.8rem">"0042"</code> (text) from <code style="font-family:var(--mono);font-size:.8rem">42</code> (a number), can put values inside other values like a Python dictionary, and has <code style="font-family:var(--mono);font-size:.8rem">null</code> for missing values.</li>
+      <li><strong>JSON</strong> can tell <code style="font-family:var(--mono);font-size:.8rem">"0042"</code> (text) from <code style="font-family:var(--mono);font-size:.8rem">42</code> (a number), can put values inside other values like a Python dictionary, and has <code style="font-family:var(--mono);font-size:.8rem">null</code> for missing values. Pandas still turns <code style="font-family:var(--mono);font-size:.8rem">"0042"</code> into 42 when it loads the file, unless you give <code style="font-family:var(--mono);font-size:.8rem">dtype</code>.</li>
       <li><strong>XML</strong> can also put values inside other values. A missing value can be an empty tag or no tag at all.</li>
       <li>"Missing" can mean different things: an empty string, <code style="font-family:var(--mono);font-size:.8rem">null</code>, or a key that isn't there. CSV and TSV turn all of these into the same empty cell.</li>
       <li><strong>To check that files match, compare row counts, missing values, and column types</strong> in your notebook. Looking at the files isn't enough.</li>
@@ -554,21 +555,22 @@ document.getElementById("chkMiss").addEventListener("click",function(){
 const chkTypes=document.getElementById("chkTypes"), fixTypes=document.getElementById("fixTypes");
 chkTypes.addEventListener("click",function(){
   document.getElementById("outTypes").innerHTML =
-    `<table class="mini"><tr><th>column</th><th>from CSV (default)</th><th>from JSON</th></tr>
-      <tr><td>case_id</td><td style="color:var(--err)">int64 → 42</td><td>string → "0042"</td></tr>
-      <tr><td>minutes_open</td><td>int64</td><td>int</td></tr>
-      <tr><td>lat / lon</td><td>float64</td><td>float / null</td></tr></table>`;
-  stTypes.hidden=false; stTypes.className="status fail"; stTypes.textContent="MISMATCH";
+    `<table class="mini"><tr><th>column</th><th>from CSV (default)</th><th>from JSON (default)</th></tr>
+      <tr><td>case_id</td><td style="color:var(--err)">int64 → 42</td><td style="color:var(--err)">int64 → 42</td></tr>
+      <tr><td>minutes_open</td><td>int64</td><td>int64</td></tr>
+      <tr><td>lat / lon</td><td>float64</td><td>float64</td></tr></table>
+     <p style="margin-top:8px">The two tables agree, but both changed the ID: <b>0042</b> became <b>42</b>. The JSON file marks the ID as text with quotes, and pandas still converts text that looks like a number.</p>`;
+  stTypes.hidden=false; stTypes.className="status fail"; stTypes.textContent="MATCH, BUT WRONG";
   fixTypes.style.display="inline-block";
   this.disabled=true;
 });
 fixTypes.addEventListener("click",function(){
   document.getElementById("outTypes").innerHTML =
-    `<table class="mini"><tr><th>column</th><th>from CSV (dtype forced)</th><th>from JSON</th></tr>
-      <tr><td>case_id</td><td style="color:var(--ok)">string → "0042"</td><td>string → "0042"</td></tr>
-      <tr><td>minutes_open</td><td>int64</td><td>int</td></tr>
-      <tr><td>lat / lon</td><td>float64</td><td>float / null</td></tr></table>
-     <p style="margin-top:8px">Now all four files load with the same types.</p>`;
+    `<table class="mini"><tr><th>column</th><th>from CSV (dtype given)</th><th>from JSON (dtype given)</th></tr>
+      <tr><td>case_id</td><td style="color:var(--ok)">text → "0042"</td><td style="color:var(--ok)">text → "0042"</td></tr>
+      <tr><td>minutes_open</td><td>int64</td><td>int64</td></tr>
+      <tr><td>lat / lon</td><td>float64</td><td>float64</td></tr></table>
+     <p style="margin-top:8px">Now the ID is text in both tables. The TSV and XML files need the same option.</p>`;
   stTypes.className="status ok"; stTypes.textContent="MATCH";
   this.style.display="none";
 });
@@ -584,7 +586,12 @@ fixTypes.addEventListener("click",function(){
   };
   const row = (r, sep, fmt) => FIELDS.map(f => fmt(r[f])).join(sep);
   const csv = [FIELDS.join(","), ...RECORDS.map(r => row(r, ",", csvValue))].join("\n") + "\n";
-  const tsv = [FIELDS.join("\t"), ...RECORDS.map(r => row(r, "\t", v => v === null || v === undefined ? "" : String(v)))].join("\n") + "\n";
+  const tsvValue = v => {
+    if (v === null || v === undefined) return "";
+    const s = String(v);
+    return /["\t\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  };
+  const tsv = [FIELDS.join("\t"), ...RECORDS.map(r => row(r, "\t", tsvValue))].join("\n") + "\n";
   const json = JSON.stringify(RECORDS, null, 2) + "\n";
   const xmlEsc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const xml = "<?xml version='1.0' encoding='utf-8'?>\n<cases>\n" + RECORDS.map(r =>

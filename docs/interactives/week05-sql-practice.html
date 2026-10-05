@@ -93,13 +93,13 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:.85rem;col
     <li><code>category</code>: the kind of request</li>
     <li><code>channel</code>: how it came in. Can be missing. Includes 11 <code>Test</code> requests.</li>
     <li><code>district</code>: supervisor district number. Can be missing.</li>
-    <li><code>hours_to_close</code>: missing if the request is not closed</li>
+    <li><code>hours_to_close</code>: missing for open requests, and for two closed ones</li>
   </ul>
   <h3>districts</h3>
   <p class="small">11 rows. One row is one supervisor district.</p>
   <ul>
     <li><code>district</code>: number from 1 to 11</li>
-    <li><code>supervisor</code>: name as the city published it in 2022. One name is out of date.</li>
+    <li><code>supervisor</code>: name listed in the city's table in September 2026. The name for district 4 is out of date.</li>
   </ul>
   <h3>districts_v2</h3>
   <p class="small">A copy of <code>districts</code> with a mistake in it. Used in question 9.</p>
@@ -278,7 +278,17 @@ function buildDatabase() {
   }
 }
 
+// The page's tables are for reading. A statement that would change or remove one is stopped before it runs;
+// otherwise the checks, which run the model answer on the same tables, would compare against changed data.
+const CHANGES_TABLES = /\b(?:insert(?:\s+or\s+\w+)?\s+into|replace\s+into|update(?:\s+or\s+\w+)?|delete\s+from|drop\s+table(?:\s+if\s+exists)?|alter\s+table)\s+(?:main\s*\.\s*)?["`\[]?(requests|districts_v2|districts|days)\b/i;
 function run(query) {
+  // Look for such a statement in the query without its comments and without the text in single quotes.
+  const target = query.replace(/--[^\n]*/g, "").replace(/\/\*[\s\S]*?\*\//g, " ").replace(/'(?:[^']|'')*'/g, "''").match(CHANGES_TABLES);
+  if (target) {
+    const error = new Error(`${target[1].toLowerCase()} is one of this page's tables, and the page only reads them. To try INSERT, UPDATE or DELETE, make your own table with CREATE TABLE first.`);
+    error.plain = true;
+    throw error;
+  }
   const results = db.exec(query);
   if (!results.length) return {columns: [], values: []};
   return results[results.length - 1];
@@ -369,7 +379,7 @@ document.addEventListener("click", e => {
   const query = $(`q${i}-sql`).value.trim();
   let mine;
   try { mine = run(query); }
-  catch (err) { setFeedback(fb, "bad", `SQL error: ${esc(err.message)}`); out.innerHTML = ""; return; }
+  catch (err) { setFeedback(fb, "bad", err.plain ? esc(err.message) : `SQL error: ${esc(err.message)}`); out.innerHTML = ""; return; }
   out.innerHTML = renderTable(mine);
   if (b.dataset.act === "run") { fb.className = "feedback"; return; }
   const result = compare(mine, run(q.answer), q.ordered);
