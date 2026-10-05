@@ -44,7 +44,7 @@ The tract column to use is `low_income_low_access`. USDA sets it to 1, a flagged
 
 Otherwise it is 0. The full definitions are in [USDA's reference guide](https://www.ers.usda.gov/data-products/food-access-research-atlas/documentation/snap-authorized-retailer-access-map-reference-guide).
 
-The flag works like `is_open` in step 7 of the SQL workspace: its sum is the number of flagged tracts, and its average is the share of tracts that are flagged.
+The flag works like `is_open` in the “Count, add up and average” step of the SQL workspace: its sum is the number of flagged tracts, and its average is the share of tracts that are flagged.
 
 ### 1. Start DuckDB and load the data
 
@@ -117,7 +117,7 @@ Use your partner's laptop. If DuckDB runs on neither, open [DuckDB in your brows
 
 <details><summary>Question 2</summary>
 
-Step 9 of the SQL workspace has the same shape: a join, then `GROUP BY`. Join `counties` to `tracts` on `county_fips`, group by `county_name`, add up the flag with `SUM`, sort with `ORDER BY ... DESC`, and keep five rows with `LIMIT 5`.
+The “Join, then group” step of the SQL workspace has the same shape: a join, then `GROUP BY`. Join `counties` to `tracts` on `county_fips`, group by `county_name`, add up the flag with `SUM`, sort with `ORDER BY ... DESC`, and keep five rows with `LIMIT 5`.
 
 </details>
 

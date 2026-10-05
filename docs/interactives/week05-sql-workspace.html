@@ -165,10 +165,10 @@ const TABLES = [
 // ordered: true checks exact order; {column, direction} checks that key and allows ties in either order. after: shown once the answer is correct.
 const STEPS = [
   {topic: 'Look at a table',
-   intro: '<code>SELECT *</code> returns every column. <code>LIMIT 5</code> lets us preview five rows. Without <code>ORDER BY</code>, SQL does not guarantee which rows come first.',
+   intro: 'The <code>requests</code> table contains one row per service request. Run the example to see five rows and all its columns. <code>SELECT *</code> returns every column. <code>LIMIT 5</code> lets us preview five rows. Without <code>ORDER BY</code>, SQL does not guarantee which rows come first.',
    example: {sql: 'SELECT *\nFROM requests\nLIMIT 5;', pandas: 'requests.head(5)', r: 'head(requests, 5)'}},
   {topic: 'Look at another table',
-   task: 'Preview five rows of the <b>districts</b> table.',
+   task: "Show five rows from the <code>districts</code> table, including all columns.",
    starter: 'SELECT *\nFROM ____\nLIMIT 5;',
    answer: 'SELECT *\nFROM districts\nLIMIT 5;', ordered: false,
    accept: mine => { const all = new Set(run('SELECT * FROM districts').values.map(rowKey)), keys = mine.values.map(r => all.has(rowKey(r)) ? rowKey(r) : rowKey([...r].reverse()));
@@ -181,7 +181,7 @@ const STEPS = [
   {topic: 'List the values in a column',
    intro: '<code>SELECT DISTINCT</code> shows each value in a column once. Use it to see what a column contains before you filter on it.',
    example: {sql: 'SELECT DISTINCT status\nFROM requests;', pandas: 'requests["status"].unique()', r: 'distinct(requests, status)'},
-   task: 'List the values in the <b>channel</b> column.',
+   task: "Using the <code>requests</code> table, list the different values in the <code>channel</code> column. Show each value only once.",
    starter: 'SELECT DISTINCT ____\nFROM requests;',
    answer: 'SELECT DISTINCT channel\nFROM requests;', ordered: false,
    pyStart: 'requests["____"].unique()',
@@ -195,7 +195,7 @@ const STEPS = [
    example: {sql: 'SELECT request_id, category, district\nFROM requests\nWHERE channel = \'Phone\'\nORDER BY request_id\nLIMIT 5;',
              pandas: 'requests.loc[\n    requests["channel"] == "Phone",\n    ["request_id", "category", "district"],\n].sort_values("request_id").head(5)',
              r: 'requests |>\n  filter(channel == "Phone") |>\n  select(request_id, category, district) |>\n  arrange(request_id) |>\n  head(5)'},
-   task: 'Show <code>request_id</code>, <code>status</code> and <code>hours_to_close</code> for the first ten <b>Web</b> requests, sorted by request ID.',
+   task: "Using the <code>requests</code> table, find rows where the <code>channel</code> column contains <code>'Web'</code>.<br><br>Show the <code>request_id</code>, <code>status</code>, and <code>hours_to_close</code> columns. Sort by <code>request_id</code> from smallest to largest and show the first ten rows.",
    starter: 'SELECT request_id, ____, ____\nFROM requests\nWHERE channel = \'____\'\nORDER BY request_id\nLIMIT ____;',
    answer: 'SELECT request_id, status, hours_to_close\nFROM requests\nWHERE channel = \'Web\'\nORDER BY request_id\nLIMIT 10;', ordered: true,
    wrong: 'Some values differ. Check the channel in WHERE, and that ORDER BY sorts by request_id from smallest to largest.',
@@ -204,19 +204,30 @@ const STEPS = [
    py: 'requests.loc[\n    requests["channel"] == "Web",\n    ["request_id", "status", "hours_to_close"],\n].sort_values("request_id").head(10)',
    r: 'requests |>\n  filter(channel == "Web") |>\n  select(request_id, status, hours_to_close) |>\n  arrange(request_id) |>\n  head(10)',
    hint: 'The two columns are <code>status</code> and <code>hours_to_close</code>. The channel is <code>\'Web\'</code>, with a capital W. The limit is 10.'},
+  {topic: 'Write a query: select and filter',
+   intro: 'Use the operations from the previous step. Write the whole SQL query; you can look back at earlier examples.',
+   task: "Using the <code>requests</code> table, find the rows where the <code>status</code> column contains <code>'Open'</code>.<br><br>Show only the <code>request_id</code> and <code>category</code> columns. Sort by <code>request_id</code> from smallest to largest and show the first five rows. Write the whole query.",
+   starter: '',
+   scaffold: 'SELECT ____, ____\nFROM requests\nWHERE ____ = \'____\'\nORDER BY ____\nLIMIT ____;',
+   answer: 'SELECT request_id, category\nFROM requests\nWHERE status = \'Open\'\nORDER BY request_id\nLIMIT 5;', ordered: true,
+   wrong: 'Check that you return request_id and category, keep Open requests, sort by request_id, and return the first five.',
+   pyStart: '', rStart: '',
+   py: 'requests.loc[\n    requests["status"] == "Open",\n    ["request_id", "category"],\n].sort_values("request_id").head(5)',
+   r: 'requests |>\n  filter(status == "Open") |>\n  select(request_id, category) |>\n  arrange(request_id) |>\n  head(5)',
+   hint: 'Choose the columns with <code>SELECT</code>, name the table with <code>FROM</code>, filter <code>status</code> with <code>WHERE</code>, then sort and limit the result. The value is <code>\'Open\'</code>.'},
   {topic: 'Count groups',
    intro: '<code>GROUP BY</code> makes one row per group. <code>COUNT(*)</code> counts its rows. <code>AS</code> names the result column. <code>DESC</code> sorts largest first; a second sort column breaks ties.',
-   example: {sql: 'SELECT channel, COUNT(*) AS requests\nFROM requests\nGROUP BY channel\nORDER BY requests DESC, channel ASC;',
-             pandas: '(requests.groupby("channel", dropna=False)\n .size().reset_index(name="requests")\n .sort_values(["requests", "channel"],\n              ascending=[False, True]))',
-             r: 'requests |>\n  count(channel, name = "requests") |>\n  arrange(desc(requests), channel)'},
-   task: 'How many <b>Phone</b> requests came from each district? Show the largest count first.',
-   starter: 'SELECT ____, COUNT(*) AS requests\nFROM requests\nWHERE channel = \'Phone\'\nGROUP BY ____\nORDER BY requests ____, district ASC;',
-   answer: 'SELECT district, COUNT(*) AS requests\nFROM requests\nWHERE channel = \'Phone\'\nGROUP BY district\nORDER BY requests DESC, district ASC;', ordered: {column: 'requests', direction: 'desc'},
+   example: {sql: 'SELECT channel, COUNT(*) AS request_count\nFROM requests\nGROUP BY channel\nORDER BY request_count DESC, channel ASC;',
+             pandas: '(requests.groupby("channel", dropna=False)\n .size().reset_index(name="request_count")\n .sort_values(["request_count", "channel"],\n              ascending=[False, True]))',
+             r: 'requests |>\n  count(channel, name = "request_count") |>\n  arrange(desc(request_count), channel)'},
+   task: "Using the <code>requests</code> table, find rows where the <code>channel</code> column contains <code>'Phone'</code>. How many of these requests are there for each value of <code>district</code>?<br><br>Show the district and its count, with the largest count first. Name the count column <code>request_count</code>.",
+   starter: 'SELECT ____, COUNT(*) AS request_count\nFROM requests\nWHERE channel = \'Phone\'\nGROUP BY ____\nORDER BY request_count ____, district ASC;',
+   answer: 'SELECT district, COUNT(*) AS request_count\nFROM requests\nWHERE channel = \'Phone\'\nGROUP BY district\nORDER BY request_count DESC, district ASC;', ordered: {column: 'request_count', direction: 'desc'},
    wrong: 'Some values differ. Count the rows in each group with COUNT(*), and keep only the Phone requests with WHERE.',
-   pyStart: '(\n    requests[requests["channel"] == "Phone"]\n    .groupby("____", dropna=False)\n    .size()\n    .reset_index(name="requests")\n    .sort_values(["requests", "district"], ascending=[____, True])\n)',
-   rStart: 'requests |>\n  filter(channel == "Phone") |>\n  count(____, name = "requests") |>\n  arrange(____(requests), district)',
-   py: '(\n    requests[requests["channel"] == "Phone"]\n    .groupby("district", dropna=False)\n    .size()\n    .reset_index(name="requests")\n    .sort_values(["requests", "district"], ascending=[False, True])\n)',
-   r: 'requests |>\n  filter(channel == "Phone") |>\n  count(district, name = "requests") |>\n  arrange(desc(requests), district)',
+   pyStart: '(\n    requests[requests["channel"] == "Phone"]\n    .groupby("____", dropna=False)\n    .size()\n    .reset_index(name="request_count")\n    .sort_values(["request_count", "district"], ascending=[____, True])\n)',
+   rStart: 'requests |>\n  filter(channel == "Phone") |>\n  count(____, name = "request_count") |>\n  arrange(____(request_count), district)',
+   py: '(\n    requests[requests["channel"] == "Phone"]\n    .groupby("district", dropna=False)\n    .size()\n    .reset_index(name="request_count")\n    .sort_values(["request_count", "district"], ascending=[False, True])\n)',
+   r: 'requests |>\n  filter(channel == "Phone") |>\n  count(district, name = "request_count") |>\n  arrange(desc(request_count), district)',
    hint: 'You want one row per district, so <code>district</code> goes after both <code>SELECT</code> and <code>GROUP BY</code>. <code>DESC</code> sorts largest first.',
    after: 'One row has no district: 81 Phone requests whose district is missing. SQL keeps that group, and so does R. Pandas drops it unless you add <code>dropna=False</code>.'},
   {topic: 'Find missing values',
@@ -224,9 +235,9 @@ const STEPS = [
    example: {sql: 'SELECT COUNT(*) AS missing_time\nFROM requests\nWHERE hours_to_close IS NULL;',
              pandas: 'requests["hours_to_close"].isna().sum()',
              r: 'sum(is.na(requests$hours_to_close))'},
-   task: 'How many requests have <b>no district</b>?',
-   starter: 'SELECT COUNT(*) AS requests\nFROM requests\nWHERE district ____;',
-   answer: 'SELECT COUNT(*) AS requests\nFROM requests\nWHERE district IS NULL;', ordered: false,
+   task: "How many rows in the <code>requests</code> table have a missing value in the <code>district</code> column? Show a single count.",
+   starter: 'SELECT COUNT(*) AS request_count\nFROM requests\nWHERE district ____;',
+   answer: 'SELECT COUNT(*) AS request_count\nFROM requests\nWHERE district IS NULL;', ordered: false,
    wrong: 'The number differs. Test for a missing value with IS NULL, and count the rows with COUNT(*).',
    pyStart: 'requests["district"].____().sum()',
    rStart: 'sum(____(requests$district))',
@@ -235,11 +246,11 @@ const STEPS = [
    hint: 'The blank is <code>IS NULL</code>.',
    after: 'Now change <code>IS NULL</code> to <code>= NULL</code> and run it. The count is 0: comparing with <code>NULL</code> gives an unknown result, and <code>WHERE</code> keeps only true conditions. Use <code>IS NULL</code> to test for missing values.'},
   {topic: 'Count, add up and average',
-   intro: '<code>COUNT(*)</code> counts rows. <code>COUNT(column)</code> counts recorded values, including zero. <code>SUM(column)</code> adds up recorded values and <code>AVG(column)</code> averages them. All three skip <code>NULL</code>.',
-   example: {sql: 'SELECT COUNT(*) AS requests,\n       COUNT(hours_to_close) AS with_time,\n       AVG(hours_to_close) AS mean_hours\nFROM requests;',
+   intro: '<code>COUNT(*)</code> counts rows. <code>COUNT(column)</code> counts recorded values, including zero. <code>SUM(column)</code> adds up recorded values and <code>AVG(column)</code> averages them. <code>COUNT(*)</code> includes every row. <code>COUNT(column)</code>, <code>SUM(column)</code>, and <code>AVG(column)</code> ignore missing values.',
+   example: {sql: 'SELECT COUNT(*) AS request_count,\n       COUNT(hours_to_close) AS with_time,\n       AVG(hours_to_close) AS mean_hours\nFROM requests;',
              pandas: 'len(requests)\nrequests["hours_to_close"].count()\nrequests["hours_to_close"].mean()',
              r: 'nrow(requests)\nsum(!is.na(requests$hours_to_close))\nmean(requests$hours_to_close, na.rm = TRUE)'},
-   task: '<code>is_open</code> is 1 for an open request and 0 for a closed one. How many requests are <b>open</b>, and what <b>share</b> of all requests is that?',
+   task: "In the <code>requests</code> table, the <code>is_open</code> column contains 1 for an open request and 0 for a closed request.<br><br>Show the number of open requests and their proportion of all requests, between 0 and 1. Your result should have one row with these two values.",
    starter: 'SELECT ____(is_open) AS open_requests,\n       ____(is_open) AS share_open\nFROM requests;',
    answer: 'SELECT SUM(is_open) AS open_requests,\n       AVG(is_open) AS share_open\nFROM requests;', ordered: false,
    accept: mine => { if (mine.values.length !== 1 || mine.columns.length !== 2) return false;
@@ -256,7 +267,7 @@ const STEPS = [
    intro: 'A join matches rows from two tables on a shared column. <code>LEFT JOIN</code> keeps every row of the first table, even when nothing matches. <code>r</code> and <code>d</code> are short names for the two tables.',
    example: {pandas: 'requests.merge(districts, on="district", how="left")',
              r: 'requests |>\n  left_join(districts, by = "district")'},
-   task: 'Add the <b>district name</b> to each request. Keep every request.',
+   task: "Add <code>district_name</code> from the <code>districts</code> table to the records in <code>requests</code>, matching the <code>district</code> values in both tables. Include every request, even when there is no matching district.<br><br>Show <code>request_id</code>, <code>category</code>, and <code>district</code> from <code>requests</code>, plus <code>district_name</code> from <code>districts</code>. Sort by <code>request_id</code> from smallest to largest.",
    starter: 'SELECT r.request_id, r.category, r.district, d.district_name\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.____ = d.____\nORDER BY r.request_id;',
    answer: 'SELECT r.request_id, r.category, r.district, d.district_name\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\nORDER BY r.request_id;', ordered: true,
    wrong: 'Some values differ. Match the district number in requests with the district number in districts.',
@@ -268,24 +279,24 @@ const STEPS = [
    after: 'The result has 16,865 rows, one per request. <code>LEFT JOIN</code> keeps every request, and each district matches at most one lookup row. If a district appeared twice in the lookup, its requests would appear twice too.'},
   {topic: 'Join, then group',
    intro: 'The join is part of <code>FROM</code>, so <code>WHERE</code>, <code>GROUP BY</code> and <code>ORDER BY</code> come after it. After a left join, a row with no match has <code>NULL</code> in the columns that come from the second table.',
-   task: 'How many requests came from each <b>district name</b>? Show the largest count first. The box has the join from step 8; write the rest.',
-   starter: 'SELECT \nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\n',
-   scaffold: 'SELECT d.district_name, COUNT(*) AS requests\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\nGROUP BY ____\nORDER BY ____;',
-   answer: 'SELECT d.district_name, COUNT(*) AS requests\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\nGROUP BY d.district_name\nORDER BY requests DESC;', ordered: {column: 'requests', direction: 'desc'},
+   task: "Using the <code>requests</code> and <code>districts</code> tables, count the requests for each <code>district_name</code>. Include requests without a matching district as a group with a missing name.<br><br>Show each name and its count, with the largest count first. Name the count column <code>request_count</code>. Write the whole query.",
+   starter: '',
+   scaffold: 'SELECT d.district_name, COUNT(*) AS request_count\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\nGROUP BY ____\nORDER BY ____;',
+   answer: 'SELECT d.district_name, COUNT(*) AS request_count\nFROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district\nGROUP BY d.district_name\nORDER BY request_count DESC;', ordered: {column: 'request_count', direction: 'desc'},
    wrong: 'Some values differ. Show the name from districts, and count rows with COUNT(*). Counting a column from districts skips the requests that have no match.',
    pyStart: 'joined = requests.merge(districts, on="district", how="left")\njoined.groupby("____", dropna=False).size().sort_values(ascending=____)',
    rStart: 'requests |>\n  left_join(districts, by = "district") |>\n  count(____) |>\n  arrange(desc(n))',
    py: 'joined = requests.merge(districts, on="district", how="left")\njoined.groupby("district_name", dropna=False).size().sort_values(ascending=False)',
    r: 'requests |>\n  left_join(districts, by = "district") |>\n  count(district_name) |>\n  arrange(desc(n))',
-   hint: 'Step 5 has the same <code>GROUP BY</code> and <code>ORDER BY</code> lines. Here you group by <code>d.district_name</code>.',
+   hint: 'Use <code>LEFT JOIN</code> to keep every request, then group by <code>d.district_name</code> and count rows with <code>COUNT(*)</code>. The join can start like this:<pre>FROM requests AS r\nLEFT JOIN districts AS d\n    ON r.district = d.district</pre>For more help, put the fuller starting point in the box below.',
    after: 'One row has no name: the 110 requests with no district, which match nothing in <code>districts</code>. The counts add up to 16,865, so the join kept every request.'},
   {topic: 'Now work in pairs in DuckDB', handoff: true,
-   intro: 'The guided SQL practice ends here. For the rest of the class, work in pairs with DuckDB on your laptop.'},
+   intro: 'The SQL practice ends here. Work in pairs on the food-access investigation in DuckDB. The new tables are <code>tracts</code> and <code>counties</code>; the activity instructions explain their columns.'},
   {topic: 'The city’s live 311 table', outside: true, extra: true}
 ];
 
 // The city's live 311 table on DataSF. The query goes in the web address.
-const DATASF_QUERY = "SELECT source, count(*) AS requests\nWHERE requested_datetime >= '2026-08-03'\n  AND requested_datetime < '2026-08-10'\nGROUP BY source\nORDER BY requests DESC";
+const DATASF_QUERY = "SELECT source, count(*) AS request_count\nWHERE requested_datetime >= '2026-08-03'\n  AND requested_datetime < '2026-08-10'\nGROUP BY source\nORDER BY request_count DESC";
 const DATASF_URL = 'https://data.sf.gov/resource/vw6y-z8j6.json?$query=' + encodeURIComponent(DATASF_QUERY.replace(/\s+/g, ' '));
 // The same two tables in the DuckDB web shell, loaded from the course's CSV files on GitHub.
 const CSV_BASE = 'https://raw.githubusercontent.com/macss-berkeley/compss-211a/main/data/';
@@ -334,7 +345,7 @@ const R_SETUP = [
 ].join('\n');
 const WEBR_URL = 'https://webr.r-wasm.org/v0.6.0/webr.mjs';
 
-const STORE = 'compss211a-week05-sql-workspace-oct5b';
+const STORE = 'compss211a-week05-sql-workspace-oct5d';
 let SQL = null, db = null, current = 0;
 const solved = new Set();
 const $ = id => document.getElementById(id);
@@ -808,7 +819,7 @@ function renderSteps() {
       </div>
       <div class="feedback" id="s${i}-fb" aria-live="polite"></div>
       <div id="s${i}-out"></div>
-      <details><summary>Hint</summary><p>${s.hint}</p>${s.scaffold ? `<p><button data-scaffold="${i}">Put a starting point in the box</button></p>` : ''}</details>
+      <details><summary>Hint</summary><div>${s.hint}</div>${s.scaffold ? `<p><button data-scaffold="${i}">Put a starting point in the box</button></p>` : ''}</details>
       <details><summary>One possible answer</summary><pre class="answer">${esc(s.answer)}</pre></details>
       </div>
       <div id="s${i}-panel-py" hidden>
