@@ -108,7 +108,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:.85rem;col
 <details id="tablesBox" open><summary>Tables in this database</summary>
   <p class="small">Click a name to put it in your query.</p>
   <div id="schema"><p class="small">Loading…</p></div>
-  <p class="small" style="margin-top:12px">To preview a table, run <code>SELECT * FROM requests LIMIT 5;</code></p>
+  <p class="small" style="margin-top:12px">To preview a table, run <code>SELECT * FROM table_name LIMIT 5;</code></p>
 </details>
 </aside>
 
@@ -164,20 +164,30 @@ const TABLES = [
 // pyStart, rStart: what the Python and R boxes start with. They have the same blanks as starter.
 // ordered: true checks exact order; {column, direction} checks that key and allows ties in either order. after: shown once the answer is correct.
 const STEPS = [
-  {topic: 'Look at a table',
-   intro: 'The <code>requests</code> table contains one row per service request. Run the example to see five rows and all its columns. <code>SELECT *</code> returns every column. <code>LIMIT 5</code> lets us preview five rows. Without <code>ORDER BY</code>, SQL does not guarantee which rows come first.',
-   example: {sql: 'SELECT *\nFROM requests\nLIMIT 5;', pandas: 'requests.head(5)', r: 'head(requests, 5)'}},
-  {topic: 'Look at another table',
-   task: "Show five rows from the <code>districts</code> table, including all columns.",
+  {topic: 'What is in requests?',
+   intro: 'The list of tables shows their names and columns, but not their rows. To see some rows, use <code>SELECT * FROM table_name LIMIT 5;</code>, as you would use <code>.head()</code> in pandas or <code>head()</code> in R. <code>SELECT *</code> returns every column. <code>LIMIT 5</code> keeps five rows. Without <code>ORDER BY</code>, SQL does not guarantee which rows come first.',
+   task: "Show five rows from the <code>requests</code> table, including all columns.",
    starter: 'SELECT *\nFROM ____\nLIMIT 5;',
-   answer: 'SELECT *\nFROM districts\nLIMIT 5;', ordered: false,
-   accept: mine => { const all = new Set(run('SELECT * FROM districts').values.map(rowKey)), keys = mine.values.map(r => all.has(rowKey(r)) ? rowKey(r) : rowKey([...r].reverse()));
-     return mine.columns.length === 2 && new Set(keys).size === 5 && keys.every(k => all.has(k)); },
+   answer: 'SELECT *\nFROM requests\nLIMIT 5;', ordered: false,
+   accept: mine => fiveRowsOf('requests', mine),
    pyStart: '____.head(5)',
    rStart: 'head(____, 5)',
+   py: 'requests.head(5)',
+   r: 'head(requests, 5)',
+   hint: 'Replace the blank with the name of the table. Clicking <code>requests</code> in the list of tables puts it in the box.',
+   after: 'Each row is one service request. The table has 16,865 rows; these are five of them.'},
+  {topic: 'What is in districts?',
+   intro: 'Now look at the other table. Write the whole SQL query; you can look back at step 1.',
+   task: "Show five rows from the <code>districts</code> table, including all columns.",
+   starter: '',
+   scaffold: 'SELECT *\nFROM ____\nLIMIT 5;',
+   answer: 'SELECT *\nFROM districts\nLIMIT 5;', ordered: false,
+   accept: mine => fiveRowsOf('districts', mine),
+   pyStart: '', rStart: '',
    py: 'districts.head(5)',
    r: 'head(districts, 5)',
-   hint: 'Replace the blank with the name of the table.'},
+   hint: 'It is the query from step 1 with the other table name: <code>SELECT *</code>, then <code>FROM</code> and the table, then <code>LIMIT 5</code>.',
+   after: 'The table has 11 rows, one per supervisor district. The <code>district</code> column is in both tables. Later steps use it to match each request with its district name.'},
   {topic: 'List the values in a column',
    intro: '<code>SELECT DISTINCT</code> shows each value in a column once. Use it to see what a column contains before you filter on it.',
    example: {sql: 'SELECT DISTINCT status\nFROM requests;', pandas: 'requests["status"].unique()', r: 'distinct(requests, status)'},
@@ -754,6 +764,12 @@ function rowsAdvice(query, answer, got, want) {
   if (got < want && has(q, 'join') && !has(q, 'left\\s+(outer\\s+)?join') && has(a, 'left\\s+join')) return 'A plain JOIN drops the rows that have no match. LEFT JOIN keeps them.';
   if (got < want && has(q, 'where') && !has(a, 'where')) return 'Your WHERE leaves out rows that the answer keeps.';
   return 'Check your filters, and whether you kept or dropped missing values.';
+}
+// A preview of a table passes with any five of its rows, in any order.
+function fiveRowsOf(table, mine) {
+  const all = run(`SELECT * FROM ${table}`), rows = new Set(all.values.map(rowKey));
+  const keys = mine.values.map(r => rows.has(rowKey(r)) ? rowKey(r) : rowKey([...r].reverse()));
+  return mine.columns.length === all.columns.length && new Set(keys).size === 5 && keys.every(k => rows.has(k));
 }
 function compare(mine, expected, ordered, query, answer) {
   if (!mine.columns.length)
