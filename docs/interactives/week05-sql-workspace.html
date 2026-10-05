@@ -166,6 +166,7 @@ const TABLES = [
 const STEPS = [
   {topic: 'What is in requests?',
    intro: 'The list of tables shows their names and columns, but not their rows. To see some rows, use <code>SELECT * FROM table_name LIMIT 5;</code>, as you would use <code>.head()</code> in pandas or <code>head()</code> in R. <code>SELECT *</code> returns every column. <code>LIMIT 5</code> keeps five rows. Without <code>ORDER BY</code>, SQL does not guarantee which rows come first.',
+   example: {pandas: 'requests.head(5)', r: 'head(requests, 5)'},
    task: "Show five rows from the <code>requests</code> table, including all columns.",
    starter: 'SELECT *\nFROM ____\nLIMIT 5;',
    answer: 'SELECT *\nFROM requests\nLIMIT 5;', ordered: false,
@@ -178,12 +179,14 @@ const STEPS = [
    after: 'Each row is one service request. The table has 16,865 rows; these are five of them.'},
   {topic: 'What is in districts?',
    intro: 'Now look at the other table. Write the whole SQL query; you can look back at step 1.',
+   example: {pandas: 'districts.head(5)', r: 'head(districts, 5)'},
    task: "Show five rows from the <code>districts</code> table, including all columns.",
    starter: '',
    scaffold: 'SELECT *\nFROM ____\nLIMIT 5;',
    answer: 'SELECT *\nFROM districts\nLIMIT 5;', ordered: false,
    accept: mine => fiveRowsOf('districts', mine),
-   pyStart: '', rStart: '',
+   pyStart: '____.head(5)',
+   rStart: 'head(____, 5)',
    py: 'districts.head(5)',
    r: 'head(districts, 5)',
    hint: 'It is the query from step 1 with the other table name: <code>SELECT *</code>, then <code>FROM</code> and the table, then <code>LIMIT 5</code>.',
@@ -221,7 +224,8 @@ const STEPS = [
    scaffold: 'SELECT ____, ____\nFROM requests\nWHERE ____ = \'____\'\nORDER BY ____\nLIMIT ____;',
    answer: 'SELECT request_id, category\nFROM requests\nWHERE status = \'Open\'\nORDER BY request_id\nLIMIT 5;', ordered: true,
    wrong: 'Check that you return request_id and category, keep Open requests, sort by request_id, and return the first five.',
-   pyStart: '', rStart: '',
+   pyStart: 'requests.loc[\n    requests["____"] == "____",\n    ["____", "____"],\n].sort_values("____").head(____)',
+   rStart: 'requests |>\n  filter(____ == "____") |>\n  select(____, ____) |>\n  arrange(____) |>\n  head(____)',
    py: 'requests.loc[\n    requests["status"] == "Open",\n    ["request_id", "category"],\n].sort_values("request_id").head(5)',
    r: 'requests |>\n  filter(status == "Open") |>\n  select(request_id, category) |>\n  arrange(request_id) |>\n  head(5)',
    hint: 'Choose the columns with <code>SELECT</code>, name the table with <code>FROM</code>, filter <code>status</code> with <code>WHERE</code>, then sort and limit the result. The value is <code>\'Open\'</code>.'},
@@ -358,6 +362,8 @@ const WEBR_URL = 'https://webr.r-wasm.org/v0.6.0/webr.mjs';
 const STORE = 'compss211a-week05-sql-workspace-oct5d';
 let SQL = null, db = null, current = 0;
 const solved = new Set();
+// tried: steps where a checked answer was wrong. ranTab: Python and R tabs where the student ran code, as 'py:3'.
+const tried = new Set(), ranTab = new Set();
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
 
@@ -480,6 +486,20 @@ function openTab(i, tab) {
   if (tab === 'py') Sandbox.python(box, {packages: ['pandas'], root: `/home/you/week05-step${i + 1}`, files: FILES, setup: PY_SETUP + '\n' + (STEPS[i].pyPre || ''), code: STEPS[i].pyStart});
   else rCell(box, STEPS[i].rStart, STEPS[i].rPre);
   guardBlanks(box);
+  const ran = () => { if (box.querySelector('.sbx-code').value.trim()) { ranTab.add(tab + ':' + i); showAnswers(); } };
+  box.addEventListener('click', e => { if (e.target.closest('.sbx-run')) ran(); });
+  box.addEventListener('keydown', e => { if ((e.metaKey || e.ctrlKey || e.shiftKey) && e.key === 'Enter') ran(); });
+}
+// An answer can be opened once the student has tried: a checked SQL answer that was wrong, or code run in the Python or R tab.
+// A solved step shows all three.
+function showAnswers() {
+  STEPS.forEach((s, n) => {
+    if (!s.answer) return;
+    for (const [id, open] of [['answer', tried.has(n)], ['py-answer', ranTab.has('py:' + n)], ['r-answer', ranTab.has('r:' + n)]]) {
+      $(`s${n}-${id}`).hidden = !(open || solved.has(n));
+      $(`s${n}-${id}-wait`).hidden = open || solved.has(n);
+    }
+  });
 }
 // Stop a run while the code still has blanks, as the SQL tab does.
 function guardBlanks(box) {
@@ -836,17 +856,20 @@ function renderSteps() {
       <div class="feedback" id="s${i}-fb" aria-live="polite"></div>
       <div id="s${i}-out"></div>
       <details><summary>Hint</summary><div>${s.hint}</div>${s.scaffold ? `<p><button data-scaffold="${i}">Put a starting point in the box</button></p>` : ''}</details>
-      <details><summary>One possible answer</summary><pre class="answer">${esc(s.answer)}</pre></details>
+      <details id="s${i}-answer" hidden><summary>One possible answer</summary><pre class="answer">${esc(s.answer)}</pre></details>
+      <p class="small" id="s${i}-answer-wait">One possible answer appears here after you have checked an answer of your own.</p>
       </div>
       <div id="s${i}-panel-py" hidden>
         <p class="small">The same task in pandas. The two tables are loaded as DataFrames with the same names. This tab is not checked or saved.</p>
         <div id="s${i}-py"></div>
-        <details><summary>One possible answer</summary><pre class="answer">${esc(s.py)}</pre></details>
+        <details id="s${i}-py-answer" hidden><summary>One possible answer</summary><pre class="answer">${esc(s.py)}</pre></details>
+        <p class="small" id="s${i}-py-answer-wait">One possible answer appears here after you have run code of your own.</p>
       </div>
       <div id="s${i}-panel-r" hidden>
         <p class="small">The same task in R. The two tables are loaded as data frames with the same names, and dplyr is loaded. This tab is not checked or saved.</p>
         <div id="s${i}-r"></div>
-        <details><summary>One possible answer</summary><pre class="answer">${esc(s.r)}</pre></details>
+        <details id="s${i}-r-answer" hidden><summary>One possible answer</summary><pre class="answer">${esc(s.r)}</pre></details>
+        <p class="small" id="s${i}-r-answer-wait">One possible answer appears here after you have run code of your own.</p>
       </div>`;
     return `<section class="q" id="s${i}" aria-labelledby="s${i}-title" hidden>
       <div class="level">Step ${i + 1} of ${STEPS.length}${s.extra ? ' · Optional' : s.challenge ? ' · Challenge' : s.guided ? ' · Guided' : ''}</div>
@@ -860,7 +883,7 @@ function renderSteps() {
 
 function save() {
   try {
-    localStorage.setItem(STORE, JSON.stringify({current, solved: [...solved], scratch: $('scratch').value, queries: STEPS.map((s, i) => s.answer ? $(`s${i}-sql`).value : null)}));
+    localStorage.setItem(STORE, JSON.stringify({current, solved: [...solved], tried: [...tried], scratch: $('scratch').value, queries: STEPS.map((s, i) => s.answer ? $(`s${i}-sql`).value : null)}));
   } catch (error) { /* storage is unavailable; the page works without it */ }
 }
 function restore() {
@@ -869,6 +892,7 @@ function restore() {
     if (!saved || !Array.isArray(saved.queries) || saved.queries.length !== STEPS.length) return;
     saved.queries.forEach((text, i) => { if (typeof text === 'string' && STEPS[i].answer) $(`s${i}-sql`).value = text; });
     (saved.solved || []).forEach(i => { if (Number.isInteger(i) && i >= 0 && i < STEPS.length) solved.add(i); });
+    (saved.tried || []).forEach(i => { if (Number.isInteger(i) && i >= 0 && i < STEPS.length) tried.add(i); });
     if (typeof saved.scratch === 'string') $('scratch').value = saved.scratch;
     if (Number.isInteger(saved.current)) current = saved.current;
   } catch (error) { /* ignore unreadable saved state */ }
@@ -884,6 +908,7 @@ function show(i, focus = true) {
   $('prev').disabled = current === 0;
   $('next').disabled = current === STEPS.length - 1;
   STEPS.forEach((s, n) => { if (s.answer) { $(`s${n}-check`).classList.toggle('primary', !solved.has(n)); $(`s${n}-next`).classList.toggle('primary', solved.has(n)); } });
+  showAnswers();
   const main = STEPS.map((s, n) => n).filter(n => STEPS[n].answer && !STEPS[n].extra);
   $('progress').textContent = `${main.filter(n => solved.has(n)).length} of ${main.length} checked`;
   if (focus) $(`s${current}-title`).focus();
@@ -927,14 +952,14 @@ document.addEventListener('click', e => {
   if (!statements(query).length) { setFeedback(fb, 'bad', 'Write a query first.'); out.innerHTML = ''; return; }
   let mine;
   try { mine = run(query); }
-  catch (error) { setFeedback(fb, 'bad', explainError(error.message)); out.innerHTML = ''; return; }
+  catch (error) { setFeedback(fb, 'bad', explainError(error.message)); out.innerHTML = ''; if (b.dataset.act === 'check') { tried.add(i); showAnswers(); save(); } return; }
   if (changesViews(query)) renderSchema();
   out.innerHTML = renderOutput(query, mine);
   if (b.dataset.act === 'run') { fb.className = 'feedback'; save(); return; }
   // A step that builds a view is checked on the view's rows. expect is the model result, written without the student's views.
   let result;
   try { result = s.accept && s.accept(mine) ? {ok: true} : compare(s.view ? run(`SELECT * FROM ${s.view}`) : mine, run(s.expect || s.answer), s.ordered, query, s.answer); }
-  catch (error) { setFeedback(fb, 'bad', explainError(error.message)); return; }
+  catch (error) { setFeedback(fb, 'bad', explainError(error.message)); tried.add(i); showAnswers(); save(); return; }
   if (!result.ok && s.wrong && result.msg.startsWith('The result has the right number')) result.msg = s.wrong;
   if (result.ok) {
     solved.add(i);
@@ -942,6 +967,8 @@ document.addEventListener('click', e => {
     show(current, false);
   } else {
     setFeedback(fb, 'bad', esc(result.msg));
+    tried.add(i);
+    showAnswers();
     save();
   }
 });
