@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 6 API Workspace · COMPSS 211A</title>
+<meta name="description" content="Practice reading replies from a web API in Python.">
+<style>
+:root{--navy:#002676;--gold:#FDBA12;--ink:#1A1A1A;--muted:#465973;--line:#CBD4E1;--pale:#EEF3FA;--paper:#fff;--mark:#FFF1CC;--good:#17643C;--bad:#9B1C1C;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+a{color:var(--navy)}
+button,textarea,select{font:inherit}
+button{cursor:pointer;border:1px solid var(--navy);border-radius:4px;padding:8px 14px;color:var(--navy);background:white;font-weight:600}
+button:hover:not(:disabled){background:var(--pale)}
+button:disabled{cursor:default;opacity:.55}
+button:focus-visible,a:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.primary{background:var(--navy);color:white}
+.primary:hover:not(:disabled){background:#173F91}
+.quiet{border-color:transparent;text-decoration:underline;font-weight:400;padding:2px 4px}
+.wrap{max-width:1180px;margin:auto;padding:0 24px}
+.mast{background:var(--navy);color:white}
+.mast .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:13px;padding-bottom:13px;font-size:.88rem}
+.mast a{color:white}
+.brand{font:700 1.05rem Georgia,serif;color:var(--gold);margin-right:12px}
+header{background:var(--navy);color:white;border-bottom:5px solid var(--gold);padding:24px 0 26px}
+h1{font-size:clamp(1.7rem,4vw,2.4rem);line-height:1.15;letter-spacing:-.02em;margin:0 0 12px}
+header p{max-width:720px;margin:0 0 10px}
+.meta{font-size:.9rem;color:#DFE8FF}
+main.wrap{padding-top:24px;padding-bottom:40px}
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:32px;align-items:start}
+h2{color:var(--navy);font-size:1.3rem;line-height:1.3;margin:2px 0 10px}
+h2:focus{outline:none}
+h3{margin:14px 0 2px;color:var(--navy);font-size:1rem;font-family:var(--mono)}
+h4{margin:18px 0 6px;color:var(--navy);font-size:1rem}
+p{max-width:75ch;margin:8px 0 12px}
+.small{font-size:.88rem;color:var(--muted)}
+code{font-family:var(--mono);font-size:.88em}
+.reference{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;border:1px solid var(--line);border-radius:6px;padding:12px 16px;font-size:.9rem}
+.reference > details > summary{font-size:1.05rem}
+.reference p{margin:4px 0}
+.name{border:0;border-radius:2px;background:none;padding:0 2px;margin-left:-2px;font:inherit;color:inherit;text-align:left}
+.name:hover:not(:disabled){background:var(--mark)}
+.work{min-width:0}
+.status{padding:10px 14px;border-left:4px solid var(--gold);background:var(--mark);margin:0 0 16px}
+.status.ready{display:none}
+.status.error{border-color:var(--bad);background:#FBEAEA}
+.pager{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin:0 0 16px}
+.pager select{padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:white;color:var(--ink);max-width:100%}
+.progress{font-size:.9rem;color:var(--muted);margin-left:auto}
+.q{border:1px solid var(--line);border-radius:6px;padding:18px 18px 14px;scroll-margin-top:16px}
+.q .level{font-size:.88rem;color:var(--muted)}
+.task{font-size:1.08rem;margin:6px 0 12px}
+.task b{color:var(--navy)}
+.example{border:1px solid var(--line);border-radius:4px;overflow:hidden;margin:8px 0 6px}
+.example .label{padding:6px 12px;background:var(--pale);color:var(--navy);font-weight:600;font-size:.88rem}
+pre{background:#101F48;color:#F0F4FF;font:13px/1.6 var(--mono);padding:12px 14px;margin:0;overflow:auto;white-space:pre-wrap}
+pre.answer{border-radius:4px}
+/* What the code printed. Lighter than the code, and it scrolls when it is long. */
+pre.out{background:#F6F8FC;color:var(--ink);border:1px solid var(--line);border-radius:4px;max-height:380px;margin:8px 0 12px;overflow-wrap:anywhere}
+pre.out:empty{display:none}
+.err{color:var(--bad)}
+.dim{color:var(--muted)}
+textarea{width:100%;min-height:150px;font-family:var(--mono);font-size:.9rem;line-height:1.5;padding:10px 12px;border:1px solid var(--line);border-radius:4px;background:#FBFCFE;color:var(--ink);resize:vertical;tab-size:4}
+.actions{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:10px 0}
+.feedback{margin:8px 0;padding:10px 12px;border-radius:4px;font-size:.95rem;display:none}
+.feedback.show{display:block}
+.feedback.good{background:#E8F4EC;color:var(--good)}
+.feedback.bad{background:#FBEAEA;color:var(--bad)}
+.feedback p{margin:0 0 8px;color:var(--ink)}
+.feedback p:last-child{margin-bottom:0}
+details{margin:6px 0}
+summary{cursor:pointer;color:var(--navy);font-weight:600}
+a.button{display:inline-block;border:1px solid var(--navy);border-radius:4px;padding:8px 14px;font-weight:600;text-decoration:none;background:white}
+a.button:hover{background:var(--pale)}
+.scratch{border:1px solid var(--line);border-radius:6px;padding:10px 18px;margin-top:16px}
+.scratch textarea{min-height:96px}
+footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:.85rem;color:var(--muted)}
+[hidden]{display:none!important}
+@media(max-width:860px){.wrap{padding-left:16px;padding-right:16px}.layout{grid-template-columns:minmax(0,1fr);gap:16px}.reference{position:static;max-height:none}.q{padding:14px 12px}.progress{margin-left:0}.pager select{width:100%}}
+</style>
+</head>
+<body>
+<div class="mast"><div class="wrap"><span><span class="brand">UC Berkeley</span>COMPSS 211A · Computing I</span><a href="../index.html">All interactives</a></div></div>
+<header><div class="wrap">
+<h1>Week 6 API workspace</h1>
+<p>Practice reading replies from a web API in Python.</p>
+<div class="meta">Week 6 · In class · Needs an internet connection</div>
+</div></header>
+
+<main class="wrap layout">
+<aside class="reference" aria-label="What is loaded">
+<details id="loadedBox" open><summary>Already loaded</summary>
+  <p class="small">Click a name to put it in your code.</p>
+  <h3><button type="button" class="name" data-name="payload">payload</button></h3>
+  <p class="small">A saved reply from the OpenAlex API.</p>
+  <h3><button type="button" class="name" data-name="page2">page2</button></h3>
+  <p class="small">The saved reply for the next page.</p>
+  <h3><button type="button" class="name" data-name="pd">pd</button></h3>
+  <p class="small">pandas.</p>
+  <p class="small" style="margin-top:12px">To look at a value, put its name on the last line and run the code, or use <code>print()</code>.</p>
+</details>
+</aside>
+
+<div class="work">
+<div class="status" id="engineStatus" role="status">Loading the saved replies…</div>
+<nav class="pager" aria-label="Steps">
+  <select id="picker" aria-label="Go to step"></select>
+  <button id="prev">Previous</button>
+  <button id="next">Next</button>
+  <span class="progress" id="progress" aria-live="polite"></span>
+</nav>
+<div id="steps"></div>
+<details class="scratch"><summary>Scratch code</summary>
+  <p class="small">Run any Python here. It does not change your answers.</p>
+  <textarea id="scratch" spellcheck="false" autocomplete="off" aria-label="Scratch code">payload["meta"]</textarea>
+  <div class="actions"><button data-act="scratch" disabled>Run</button></div>
+  <pre class="out" id="scratch-out"></pre>
+</details>
+<p class="small" style="margin-top:18px"><button id="reset" class="quiet">Start over</button> Clears your code and checks on this page.</p>
+</div>
+</main>
+
+<footer><div class="wrap">COMPSS 211A · UC Berkeley · CC BY 4.0. Python runs in your browser with Pyodide. Your code is saved in this browser only and is not sent anywhere. <code>payload</code> and <code>page2</code> are two replies from the <a href="https://openalex.org">OpenAlex</a> API, saved on October 5, 2026 and shortened.</div></footer>
+
+<script src="sandbox/sandbox.js"></script>
+<script>
+'use strict';
+// The saved replies. Each file sits in data/week06/ next to this page and is read by the Python code as a file.
+const DATA_FILES = ['openalex_page1.json', 'openalex_page2.json'];
+const FILES = {};
+const ROOT = '/home/you/week06';
+
+// Every run starts from this code, so a step never depends on what an earlier run left behind.
+const SETUP = [
+  'import json',
+  'import pandas as pd',
+  'from urllib.parse import urlencode',
+  'pd.set_option("display.width", 200)',
+  'pd.set_option("display.max_columns", 20)',
+  'pd.set_option("display.max_colwidth", 60)',
+  'with open("openalex_page1.json") as f:',
+  '    payload = json.load(f)',
+  'with open("openalex_page2.json") as f:',
+  '    page2 = json.load(f)',
+].join('\n');
+// Steps that send a real request also get requests. pyodide_http lets requests work inside a browser.
+const LIVE_SETUP = 'import pyodide_http\npyodide_http.patch_all()\nimport requests';
+
+// One entry per step.
+// starter: what the box starts with; scaffold: a starting point with blanks, offered in the hint.
+// answer: the model code. check.exprs: expressions compared after the student's code and after the model code.
+// check.labels: what to call an expression in a message. check.truths: for a live request, tests on the student's own result, because a second request would give a different reply.
+// pre: code run before the student's code, for a value an earlier step made. live: the step sends a real request.
+// example: code that is shown and can be run. after: shown once the answer is correct.
+const STEPS = [
+  {topic: 'What is in a reply?',
+   intro: 'A web API answers a request with text in JSON format. In Python, JSON becomes dictionaries and lists. <code>payload</code> is a saved reply from OpenAlex, a catalogue of research papers. It is a dictionary, and you cannot see what is in it until you ask. <code>list(d.keys())</code> lists the keys of a dictionary <code>d</code>.',
+   task: 'Make <code>top_keys</code>: a list of the keys of <code>payload</code>.',
+   starter: 'top_keys = list(____.keys())\ntop_keys',
+   answer: 'top_keys = list(payload.keys())\ntop_keys',
+   check: {exprs: ['list(top_keys)']},
+   hint: 'Replace the blank with the name of the dictionary. Clicking <code>payload</code> in the list puts it in the box.',
+   after: 'The reply has three parts. <code>meta</code> describes the whole result, <code>results</code> holds the records, and <code>group_by</code> is empty for this request.'},
+  {topic: 'Read a value',
+   intro: 'Square brackets with a key give you the value stored under that key. The value can be another dictionary, and then you can use brackets again.',
+   example: 'payload["meta"]',
+   task: 'Make <code>n_matching</code>: the number of works that matched the request. It is stored under <code>count</code>, inside <code>meta</code>.',
+   starter: 'n_matching = payload["____"]["____"]\nn_matching',
+   answer: 'n_matching = payload["meta"]["count"]\nn_matching',
+   check: {exprs: ['n_matching']},
+   hint: 'The first key is <code>meta</code> and the second is <code>count</code>.',
+   after: '11,207 works matched the request. One reply does not hold them all, as the next step shows.'},
+  {topic: 'Look inside a list',
+   intro: '<code>payload["results"]</code> is a list with one dictionary for each work. <code>len()</code> counts the items in a list, and a number in square brackets picks one of them. Python counts from 0, so <code>[0]</code> is the first.',
+   task: 'Make <code>n_on_page</code>: how many works are in <code>payload["results"]</code>. Then make <code>first_title</code>: the <code>display_name</code> of the first work.',
+   starter: 'n_on_page = ____(payload["results"])\nfirst_title = payload["results"][____]["display_name"]\nprint(n_on_page)\nprint(first_title)',
+   answer: 'n_on_page = len(payload["results"])\nfirst_title = payload["results"][0]["display_name"]\nprint(n_on_page)\nprint(first_title)',
+   check: {exprs: ['n_on_page', 'first_title']},
+   hint: '<code>len(...)</code> counts the works. The first work is at position <code>0</code>.',
+   after: 'This reply holds five works out of the 11,207 that matched. An API sends its results one page at a time.'},
+  {topic: 'Go deeper',
+   intro: 'A value can sit several levels down. Each work has a list of <code>authorships</code>. Each authorship has an <code>author</code>, and the author has a <code>display_name</code>. Write the path from left to right, with one pair of brackets for each level.',
+   example: 'payload["results"][0]["authorships"][0]',
+   task: 'Make <code>first_author</code>: the name of the first author of the first work.',
+   starter: 'first_author = payload["results"][0]["____"][0]["____"]["display_name"]\nfirst_author',
+   answer: 'first_author = payload["results"][0]["authorships"][0]["author"]["display_name"]\nfirst_author',
+   check: {exprs: ['first_author']},
+   hint: 'The two blanks are the keys <code>authorships</code> and <code>author</code>.'},
+  {topic: 'Write it yourself: one value',
+   intro: 'Write the whole line; you can look back at earlier steps. To see what a work contains, print it first: <code>payload["results"][1]</code>.',
+   task: 'Make <code>topic</code>: the <code>display_name</code> of the <code>primary_topic</code> of the <b>second</b> work.',
+   starter: '',
+   scaffold: 'topic = payload["results"][____]["____"]["____"]\ntopic',
+   answer: 'topic = payload["results"][1]["primary_topic"]["display_name"]\ntopic',
+   check: {exprs: ['topic']},
+   hint: 'The second work is at position <code>1</code>. From there, follow two keys: <code>primary_topic</code>, then <code>display_name</code>.'},
+  {topic: 'Loop over the works',
+   intro: 'To get the same value from every work, loop over the list. Each time around the loop, <code>work</code> is the dictionary for one work.',
+   example: 'for work in payload["results"]:\n    print(work["publication_year"], work["cited_by_count"])',
+   task: 'Make <code>titles</code>: a list with the <code>display_name</code> of every work in <code>payload["results"]</code>.',
+   starter: 'titles = []\nfor work in payload["results"]:\n    titles.append(work["____"])\ntitles',
+   answer: 'titles = []\nfor work in payload["results"]:\n    titles.append(work["display_name"])\ntitles',
+   check: {exprs: ['list(titles)']},
+   hint: 'The blank is the key that holds a work\'s title: <code>display_name</code>.'},
+  {topic: 'Find missing values',
+   intro: 'JSON writes a missing value as <code>null</code>, and Python reads it as <code>None</code>. Test for it with <code>is None</code>. An ORCID is an ID number for a researcher, and some authors have none on record.',
+   example: 'payload["results"][1]["authorships"][0]["author"]',
+   task: 'Look at the <b>third</b> work. Make <code>n_authors</code>: how many authors it lists. Make <code>n_no_orcid</code>: how many of them have no ORCID.',
+   starter: 'authorships = payload["results"][2]["authorships"]\nn_authors = ____(authorships)\nn_no_orcid = 0\nfor authorship in authorships:\n    if authorship["author"]["orcid"] ____ None:\n        n_no_orcid += 1\nprint(n_authors, n_no_orcid)',
+   answer: 'authorships = payload["results"][2]["authorships"]\nn_authors = len(authorships)\nn_no_orcid = 0\nfor authorship in authorships:\n    if authorship["author"]["orcid"] is None:\n        n_no_orcid += 1\nprint(n_authors, n_no_orcid)',
+   check: {exprs: ['n_authors', 'n_no_orcid']},
+   hint: 'The first blank is <code>len</code>, which counts the authors. The second is <code>is</code>.',
+   after: 'Two of the seven authors have no ORCID. <code>None</code> in JSON data is what <code>NULL</code> is in SQL and <code>NaN</code> is in pandas. Missing data can also be an empty list: three of these authors have <code>[]</code> as their <code>institutions</code>.'},
+  {topic: 'Build a request',
+   intro: 'A request is a web address: an endpoint, then <code>?</code>, then the parameters. In Python the parameters go in a dictionary, and <code>urlencode</code> turns the dictionary into the text after the <code>?</code>. For OpenAlex, <code>filter</code> says which works you want and <code>per_page</code> says how many to send at a time.',
+   task: 'The saved reply came from a request for works from <b>2024</b> that have a Berkeley author and an abstract, <b>five</b> per page. Fill in the two blanks so that <code>params</code> describes that request.',
+   starter: 'params = {\n    "filter": "institutions.id:I95457486,publication_year:____,has_abstract:true",\n    "per_page": ____,\n}\nurl = "https://api.openalex.org/works?" + urlencode(params)\nurl',
+   answer: 'params = {\n    "filter": "institutions.id:I95457486,publication_year:2024,has_abstract:true",\n    "per_page": 5,\n}\nurl = "https://api.openalex.org/works?" + urlencode(params)\nurl',
+   check: {exprs: ['params["filter"]', 'str(params["per_page"])'], labels: {'params["filter"]': 'The filter', 'str(params["per_page"])': 'per_page'}},
+   hint: 'The year is <code>2024</code> and the number per page is <code>5</code>.',
+   after: '<code>I95457486</code> is OpenAlex\'s ID for UC Berkeley. The filter decides what the data can tell you about: these are works with at least one Berkeley-affiliated author, which is not the same as all research done at Berkeley.'},
+  {topic: 'Send a real request', live: true,
+   intro: 'So far you have read a saved reply. <code>requests.get</code> sends a real request and waits for the answer. Read the status code first: 200 means the server accepted the request. This step needs an internet connection. If the request fails in the room, go on to the next step.',
+   task: 'Send the request. Make <code>status</code>: the status code of the response. Make <code>n_now</code>: the number of works that match today.',
+   starter: 'params = {\n    "filter": "institutions.id:I95457486,publication_year:2024,has_abstract:true",\n    "per_page": 5,\n}\nresponse = requests.get("https://api.openalex.org/works", params=params, timeout=30)\nstatus = response.____\nlive = response.json()\nn_now = live["meta"]["____"]\nprint(status, n_now)',
+   answer: 'params = {\n    "filter": "institutions.id:I95457486,publication_year:2024,has_abstract:true",\n    "per_page": 5,\n}\nresponse = requests.get("https://api.openalex.org/works", params=params, timeout=30)\nstatus = response.status_code\nlive = response.json()\nn_now = live["meta"]["count"]\nprint(status, n_now)',
+   check: {truths: [['status == 200', 'status should be 200. Take it from response.status_code.'],
+                    ['isinstance(live, dict) and len(live["results"]) == 5', 'The reply should hold five works. Leave params as it was.'],
+                    ['n_now == live["meta"]["count"]', 'n_now should be the count inside meta.']]},
+   hint: 'The status code is <code>response.status_code</code>. The number of matching works is under <code>count</code>, as in the saved reply.',
+   after: 'Compare <code>n_now</code> with the 11,207 in the saved reply. OpenAlex keeps adding and correcting records, so a live count can change. A saved copy stays the same.'},
+  {topic: 'Get the next page',
+   intro: 'The reply holds five works out of 11,207. To get the next five, you send the same request again and add the <code>next_cursor</code> value from <code>meta</code>. <code>page2</code> is the saved reply to that second request. <code>+</code> joins two lists into one.',
+   task: 'Make <code>cursor</code>: the <code>next_cursor</code> value in <code>payload</code>. Then make <code>all_works</code>: the works of both pages in one list.',
+   starter: 'cursor = payload["meta"]["____"]\nall_works = payload["results"] + page2["____"]\nprint(cursor)\nprint(len(all_works))',
+   answer: 'cursor = payload["meta"]["next_cursor"]\nall_works = payload["results"] + page2["results"]\nprint(cursor)\nprint(len(all_works))',
+   check: {exprs: ['cursor', '[work["id"] for work in all_works]'], labels: {'[work["id"] for work in all_works]': 'all_works'}},
+   hint: 'The first blank is <code>next_cursor</code>. The works of the second page are under <code>results</code>, as in the first.',
+   after: 'That makes ten works. Collecting all 11,207 at five per page would take 2,242 requests, so decide how many pages you need before you start.'},
+  {topic: 'Write it yourself: make a table',
+   pre: 'all_works = payload["results"] + page2["results"]',
+   intro: 'A list of dictionaries becomes a table with <code>pd.DataFrame</code>: one dictionary for each row, one key for each column. <code>all_works</code> is loaded for this step: the ten works from both pages. Build the list of rows in a loop, as in the “Loop over the works” step.',
+   example: 'rows = [{"title": "A", "year": 2024}, {"title": "B", "year": 2025}]\npd.DataFrame(rows)',
+   task: 'Make <code>table</code>: a DataFrame with one row for each work in <code>all_works</code> and three columns: <code>title</code> (the work\'s <code>display_name</code>), <code>year</code> (its <code>publication_year</code>) and <code>cited_by</code> (its <code>cited_by_count</code>). Write the whole thing.',
+   starter: '',
+   scaffold: 'rows = []\nfor work in all_works:\n    rows.append({"title": work["____"], "year": work["____"], "cited_by": work["____"]})\ntable = pd.DataFrame(rows)\ntable',
+   answer: 'rows = []\nfor work in all_works:\n    rows.append({"title": work["display_name"], "year": work["publication_year"], "cited_by": work["cited_by_count"]})\ntable = pd.DataFrame(rows)\ntable',
+   check: {exprs: ['table'], ordered: true, names: true},
+   hint: 'Start with an empty list. In the loop, append one dictionary for each work, with the keys <code>title</code>, <code>year</code> and <code>cited_by</code>. Then pass the list to <code>pd.DataFrame</code>.',
+   after: 'From here on it is the pandas you know: the reply has become a table with one row for each work.'},
+  {topic: 'Now work in the notebook', handoff: true,
+   intro: 'The practice in the browser ends here. For the rest of the class, work in the Week 6 notebook in VS Code, where you send your own request and save the reply to a file.'}
+];
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const STORE = 'compss211a-week06-api-workspace';
+let current = 0;
+const solved = new Set();
+// tried: steps where a checked answer was wrong. An answer can be opened once the student has tried.
+const tried = new Set();
+
+// ---------- Python ----------
+// The comparison code is the one the practice site uses for its code drills.
+const HELPERS = `
+import ast, json, math, numbers, sys, traceback
+import pandas as pd
+
+_WS_NL = chr(10)
+
+def _ws_pretty(value, indent=0):
+    # A short value stays on one line. A long dictionary or list gets one item per line, so its levels are visible.
+    flat = repr(value)
+    if not isinstance(value, (dict, list, tuple)) or len(flat) <= 88 - indent:
+        return flat
+    pad, inner = " " * indent, " " * (indent + 2)
+    if isinstance(value, dict):
+        items = [f"{inner}{key!r}: {_ws_pretty(item, indent + 2)}" for key, item in value.items()]
+        return "{" + _WS_NL + ("," + _WS_NL).join(items) + _WS_NL + pad + "}"
+    first, last = ("[", "]") if isinstance(value, list) else ("(", ")")
+    items = [inner + _ws_pretty(item, indent + 2) for item in value]
+    return first + _WS_NL + ("," + _WS_NL).join(items) + _WS_NL + pad + last
+
+def _ws_show(value):
+    if value is not None:
+        print(_ws_pretty(value))
+
+def _ws_run(code, namespace):
+    """Run a box of code as a notebook cell would: the value of the last line is shown."""
+    try:
+        tree = ast.parse(code, "<your code>")
+        last = None
+        if tree.body and isinstance(tree.body[-1], ast.Expr):
+            last = ast.Expression(tree.body.pop().value)
+        exec(compile(tree, "<your code>", "exec"), namespace)
+        if last is not None:
+            _ws_show(eval(compile(last, "<your code>", "eval"), namespace))
+        return True
+    except BaseException:
+        et, ev, tb = sys.exc_info()
+        frames = [f for f in traceback.extract_tb(tb) if f.filename == "<your code>"]
+        if frames:
+            print("Traceback (most recent call last):", file=sys.stderr)
+            print("".join(traceback.format_list(frames)), end="", file=sys.stderr)
+        print("".join(traceback.format_exception_only(et, ev)), end="", file=sys.stderr)
+        return False
+
+def _ws_norm(x):
+    plain = lambda obj: obj.index.name is None and not isinstance(obj.index, pd.MultiIndex) and pd.api.types.is_integer_dtype(obj.index.dtype)
+    if isinstance(x, pd.Series):
+        return x.reset_index(drop=True).to_frame() if plain(x) else x.reset_index()
+    if isinstance(x, pd.DataFrame):
+        return x.reset_index(drop=True) if plain(x) else x.reset_index()
+    return x
+
+def _ws_same(a, b):
+    try:
+        if pd.isna(a) and pd.isna(b):
+            return True
+    except (TypeError, ValueError):
+        pass
+    if isinstance(a, numbers.Number) and isinstance(b, numbers.Number) and not isinstance(a, bool) and not isinstance(b, bool):
+        try:
+            return math.isclose(float(a), float(b), rel_tol=1e-6, abs_tol=1e-9)
+        except (TypeError, ValueError):
+            return False
+    try:
+        return bool(a == b)
+    except Exception:
+        return False
+
+def _ws_short(value):
+    text = repr(value)
+    return text if len(text) <= 80 else text[:77] + "..."
+
+def _ws_compare(label, got, exp, ordered, names):
+    if isinstance(exp, (pd.DataFrame, pd.Series)):
+        if not isinstance(got, (pd.DataFrame, pd.Series)):
+            return f"{label} should be a pandas table, but it is a {type(got).__name__}."
+        g, e = _ws_norm(got), _ws_norm(exp)
+        if names and isinstance(exp, pd.DataFrame):
+            by_name = {str(c): c for c in g.columns}
+            wanted = [str(c) for c in e.columns]
+            missing = [c for c in wanted if c not in by_name]
+            extra = [c for c in by_name if c not in wanted]
+            if missing or extra:
+                parts = []
+                if missing:
+                    parts.append("missing: " + ", ".join(missing))
+                if extra:
+                    parts.append("not needed: " + ", ".join(extra))
+                return f"{label} has the wrong columns ({'; '.join(parts)})."
+            g = g[[by_name[c] for c in wanted]]
+        if g.shape[1] != e.shape[1]:
+            return f"{label} has {g.shape[1]} column(s); the answer has {e.shape[1]}."
+        if len(g) != len(e):
+            return f"{label} has {len(g)} row(s); the answer has {len(e)}."
+        rows = lambda frame: [list(row) for row in frame.astype(object).itertuples(index=False)]
+        gr, er = rows(g), rows(e)
+        match = lambda A, B: all(all(_ws_same(p, q) for p, q in zip(x, y)) for x, y in zip(A, B))
+        if match(gr, er):
+            return ""
+        key = lambda row: [str(v) for v in row]
+        if match(sorted(gr, key=key), sorted(er, key=key)):
+            return "" if not ordered else f"{label} has the right rows, but in a different order."
+        return f"{label} has the right shape, but some values are different. Compare your output with the task."
+    if got is Ellipsis:
+        return f"{label} is still ... (the placeholder). Replace the ... with your answer."
+    if got is None and exp is not None:
+        return f"{label} is None."
+    if isinstance(exp, (list, tuple)):
+        if not isinstance(got, (list, tuple)):
+            return f"{label} should be a list, but it is a {type(got).__name__}."
+        if len(got) != len(exp):
+            return f"{label} has {len(got)} item(s); the answer has {len(exp)}."
+        if not all(_ws_same(a, b) for a, b in zip(got, exp)):
+            return f"{label} has the right number of items, but some are different."
+        return ""
+    if not _ws_same(got, exp):
+        return f"{label} is {_ws_short(got)}, which isn't right yet."
+    return ""
+
+def _ws_check(user_ns, model_ns, spec_json):
+    spec = json.loads(spec_json)
+    for expr in spec["exprs"]:
+        expected = eval(expr, model_ns)
+        try:
+            got = eval(expr, user_ns)
+        except NameError as error:
+            return f"{error.name} doesn't exist yet. Check the spelling, and that your code makes it."
+        except Exception as error:
+            return f"Checking {expr} gave an error: {type(error).__name__}: {error}"
+        label = spec.get("labels", {}).get(expr, expr)
+        for wrapper in ("list(", "str("):
+            if expr.startswith(wrapper) and expr.endswith(")") and expr[len(wrapper):-1].isidentifier():
+                label = expr[len(wrapper):-1]
+        message = _ws_compare(label, got, expected, spec.get("ordered", True), spec.get("names", False))
+        if message:
+            return message
+    return ""
+
+def _ws_truths(user_ns, spec_json):
+    for expr, message in json.loads(spec_json):
+        try:
+            ok = bool(eval(expr, user_ns))
+        except NameError as error:
+            return f"{error.name} doesn't exist yet. Check the spelling, and that your code makes it."
+        except Exception as error:
+            return f"Checking the result gave an error: {type(error).__name__}: {error}"
+        if not ok:
+            return message
+    return ""
+`;
+
+let pythonReady = null, helpersLoaded = false;
+const setEngine = (text, kind) => { $('engineStatus').className = 'status' + (kind ? ' ' + kind : ''); $('engineStatus').textContent = text; };
+// Python starts once. Steps that send a request also need two more packages, loaded the first time one is run.
+async function getPython(live) {
+  const py = await Sandbox.runtime(live ? ['pandas', 'requests', 'pyodide-http'] : ['pandas'], text => setEngine(text));
+  if (!helpersLoaded) {
+    py.runPython(HELPERS);
+    Sandbox.writeFiles(py.FS, ROOT, FILES);
+    helpersLoaded = true;
+  }
+  py.FS.chdir(ROOT);
+  setEngine('', 'ready');
+  return py;
+}
+// A fresh set of variables: the setup, then anything the step loads before the student's code.
+function freshNamespace(py, step, live) {
+  const ns = py.toPy({'__name__': '__main__'});
+  const run = py.globals.get('_ws_run');
+  run(SETUP + (live ? '\n' + LIVE_SETUP : '') + (step && step.pre ? '\n' + step.pre : ''), ns);
+  return ns;
+}
+const LIMIT = 12000;   // characters of output shown
+// Run code and collect what it prints. Returns {ok, html, ns}; the caller destroys ns.
+async function execute(code, step, live) {
+  const py = await getPython(live);
+  const ns = freshNamespace(py, step, live);
+  let html = '', shown = 0, cut = false;
+  const sink = (text, kind) => {
+    if (shown >= LIMIT) { cut = true; return; }
+    const part = text.slice(0, LIMIT - shown);
+    shown += part.length;
+    if (part.length < text.length) cut = true;
+    html += kind === 'err' ? `<span class="err">${esc(part)}</span>` : esc(part);
+  };
+  const ok = await Sandbox.capture(() => py.globals.get('_ws_run')(code, ns), sink);
+  if (cut) html += '\n<span class="dim">The output is longer than this box shows. Print a smaller part.</span>';
+  if (!html) html = '<span class="dim">(no output)</span>';
+  return {ok, html, ns, py};
+}
+// What a common error message means, in a sentence. The Python message stays above it.
+function explainError(html) {
+  const text = html.replace(/<[^>]+>/g, '').replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim().split('\n').pop() || '';
+  let m;
+  if ((m = text.match(/^KeyError: (.+)$/))) return `There is no key ${m[1]} at this level. Print the dictionary one level up to see its keys.`;
+  if (/^TypeError: 'NoneType' object is not subscriptable/.test(text)) return 'You used square brackets on None. The value just before the last brackets is missing.';
+  if (/^TypeError: list indices must be integers or slices, not str/.test(text)) return 'This value is a list, so it needs a position such as [0] before you can use a key.';
+  if (/^TypeError: string indices must be integers/.test(text)) return 'This value is text, not a dictionary. You have gone one level too deep.';
+  if (/^IndexError: list index out of range/.test(text)) return 'The list is shorter than that position. len() tells you how many items it has, and the first is at 0.';
+  if ((m = text.match(/^NameError: name '(.+)' is not defined/))) return `Python does not know the name ${m[1]}. Check the spelling, and that an earlier line in this box makes it. Each run starts fresh.`;
+  if (/^SyntaxError|^IndentationError/.test(text)) return 'Python could not read the code. Look at the line the message points to for a missing bracket, quotation mark or colon, or uneven indentation.';
+  if (/ConnectionError|Timeout|NetworkError|Failed to execute 'send'/.test(text)) return 'The request did not get through. Check the internet connection and try again, or go on to the next step.';
+  return '';
+}
+
+function setFeedback(el, kind, html) { el.className = `feedback show ${kind}`; el.innerHTML = html; }
+
+// ---------- The page ----------
+function renderSteps() {
+  $('steps').innerHTML = STEPS.map((s, i) => {
+    const example = s.example ? `<div class="example"><div class="label">Example</div><pre>${esc(s.example)}</pre></div>
+      <p><button data-act="example" data-q="${i}" disabled>Run the example</button></p><pre class="out" id="s${i}-example"></pre>` : '';
+    const work = s.handoff ? `<p>Open <code>week06_live_workspace.ipynb</code>, in the <code>lessons/week06_web-apis</code> folder of the course repo.</p>
+        <p><a class="button" href="https://github.com/macss-berkeley/compss-211a/tree/main/lessons/week06_web-apis" target="_blank" rel="noopener">See the folder on GitHub</a></p>`
+      : `<h4>Your turn</h4><p class="task">${s.task}</p>
+      <label class="small" for="s${i}-code">Your code</label>
+      <textarea id="s${i}-code" spellcheck="false" autocomplete="off" rows="${Math.max(6, (s.scaffold || s.starter).split('\n').length + 1)}">${esc(s.starter)}</textarea>
+      <div class="actions">
+        <button data-act="run" data-q="${i}" disabled>Run</button>
+        <button class="primary" data-act="check" data-q="${i}" id="s${i}-check" disabled>Check answer</button>
+        <button data-next id="s${i}-next">Next step</button>
+        <span class="small">Ctrl or ⌘ + Enter runs the code.</span>
+      </div>
+      <div class="feedback" id="s${i}-fb" aria-live="polite"></div>
+      <pre class="out" id="s${i}-out"></pre>
+      <details><summary>Hint</summary><div><p>${s.hint}</p></div>${s.scaffold ? `<p><button data-scaffold="${i}">Put a starting point in the box</button></p>` : ''}</details>
+      <details id="s${i}-answer" hidden><summary>One possible answer</summary><pre class="answer">${esc(s.answer)}</pre></details>
+      <p class="small" id="s${i}-answer-wait">One possible answer appears here after you have checked an answer of your own.</p>`;
+    return `<section class="q" id="s${i}" aria-labelledby="s${i}-title" hidden>
+      <div class="level">Step ${i + 1} of ${STEPS.length}</div>
+      <h2 id="s${i}-title" tabindex="-1">${esc(s.topic)}</h2>
+      ${s.intro ? `<p>${s.intro}</p>` : ''}
+      ${example}
+      ${work}
+    </section>`;
+  }).join('');
+}
+
+function save() {
+  try {
+    localStorage.setItem(STORE, JSON.stringify({current, solved: [...solved], tried: [...tried], scratch: $('scratch').value, code: STEPS.map((s, i) => s.answer ? $(`s${i}-code`).value : null)}));
+  } catch (error) { /* storage is unavailable; the page works without it */ }
+}
+function restore() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORE) || 'null');
+    if (!saved || !Array.isArray(saved.code) || saved.code.length !== STEPS.length) return;
+    saved.code.forEach((text, i) => { if (typeof text === 'string' && STEPS[i].answer) $(`s${i}-code`).value = text; });
+    for (const [name, set] of [['solved', solved], ['tried', tried]])
+      (saved[name] || []).forEach(i => { if (Number.isInteger(i) && i >= 0 && i < STEPS.length) set.add(i); });
+    if (typeof saved.scratch === 'string') $('scratch').value = saved.scratch;
+    if (Number.isInteger(saved.current)) current = saved.current;
+  } catch (error) { /* ignore unreadable saved state */ }
+}
+
+// One step is visible at a time. The others stay in the page, so their code is kept.
+function show(i, focus = true) {
+  current = Math.max(0, Math.min(STEPS.length - 1, i));
+  STEPS.forEach((_, n) => { $(`s${n}`).hidden = n !== current; });
+  $('picker').innerHTML = STEPS.map((s, n) => `<option value="${n}"${n === current ? ' selected' : ''}>${n + 1}. ${esc(s.topic)}${solved.has(n) ? ' ✓' : ''}</option>`).join('');
+  $('prev').disabled = current === 0;
+  $('next').disabled = current === STEPS.length - 1;
+  STEPS.forEach((s, n) => {
+    if (!s.answer) return;
+    $(`s${n}-check`).classList.toggle('primary', !solved.has(n));
+    $(`s${n}-next`).classList.toggle('primary', solved.has(n));
+    const open = tried.has(n) || solved.has(n);
+    $(`s${n}-answer`).hidden = !open;
+    $(`s${n}-answer-wait`).hidden = open;
+  });
+  const main = STEPS.map((s, n) => n).filter(n => STEPS[n].answer);
+  $('progress').textContent = `${main.filter(n => solved.has(n)).length} of ${main.length} checked`;
+  if (focus) $(`s${current}-title`).focus();
+  save();
+}
+
+// Clicking a name in the list puts it into the code box that was used last, at the cursor or in the next blank.
+let lastBox = null;
+for (const type of ['focusin', 'pointerdown', 'input']) document.addEventListener(type, e => { if (e.target.matches && e.target.matches('textarea')) lastBox = e.target; });
+function insertName(name) {
+  const visible = STEPS[current].answer ? $(`s${current}-code`) : null;
+  const box = lastBox && lastBox.offsetParent !== null ? lastBox : visible || $('scratch');
+  if (!box) return;
+  const blank = box.value.indexOf('____');
+  if (blank !== -1) box.setRangeText(name, blank, blank + 4, 'end');
+  else box.setRangeText(name, box.selectionStart, box.selectionEnd, 'end');
+  box.dispatchEvent(new Event('input', {bubbles: true}));
+  box.focus();
+}
+
+let busy = false;
+async function runBox(button) {
+  if (busy) return;
+  const act = button.dataset.act;
+  const i = Number(button.dataset.q), s = STEPS[i];
+  const box = act === 'scratch' ? $('scratch') : act === 'example' ? null : $(`s${i}-code`);
+  const out = act === 'scratch' ? $('scratch-out') : act === 'example' ? $(`s${i}-example`) : $(`s${i}-out`);
+  const fb = act === 'run' || act === 'check' ? $(`s${i}-fb`) : null;
+  const code = act === 'example' ? s.example : box.value;
+  if (fb && code.includes('____')) { setFeedback(fb, 'bad', 'Replace every <code>____</code> first.'); out.innerHTML = ''; return; }
+  if (fb && !code.trim()) { setFeedback(fb, 'bad', 'Write some code first.'); out.innerHTML = ''; return; }
+  if (!code.trim()) return;
+  // The scratch box can send requests too, when the code uses them.
+  const live = act === 'scratch' ? /\brequests\b/.test(code) : Boolean(s && s.live);
+  busy = true;
+  button.disabled = true;
+  let result = null, model = null;
+  try {
+    result = await execute(code, act === 'scratch' ? null : s, live);
+    const plain = result.ok ? '' : explainError(result.html);
+    out.innerHTML = result.html;
+    if (act !== 'run' && act !== 'check') return;
+    if (act === 'run') {
+      if (plain) setFeedback(fb, 'bad', esc(plain)); else fb.className = 'feedback';
+      save();
+      return;
+    }
+    let message;
+    if (!result.ok) message = 'Your code stopped with an error. ' + (plain || 'The last line of the message below says what went wrong.');
+    else if (s.check.truths) message = result.py.globals.get('_ws_truths')(result.ns, JSON.stringify(s.check.truths));
+    else {
+      model = await execute(s.answer, s, live);
+      message = result.py.globals.get('_ws_check')(result.ns, model.ns, JSON.stringify(s.check));
+    }
+    if (!message) {
+      solved.add(i);
+      setFeedback(fb, 'good', `<p><strong>Correct.</strong></p>${s.after ? `<p>${s.after}</p>` : ''}`);
+    } else {
+      tried.add(i);
+      setFeedback(fb, 'bad', esc(message));
+    }
+    show(current, false);
+  } catch (error) {
+    const text = error && error.message ? error.message : String(error);
+    if (fb) setFeedback(fb, 'bad', esc(/load|fetch|network|internet/i.test(text) ? 'Python could not load. This page needs an internet connection. Reload when you are online.' : text));
+    else out.innerHTML = `<span class="err">${esc(text)}</span>`;
+  } finally {
+    for (const r of [result, model]) if (r && r.ns) r.ns.destroy();
+    busy = false;
+    button.disabled = false;
+  }
+}
+
+document.addEventListener('click', e => {
+  if (e.target.closest('[data-next]')) { show(current + 1); return; }
+  const name = e.target.closest('[data-name]');
+  if (name) { insertName(name.dataset.name); return; }
+  const scaffold = e.target.closest('[data-scaffold]');
+  if (scaffold) {
+    const i = Number(scaffold.dataset.scaffold), box = $(`s${i}-code`);
+    if (box.value.trim() && box.value.trim() !== STEPS[i].starter.trim() && !window.confirm('Replace what is in the box with a starting point?')) return;
+    box.value = STEPS[i].scaffold;
+    box.dispatchEvent(new Event('input', {bubbles: true}));
+    box.focus();
+    return;
+  }
+  const button = e.target.closest('button[data-act]');
+  if (button) runBox(button);
+});
+document.addEventListener('keydown', e => {
+  if (!e.target.matches || !e.target.matches('textarea')) return;
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+    e.preventDefault();
+    const button = e.target.id === 'scratch' ? document.querySelector('[data-act="scratch"]') : e.target.closest('.q').querySelector('[data-act="run"]');
+    if (button && !button.disabled) runBox(button);
+  } else if (e.key === 'Tab' && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey) {
+    // Tab indents, as in a code editor. Escape, then Tab, leaves the box.
+    if (e.target.dataset.leave) { delete e.target.dataset.leave; return; }
+    e.preventDefault();
+    e.target.setRangeText('    ', e.target.selectionStart, e.target.selectionEnd, 'end');
+    e.target.dispatchEvent(new Event('input', {bubbles: true}));
+  } else if (e.key === 'Escape') {
+    e.target.dataset.leave = '1';
+  } else if (e.key === 'Enter' && !e.shiftKey && !e.metaKey && !e.ctrlKey) {
+    // Enter keeps the indentation of the line above, and adds four spaces after a colon.
+    const box = e.target, start = box.selectionStart, before = box.value.slice(0, start);
+    const line = before.slice(before.lastIndexOf('\n') + 1);
+    const indent = line.match(/^[ \t]*/)[0] + (/:\s*$/.test(line) ? '    ' : '');
+    if (!indent) return;
+    e.preventDefault();
+    box.setRangeText('\n' + indent, start, box.selectionEnd, 'end');
+    box.dispatchEvent(new Event('input', {bubbles: true}));
+  }
+});
+document.addEventListener('input', e => { if (e.target.matches('textarea')) save(); });
+
+renderSteps();
+restore();
+$('picker').addEventListener('change', e => show(Number(e.target.value)));
+$('prev').addEventListener('click', () => show(current - 1));
+$('next').addEventListener('click', () => show(current + 1));
+$('reset').addEventListener('click', () => {
+  if (!window.confirm('Clear all your code and checks on this page?')) return;
+  try { localStorage.removeItem(STORE); } catch (error) { /* nothing was saved */ }
+  location.reload();
+});
+// On a narrow screen the list starts closed, so the step is visible first.
+if (window.matchMedia('(max-width: 860px)').matches) $('loadedBox').open = false;
+show(current, false);
+
+(async () => {
+  try {
+    for (const name of DATA_FILES) {
+      const response = await fetch('data/week06/' + name);
+      if (!response.ok) throw new Error('Could not load ' + name);
+      FILES[name] = await response.text();
+    }
+    setEngine('Starting Python in your browser…');
+    await getPython(false);
+    document.querySelectorAll('button[data-act]').forEach(b => { b.disabled = false; });
+  } catch (error) {
+    setEngine(/Could not load/.test(error.message) ? error.message + '. Reload the page.' : 'Python could not load. This page needs an internet connection. Reload when you are online.', 'error');
+  }
+})();
+</script>
+</body>
+</html>

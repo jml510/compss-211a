@@ -1,0 +1,2367 @@
+{
+ "meta": {
+  "count": 11207,
+  "db_response_time_ms": 28,
+  "page": null,
+  "per_page": 5,
+  "next_cursor": "IlsxMDAuMCwgNTQyLCAnaHR0cHM6Ly9vcGVuYWxleC5vcmcvVzQ0MDIyNjI4NzgnXSI=",
+  "groups_count": null
+ },
+ "results": [
+  {
+   "id": "https://openalex.org/W4401889742",
+   "doi": "https://doi.org/10.3390/info15090517",
+   "display_name": "Recurrent Neural Networks: A Comprehensive Review of Architectures, Variants, and Applications",
+   "publication_year": 2024,
+   "cited_by_count": 603,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5036808970",
+      "display_name": "Ibomoiye Domor Mienye",
+      "orcid": "https://orcid.org/0000-0001-9353-8894"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I24027795",
+       "display_name": "University of Johannesburg",
+       "country_code": "ZA"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5036607092",
+      "display_name": "Theo G. Swart",
+      "orcid": "https://orcid.org/0000-0002-1525-7728"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I24027795",
+       "display_name": "University of Johannesburg",
+       "country_code": "ZA"
+      }
+     ]
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5053034151",
+      "display_name": "George Obaido",
+      "orcid": "https://orcid.org/0000-0001-5049-9522"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    }
+   ],
+   "primary_topic": {
+    "id": "https://openalex.org/T12611",
+    "display_name": "Neural Networks and Reservoir Computing",
+    "field": {
+     "id": "https://openalex.org/fields/17",
+     "display_name": "Computer Science"
+    },
+    "domain": {
+     "id": "https://openalex.org/domains/3",
+     "display_name": "Physical Sciences"
+    }
+   }
+  },
+  {
+   "id": "https://openalex.org/W4403062911",
+   "doi": "https://doi.org/10.1038/s41586-024-07558-y",
+   "display_name": "Neuronal wiring diagram of an adult brain",
+   "publication_year": 2024,
+   "cited_by_count": 573,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5029238845",
+      "display_name": "Sven Dorkenwald",
+      "orcid": "https://orcid.org/0000-0003-2352-319X"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5067080101",
+      "display_name": "Arie Matsliah",
+      "orcid": "https://orcid.org/0009-0001-4490-2028"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5064891337",
+      "display_name": "Amy Robinson Sterling",
+      "orcid": "https://orcid.org/0000-0002-4961-3954"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5028868240",
+      "display_name": "Philipp M. Schlegel",
+      "orcid": "https://orcid.org/0000-0002-5633-1314"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I170203145",
+       "display_name": "MRC Laboratory of Molecular Biology",
+       "country_code": "GB"
+      },
+      {
+       "id": "https://openalex.org/I241749",
+       "display_name": "University of Cambridge",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5014758925",
+      "display_name": "Szi-chieh Yu",
+      "orcid": "https://orcid.org/0009-0001-9684-0156"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5000560035",
+      "display_name": "Claire E. McKellar",
+      "orcid": "https://orcid.org/0000-0002-3580-7336"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5090075554",
+      "display_name": "Albert Lin",
+      "orcid": "https://orcid.org/0000-0002-4541-5889"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5076457920",
+      "display_name": "Marta Costa",
+      "orcid": "https://orcid.org/0000-0001-5948-3092"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I241749",
+       "display_name": "University of Cambridge",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5066532705",
+      "display_name": "Katharina Eichler",
+      "orcid": "https://orcid.org/0000-0002-7833-8621"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I241749",
+       "display_name": "University of Cambridge",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5021499441",
+      "display_name": "Yijie Yin",
+      "orcid": "https://orcid.org/0000-0002-5026-2602"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I241749",
+       "display_name": "University of Cambridge",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5044409442",
+      "display_name": "William Silversmith",
+      "orcid": "https://orcid.org/0000-0002-5485-5341"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5069645949",
+      "display_name": "Casey M Schneider-Mizell",
+      "orcid": "https://orcid.org/0000-0001-9477-3853"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1314596251",
+       "display_name": "Allen Institute for Brain Science",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5112573345",
+      "display_name": "Chris S. Jordan",
+      "orcid": "https://orcid.org/0000-0003-1828-8148"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5091372341",
+      "display_name": "Derrick Brittain",
+      "orcid": "https://orcid.org/0000-0003-3890-2862"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1314596251",
+       "display_name": "Allen Institute for Brain Science",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5058688997",
+      "display_name": "Akhilesh Halageri",
+      "orcid": "https://orcid.org/0000-0001-7367-4776"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5063175680",
+      "display_name": "Kai Kuehner",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5065367769",
+      "display_name": "Oluwaseun Ogedengbe",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Ryan Morey",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5040052172",
+      "display_name": "Jay Gager",
+      "orcid": "https://orcid.org/0000-0002-8001-2604"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5025645286",
+      "display_name": "Krzysztof Kruk",
+      "orcid": "https://orcid.org/0009-0005-9305-7042"
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5001311633",
+      "display_name": "Eric Perlman",
+      "orcid": "https://orcid.org/0000-0001-5542-1302"
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5032223753",
+      "display_name": "Runzhe Yang",
+      "orcid": "https://orcid.org/0000-0001-8891-5149"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5001327214",
+      "display_name": "David S. Deutsch",
+      "orcid": "https://orcid.org/0000-0002-8587-2435"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I91203450",
+       "display_name": "University of Haifa",
+       "country_code": "IL"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5054500131",
+      "display_name": "Doug Bland",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5010042810",
+      "display_name": "Marissa Sorek",
+      "orcid": "https://orcid.org/0009-0008-7636-0746"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5036614566",
+      "display_name": "Ran Lu",
+      "orcid": "https://orcid.org/0000-0002-2077-8165"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5021620351",
+      "display_name": "Thomas Macrina",
+      "orcid": "https://orcid.org/0000-0002-0622-9338"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5101950460",
+      "display_name": "Kisuk Lee",
+      "orcid": "https://orcid.org/0000-0001-5707-0155"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I63966007",
+       "display_name": "Massachusetts Institute of Technology",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5100780771",
+      "display_name": "J. Alexander Bae",
+      "orcid": "https://orcid.org/0000-0002-4681-6342"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5055548214",
+      "display_name": "Shang Mu",
+      "orcid": "https://orcid.org/0000-0003-0393-467X"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5085902184",
+      "display_name": "Barak Nehoran",
+      "orcid": "https://orcid.org/0000-0001-7371-0829"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5074009646",
+      "display_name": "Eric Mitchell",
+      "orcid": "https://orcid.org/0000-0002-7487-1744"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5011749657",
+      "display_name": "Sergiy Popovych",
+      "orcid": "https://orcid.org/0000-0002-6158-9782"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5047394906",
+      "display_name": "Jingpeng Wu",
+      "orcid": "https://orcid.org/0000-0003-1604-8802"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5102854276",
+      "display_name": "Zhen Jia",
+      "orcid": "https://orcid.org/0000-0003-3543-2324"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5032904789",
+      "display_name": "Manuel A Castro",
+      "orcid": "https://orcid.org/0000-0001-9569-6116"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5047052635",
+      "display_name": "Nico Kemnitz",
+      "orcid": "https://orcid.org/0000-0002-0260-4532"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5000580352",
+      "display_name": "Dodam Ih",
+      "orcid": "https://orcid.org/0000-0002-0295-8445"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5072640739",
+      "display_name": "Alexander Shakeel Bates",
+      "orcid": "https://orcid.org/0000-0002-1195-0445"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I136199984",
+       "display_name": "Harvard University",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I170203145",
+       "display_name": "MRC Laboratory of Molecular Biology",
+       "country_code": "GB"
+      },
+      {
+       "id": "https://openalex.org/I40120149",
+       "display_name": "University of Oxford",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5012550882",
+      "display_name": "Nils Eckstein",
+      "orcid": "https://orcid.org/0000-0003-2226-8174"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1344073410",
+       "display_name": "Howard Hughes Medical Institute",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I195573530",
+       "display_name": "Janelia Research Campus",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5035652164",
+      "display_name": "Jan Funke",
+      "orcid": "https://orcid.org/0000-0003-4388-7783"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1344073410",
+       "display_name": "Howard Hughes Medical Institute",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I195573530",
+       "display_name": "Janelia Research Campus",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5087655102",
+      "display_name": "Forrest Collman",
+      "orcid": "https://orcid.org/0000-0002-0280-7022"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1314596251",
+       "display_name": "Allen Institute for Brain Science",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5057532346",
+      "display_name": "Davi D. Bock",
+      "orcid": "https://orcid.org/0000-0002-8218-7926"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I111236770",
+       "display_name": "University of Vermont",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5055440525",
+      "display_name": "Gregory S.X.E. Jefferis",
+      "orcid": "https://orcid.org/0000-0002-0587-9355"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I170203145",
+       "display_name": "MRC Laboratory of Molecular Biology",
+       "country_code": "GB"
+      },
+      {
+       "id": "https://openalex.org/I241749",
+       "display_name": "University of Cambridge",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5044273339",
+      "display_name": "H. Sebastian Seung",
+      "orcid": "https://orcid.org/0000-0002-8591-6733"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5078606916",
+      "display_name": "Mala Murthy",
+      "orcid": "https://orcid.org/0000-0003-3063-3389"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Zairene Lenizo",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Austin T. Burke",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Kyle Patrick Willie",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Nikitas Serafetinidis",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Nashra Hadjerol",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Ryan Willie",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Ben Silverman",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "John Anthony Ocho",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Joshua Bañez",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Rey Adrian Candilada",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Anne Kristiansen",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Nelsie Panes",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Arti Yadav",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Remer Tancontian",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Shirleyjoy Serona",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Jet Ivan Dolorosa",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Kendrick Joules Vinson",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Dustin Garner",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I154570441",
+       "display_name": "University of California, Santa Barbara",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Regine Salem",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Ariel Dagohoy",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Jaime Skelton",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Mendell Lopez",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Laia Serratosa Capdevila",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I241749",
+       "display_name": "University of Cambridge",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Griffin Badalamente",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I241749",
+       "display_name": "University of Cambridge",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5119153053",
+      "display_name": "Tom Stocks",
+      "orcid": "https://orcid.org/0000-0003-0290-1630"
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Anjali Pandey",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Darrel Jay Akiatan",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "James Hebditch",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Celia David",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I20089843",
+       "display_name": "Princeton University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Dharini Sapkal",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Shaina Mae Monungolh",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Varun Sane",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I241749",
+       "display_name": "University of Cambridge",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Mark Lloyd Pielago",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Miguel Albero",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Jacquilyn Laude",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Márcia dos Santos",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I241749",
+       "display_name": "University of Cambridge",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Zeba Vohra",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Kaiyu Wang",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1344073410",
+       "display_name": "Howard Hughes Medical Institute",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I195573530",
+       "display_name": "Janelia Research Campus",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Allien Mae Gogo",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Emil Kind",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I75951250",
+       "display_name": "Freie Universität Berlin",
+       "country_code": "DE"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Alvin Josh Mandahay",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Chereb Martinez",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "John David Asis",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Chitra Nair",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Dhwani Patel",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Marchan Manaytay",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Imaan F. M. Tamimi",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I241749",
+       "display_name": "University of Cambridge",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Clyde Angelo Lim",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Philip Lenard Ampo",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Michelle Darapan Pantujan",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Alexandre Javier",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I241749",
+       "display_name": "University of Cambridge",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Daril Bautista",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Rashmita Rana",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Jansen Seguido",
+      "orcid": null
+     },
+     "institutions": []
+    }
+   ],
+   "primary_topic": {
+    "id": "https://openalex.org/T10423",
+    "display_name": "Neurobiology and Insect Physiology Research",
+    "field": {
+     "id": "https://openalex.org/fields/28",
+     "display_name": "Neuroscience"
+    },
+    "domain": {
+     "id": "https://openalex.org/domains/1",
+     "display_name": "Life Sciences"
+    }
+   }
+  },
+  {
+   "id": "https://openalex.org/W4403102965",
+   "doi": "https://doi.org/10.1002/sd.3221",
+   "display_name": "AI ‐driven adaptive learning for sustainable educational transformation",
+   "publication_year": 2024,
+   "cited_by_count": 554,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5076161313",
+      "display_name": "Wadim Striełkowski",
+      "orcid": "https://orcid.org/0000-0001-6113-3841"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I205984670",
+       "display_name": "Czech University of Life Sciences Prague",
+       "country_code": "CZ"
+      },
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5021143474",
+      "display_name": "Veronika Mikhailovna Grebennikova",
+      "orcid": "https://orcid.org/0000-0003-0705-7985"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I117963711",
+       "display_name": "Kuban State University",
+       "country_code": "RU"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5092228829",
+      "display_name": "Alexander Lisovskiy",
+      "orcid": "https://orcid.org/0000-0003-1304-0792"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I211738395",
+       "display_name": "Financial University",
+       "country_code": "RU"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5107692307",
+      "display_name": "Guzalbegim Rakhimova",
+      "orcid": "https://orcid.org/0000-0002-8611-2139"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I4210109462",
+       "display_name": "Tashkent Institute of Irrigation and Agricultural Mechanization Engineers",
+       "country_code": "UZ"
+      }
+     ]
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5114239683",
+      "display_name": "Tatiana Vasileva",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I157338126",
+       "display_name": "Moscow State Pedagogical University",
+       "country_code": "RU"
+      }
+     ]
+    }
+   ],
+   "primary_topic": {
+    "id": "https://openalex.org/T14414",
+    "display_name": "Artificial Intelligence in Education",
+    "field": {
+     "id": "https://openalex.org/fields/17",
+     "display_name": "Computer Science"
+    },
+    "domain": {
+     "id": "https://openalex.org/domains/3",
+     "display_name": "Physical Sciences"
+    }
+   }
+  },
+  {
+   "id": "https://openalex.org/W4395469472",
+   "doi": "https://doi.org/10.1016/j.cell.2024.03.045",
+   "display_name": "The plant immune system: From discovery to deployment",
+   "publication_year": 2024,
+   "cited_by_count": 547,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5002834524",
+      "display_name": "Jonathan D. G. Jones",
+      "orcid": "https://orcid.org/0000-0002-4953-261X"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1118541",
+       "display_name": "University of East Anglia",
+       "country_code": "GB"
+      },
+      {
+       "id": "https://openalex.org/I2800011936",
+       "display_name": "Sainsbury Laboratory",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5080532569",
+      "display_name": "Brian J. Staskawicz",
+      "orcid": "https://orcid.org/0000-0002-9711-3962"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I4210109258",
+       "display_name": "Innovative Genomics Institute",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5082498150",
+      "display_name": "Jeffery L. Dangl",
+      "orcid": "https://orcid.org/0000-0003-3199-8654"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I114027177",
+       "display_name": "University of North Carolina at Chapel Hill",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I1344073410",
+       "display_name": "Howard Hughes Medical Institute",
+       "country_code": "US"
+      }
+     ]
+    }
+   ],
+   "primary_topic": {
+    "id": "https://openalex.org/T10076",
+    "display_name": "Plant-Microbe Interactions and Immunity",
+    "field": {
+     "id": "https://openalex.org/fields/11",
+     "display_name": "Agricultural and Biological Sciences"
+    },
+    "domain": {
+     "id": "https://openalex.org/domains/1",
+     "display_name": "Life Sciences"
+    }
+   }
+  },
+  {
+   "id": "https://openalex.org/W4402262878",
+   "doi": "https://doi.org/10.1126/science.adn3747",
+   "display_name": "Climate change exacerbates the environmental impacts of agriculture",
+   "publication_year": 2024,
+   "cited_by_count": 542,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5073299399",
+      "display_name": "Yi Yang",
+      "orcid": "https://orcid.org/0000-0002-0600-602X"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I158842170",
+       "display_name": "Chongqing University",
+       "country_code": "CN"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5023335715",
+      "display_name": "David Tilman",
+      "orcid": "https://orcid.org/0000-0001-6395-7676"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I130238516",
+       "display_name": "University of Minnesota",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I154570441",
+       "display_name": "University of California, Santa Barbara",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5078798454",
+      "display_name": "Zhenong Jin",
+      "orcid": "https://orcid.org/0000-0002-1252-2514"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I130238516",
+       "display_name": "University of Minnesota",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5028843362",
+      "display_name": "Pete Smith",
+      "orcid": "https://orcid.org/0000-0002-3784-1124"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I195460627",
+       "display_name": "University of Aberdeen",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5088542979",
+      "display_name": "Christopher B. Barrett",
+      "orcid": "https://orcid.org/0000-0001-9139-2721"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I205783295",
+       "display_name": "Cornell University",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I4387155861",
+       "display_name": "Cornell Atkinson Center for Sustainability",
+       "country_code": null
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5100434325",
+      "display_name": "Yong‐Guan Zhu",
+      "orcid": "https://orcid.org/0000-0003-3861-8482"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I19820366",
+       "display_name": "Chinese Academy of Sciences",
+       "country_code": "CN"
+      },
+      {
+       "id": "https://openalex.org/I4210119653",
+       "display_name": "Institute of Urban Environment",
+       "country_code": "CN"
+      },
+      {
+       "id": "https://openalex.org/I4210144289",
+       "display_name": "Research Center for Eco-Environmental Sciences",
+       "country_code": "CN"
+      },
+      {
+       "id": "https://openalex.org/I4387153223",
+       "display_name": "State Key Laboratory of Urban and Regional Ecology",
+       "country_code": null
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5067072535",
+      "display_name": "Jennifer Anne Burney",
+      "orcid": "https://orcid.org/0000-0003-3532-2934"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I150209017",
+       "display_name": "Scripps Institution of Oceanography",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I36258959",
+       "display_name": "University of California San Diego",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5006449807",
+      "display_name": "Paolo D’Odorico",
+      "orcid": "https://orcid.org/0000-0002-0007-5833"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5072730205",
+      "display_name": "Peter Fantke",
+      "orcid": "https://orcid.org/0000-0001-7148-6982"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I96673099",
+       "display_name": "Technical University of Denmark",
+       "country_code": "DK"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5032617635",
+      "display_name": "Joseph Fargione",
+      "orcid": "https://orcid.org/0000-0002-0636-5380"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1280640908",
+       "display_name": "The Nature Conservancy",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5057863865",
+      "display_name": "Jacques C. Finlay",
+      "orcid": "https://orcid.org/0000-0002-7968-7030"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I130238516",
+       "display_name": "University of Minnesota",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5089701851",
+      "display_name": "Maria Cristina Rulli",
+      "orcid": "https://orcid.org/0000-0002-9694-4262"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I93860229",
+       "display_name": "Politecnico di Milano",
+       "country_code": "IT"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5019937716",
+      "display_name": "Lindsey Sloat",
+      "orcid": "https://orcid.org/0000-0002-2986-9725"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1331321872",
+       "display_name": "World Resources Institute",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5048463460",
+      "display_name": "Kees Jan van Groenigen",
+      "orcid": "https://orcid.org/0000-0002-9165-3925"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I23923803",
+       "display_name": "University of Exeter",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5079312439",
+      "display_name": "Paul C West",
+      "orcid": "https://orcid.org/0000-0001-9024-1657"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I130238516",
+       "display_name": "University of Minnesota",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5086058723",
+      "display_name": "Lewis Hans Ziska",
+      "orcid": "https://orcid.org/0000-0002-6220-1620"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I78577930",
+       "display_name": "Columbia University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5086816554",
+      "display_name": "Anna M. Michalak",
+      "orcid": "https://orcid.org/0000-0002-6152-7979"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1291425158",
+       "display_name": "Google (United States)",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I196817621",
+       "display_name": "Carnegie Institution for Science",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I97018004",
+       "display_name": "Stanford University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "the Clim-Ag Team",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I97018004",
+       "display_name": "Stanford University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5026642372",
+      "display_name": "David B. Lobell",
+      "orcid": "https://orcid.org/0000-0002-5969-3476"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I158842170",
+       "display_name": "Chongqing University",
+       "country_code": "CN"
+      },
+      {
+       "id": "https://openalex.org/I97018004",
+       "display_name": "Stanford University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5110661012",
+      "display_name": "Michael Clark",
+      "orcid": "https://orcid.org/0000-0001-7161-7751"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I158842170",
+       "display_name": "Chongqing University",
+       "country_code": "CN"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5078492058",
+      "display_name": "Jed B. Colquhoun",
+      "orcid": "https://orcid.org/0000-0002-8160-293X"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I158842170",
+       "display_name": "Chongqing University",
+       "country_code": "CN"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5103217233",
+      "display_name": "Teevrat Garg",
+      "orcid": "https://orcid.org/0000-0003-4139-9508"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I130238516",
+       "display_name": "University of Minnesota",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I158842170",
+       "display_name": "Chongqing University",
+       "country_code": "CN"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5031918844",
+      "display_name": "Karen A. Garrett",
+      "orcid": "https://orcid.org/0000-0002-6578-1616"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I130238516",
+       "display_name": "University of Minnesota",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I154570441",
+       "display_name": "University of California, Santa Barbara",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5082581740",
+      "display_name": "Camilla Geels",
+      "orcid": "https://orcid.org/0000-0003-2549-1750"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I130238516",
+       "display_name": "University of Minnesota",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I154570441",
+       "display_name": "University of California, Santa Barbara",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5013096320",
+      "display_name": "Rebecca R. Hernandez",
+      "orcid": "https://orcid.org/0000-0002-8031-2949"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I130238516",
+       "display_name": "University of Minnesota",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I195460627",
+       "display_name": "University of Aberdeen",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5013702236",
+      "display_name": "Mario Herrero",
+      "orcid": "https://orcid.org/0000-0002-7741-5090"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I195460627",
+       "display_name": "University of Aberdeen",
+       "country_code": "GB"
+      },
+      {
+       "id": "https://openalex.org/I205783295",
+       "display_name": "Cornell University",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I4387155861",
+       "display_name": "Cornell Atkinson Center for Sustainability",
+       "country_code": null
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5022853397",
+      "display_name": "W. D. Hutchison",
+      "orcid": "https://orcid.org/0000-0001-9605-2996"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I19820366",
+       "display_name": "Chinese Academy of Sciences",
+       "country_code": "CN"
+      },
+      {
+       "id": "https://openalex.org/I205783295",
+       "display_name": "Cornell University",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I4210119653",
+       "display_name": "Institute of Urban Environment",
+       "country_code": "CN"
+      },
+      {
+       "id": "https://openalex.org/I4387155861",
+       "display_name": "Cornell Atkinson Center for Sustainability",
+       "country_code": null
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5076289066",
+      "display_name": "Meha Jain",
+      "orcid": "https://orcid.org/0000-0002-6821-473X"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I19820366",
+       "display_name": "Chinese Academy of Sciences",
+       "country_code": "CN"
+      },
+      {
+       "id": "https://openalex.org/I4210119653",
+       "display_name": "Institute of Urban Environment",
+       "country_code": "CN"
+      },
+      {
+       "id": "https://openalex.org/I4210144289",
+       "display_name": "Research Center for Eco-Environmental Sciences",
+       "country_code": "CN"
+      },
+      {
+       "id": "https://openalex.org/I4387153223",
+       "display_name": "State Key Laboratory of Urban and Regional Ecology",
+       "country_code": null
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5000252820",
+      "display_name": "Jacob M. Jungers",
+      "orcid": "https://orcid.org/0000-0001-8954-7325"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I19820366",
+       "display_name": "Chinese Academy of Sciences",
+       "country_code": "CN"
+      },
+      {
+       "id": "https://openalex.org/I36258959",
+       "display_name": "University of California San Diego",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I4210144289",
+       "display_name": "Research Center for Eco-Environmental Sciences",
+       "country_code": "CN"
+      },
+      {
+       "id": "https://openalex.org/I4387153223",
+       "display_name": "State Key Laboratory of Urban and Regional Ecology",
+       "country_code": null
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Beibei Liu",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I150209017",
+       "display_name": "Scripps Institution of Oceanography",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I36258959",
+       "display_name": "University of California San Diego",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5071844066",
+      "display_name": "Nathaniel D. Mueller",
+      "orcid": "https://orcid.org/0000-0003-1857-5104"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I150209017",
+       "display_name": "Scripps Institution of Oceanography",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I36258959",
+       "display_name": "University of California San Diego",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5067775379",
+      "display_name": "Ariel Ortiz‐Bobea",
+      "orcid": "https://orcid.org/0000-0003-4482-6843"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5087589855",
+      "display_name": "Jacob Schewe",
+      "orcid": "https://orcid.org/0000-0001-9455-4159"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I96673099",
+       "display_name": "Technical University of Denmark",
+       "country_code": "DK"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5081438845",
+      "display_name": "Jie Song",
+      "orcid": "https://orcid.org/0000-0001-6543-1053"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1280640908",
+       "display_name": "The Nature Conservancy",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I96673099",
+       "display_name": "Technical University of Denmark",
+       "country_code": "DK"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5038067633",
+      "display_name": "Julie Verheyen",
+      "orcid": "https://orcid.org/0000-0001-7496-5137"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1280640908",
+       "display_name": "The Nature Conservancy",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I96673099",
+       "display_name": "Technical University of Denmark",
+       "country_code": "DK"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5085091009",
+      "display_name": "Peter M. Vitousek",
+      "orcid": "https://orcid.org/0000-0003-4933-2666"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I130238516",
+       "display_name": "University of Minnesota",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I93860229",
+       "display_name": "Politecnico di Milano",
+       "country_code": "IT"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5032181031",
+      "display_name": "Yoshihide Wada",
+      "orcid": "https://orcid.org/0000-0003-4770-2539"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1331321872",
+       "display_name": "World Resources Institute",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I93860229",
+       "display_name": "Politecnico di Milano",
+       "country_code": "IT"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5055554238",
+      "display_name": "Longlong Xia",
+      "orcid": "https://orcid.org/0000-0003-4026-4265"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1331321872",
+       "display_name": "World Resources Institute",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I23923803",
+       "display_name": "University of Exeter",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5101791132",
+      "display_name": "Xin Zhang",
+      "orcid": "https://orcid.org/0000-0002-5019-5729"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I130238516",
+       "display_name": "University of Minnesota",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I23923803",
+       "display_name": "University of Exeter",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5022828298",
+      "display_name": "Minghao Zhuang",
+      "orcid": "https://orcid.org/0000-0003-0049-2570"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I130238516",
+       "display_name": "University of Minnesota",
+       "country_code": "US"
+      }
+     ]
+    }
+   ],
+   "primary_topic": {
+    "id": "https://openalex.org/T10439",
+    "display_name": "Climate change impacts on agriculture",
+    "field": {
+     "id": "https://openalex.org/fields/11",
+     "display_name": "Agricultural and Biological Sciences"
+    },
+    "domain": {
+     "id": "https://openalex.org/domains/1",
+     "display_name": "Life Sciences"
+    }
+   }
+  }
+ ],
+ "group_by": []
+}

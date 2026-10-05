@@ -1,0 +1,29 @@
+{
+ "files": {
+  "openalex_page1.json": "034b02b09605e0075b1c1bdffac58c6498cde84293608413c37215998977c641",
+  "openalex_page2.json": "d373c11872507fd521dd95917fd6244e6da3e8b6093557e87e81698da38271b2"
+ },
+ "retrieved_at_utc": "2026-10-05T23:28:27Z",
+ "method": "GET",
+ "endpoint": "https://api.openalex.org/works",
+ "parameters": {
+  "filter": "institutions.id:I95457486,publication_year:2024,has_abstract:true",
+  "per_page": 5,
+  "select": "id,doi,display_name,publication_year,cited_by_count,authorships,primary_topic",
+  "cursor": "* for page 1; page 1's meta.next_cursor for page 2"
+ },
+ "response_status": [
+  200,
+  200
+ ],
+ "authentication_used": false,
+ "coverage_statement": "The ten most-cited works in OpenAlex with at least one UC Berkeley-affiliated authorship, publication year 2024, and an abstract, as ranked on the retrieval date.",
+ "construction_notes": [
+  "Both files keep the shape of an OpenAlex list reply: meta, results, group_by.",
+  "meta keeps count, db_response_time_ms, page, per_page, next_cursor and groups_count; the long x_query entry and cost_usd are left out.",
+  "Each work keeps id, doi, display_name, publication_year, cited_by_count, authorships and primary_topic.",
+  "Each authorship keeps author_position, the author's id, display_name and orcid, and each institution's id, display_name and country_code. Nothing was added or changed; OpenAlex lists at most 100 authorships per work in a list reply.",
+  "primary_topic keeps id, display_name, field and domain.",
+  "OpenAlex records change over time; these files are the fixed copy the workspace checks answers against."
+ ]
+}

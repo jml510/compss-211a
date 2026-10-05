@@ -1,0 +1,854 @@
+{
+ "meta": {
+  "count": 11207,
+  "db_response_time_ms": 37,
+  "page": null,
+  "per_page": 5,
+  "next_cursor": "IlsxMDAuMCwgNzAwLCAnaHR0cHM6Ly9vcGVuYWxleC5vcmcvVzQzOTExNjA2ODInXSI=",
+  "groups_count": null
+ },
+ "results": [
+  {
+   "id": "https://openalex.org/W4400089962",
+   "doi": "https://doi.org/10.1002/alz.13859",
+   "display_name": "Revised criteria for diagnosis and staging of Alzheimer's disease: Alzheimer's Association Workgroup",
+   "publication_year": 2024,
+   "cited_by_count": 2724,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5005099850",
+      "display_name": "Clifford R. Jack",
+      "orcid": "https://orcid.org/0000-0001-7916-622X"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1330342723",
+       "display_name": "Mayo Clinic",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5113447339",
+      "display_name": "Jeffrey Scott Andrews",
+      "orcid": "https://orcid.org/0009-0001-5516-7719"
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5072613176",
+      "display_name": "Thomas G. Beach",
+      "orcid": "https://orcid.org/0000-0003-3296-6128"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I4210145600",
+       "display_name": "Banner Sun Health Research Institute",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5066655367",
+      "display_name": "Teresa Buracchio",
+      "orcid": "https://orcid.org/0009-0006-4608-4512"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1320320070",
+       "display_name": "United States Food and Drug Administration",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5023830624",
+      "display_name": "Billy Dunn",
+      "orcid": "https://orcid.org/0000-0002-4314-5993"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I2802508227",
+       "display_name": "Michael J. Fox Foundation",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5108200803",
+      "display_name": "Ana Graf",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1283582996",
+       "display_name": "Novartis (Switzerland)",
+       "country_code": "CH"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5049277633",
+      "display_name": "Oskar Hansson",
+      "orcid": "https://orcid.org/0000-0001-8467-7286"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I187531555",
+       "display_name": "Lund University",
+       "country_code": "SE"
+      },
+      {
+       "id": "https://openalex.org/I4210137844",
+       "display_name": "Skåne University Hospital",
+       "country_code": "SE"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5005868870",
+      "display_name": "Carole Ho",
+      "orcid": "https://orcid.org/0000-0003-3623-8267"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I4210097160",
+       "display_name": "Denali Therapeutics (United States)",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5061269385",
+      "display_name": "William J. Jagust",
+      "orcid": "https://orcid.org/0000-0002-4458-113X"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5068373508",
+      "display_name": "Eric McDade",
+      "orcid": "https://orcid.org/0000-0002-6764-3866"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I204465549",
+       "display_name": "Washington University in St. Louis",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5036068671",
+      "display_name": "José Luís Molinuevo",
+      "orcid": "https://orcid.org/0000-0003-0485-6001"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I133593841",
+       "display_name": "Lundbeck (Denmark)",
+       "country_code": "DK"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5102750078",
+      "display_name": "Ozioma C. Okonkwo",
+      "orcid": "https://orcid.org/0009-0009-8764-811X"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I135310074",
+       "display_name": "University of Wisconsin–Madison",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5014569398",
+      "display_name": "Luca Pani",
+      "orcid": "https://orcid.org/0000-0001-9273-2839"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I145608581",
+       "display_name": "University of Miami",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5026799001",
+      "display_name": "Michael S. Rafii",
+      "orcid": "https://orcid.org/0000-0003-2640-2094"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1174212",
+       "display_name": "University of Southern California",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5025870220",
+      "display_name": "Philip Scheltens",
+      "orcid": "https://orcid.org/0000-0002-1046-6408"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I4210151833",
+       "display_name": "Amsterdam University Medical Centers",
+       "country_code": "NL"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5080609944",
+      "display_name": "Eric Siemers",
+      "orcid": "https://orcid.org/0000-0001-7125-1550"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I4210160595",
+       "display_name": "Acumen Pharmaceuticals (United States)",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5001912833",
+      "display_name": "Heather M. Snyder",
+      "orcid": "https://orcid.org/0000-0002-7665-7696"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1279571640",
+       "display_name": "Alzheimer's Association",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5001795846",
+      "display_name": "Reisa Anne Sperling",
+      "orcid": "https://orcid.org/0000-0003-1535-6133"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1283280774",
+       "display_name": "Brigham and Women's Hospital",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I136199984",
+       "display_name": "Harvard University",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I4210087915",
+       "display_name": "Massachusetts General Hospital",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5075394738",
+      "display_name": "Charlotte Elisabeth Teunissen",
+      "orcid": "https://orcid.org/0000-0002-4061-0837"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I4210151833",
+       "display_name": "Amsterdam University Medical Centers",
+       "country_code": "NL"
+      }
+     ]
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5104507840",
+      "display_name": "Marı́a C. Carrillo",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1279571640",
+       "display_name": "Alzheimer's Association",
+       "country_code": "US"
+      }
+     ]
+    }
+   ],
+   "primary_topic": {
+    "id": "https://openalex.org/T10009",
+    "display_name": "Dementia and Cognitive Impairment Research",
+    "field": {
+     "id": "https://openalex.org/fields/27",
+     "display_name": "Medicine"
+    },
+    "domain": {
+     "id": "https://openalex.org/domains/4",
+     "display_name": "Health Sciences"
+    }
+   }
+  },
+  {
+   "id": "https://openalex.org/W3196836501",
+   "doi": "https://doi.org/10.1093/restud/rdae007",
+   "display_name": "Revisiting Event-Study Designs: Robust and Efficient Estimation",
+   "publication_year": 2024,
+   "cited_by_count": 2137,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5043376121",
+      "display_name": "Kirill Borusyak",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1279858714",
+       "display_name": "Center for Economic and Policy Research",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5060513804",
+      "display_name": "Xavier Jaravel",
+      "orcid": "https://orcid.org/0000-0001-9228-2137"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1279858714",
+       "display_name": "Center for Economic and Policy Research",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I4210140326",
+       "display_name": "Centre for Economic Policy Research",
+       "country_code": "GB"
+      },
+      {
+       "id": "https://openalex.org/I909854389",
+       "display_name": "London School of Economics and Political Science",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5061755779",
+      "display_name": "Jann Spiess",
+      "orcid": "https://orcid.org/0000-0002-4120-8241"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I97018004",
+       "display_name": "Stanford University",
+       "country_code": "US"
+      }
+     ]
+    }
+   ],
+   "primary_topic": {
+    "id": "https://openalex.org/T10845",
+    "display_name": "Advanced Causal Inference Techniques",
+    "field": {
+     "id": "https://openalex.org/fields/26",
+     "display_name": "Mathematics"
+    },
+    "domain": {
+     "id": "https://openalex.org/domains/3",
+     "display_name": "Physical Sciences"
+    }
+   }
+  },
+  {
+   "id": "https://openalex.org/W4391876619",
+   "doi": "https://doi.org/10.1162/tacl_a_00638",
+   "display_name": "Lost in the Middle: How Language Models Use Long Contexts",
+   "publication_year": 2024,
+   "cited_by_count": 1370,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5031981513",
+      "display_name": "Nelson F. Liu",
+      "orcid": null
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I97018004",
+       "display_name": "Stanford University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5074764224",
+      "display_name": "Kevin Lin",
+      "orcid": "https://orcid.org/0000-0002-1236-9847"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5075075495",
+      "display_name": "John Hewitt",
+      "orcid": "https://orcid.org/0000-0003-1320-6633"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I97018004",
+       "display_name": "Stanford University",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5067264969",
+      "display_name": "Ashwin Paranjape",
+      "orcid": "https://orcid.org/0009-0009-6294-6129"
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": null,
+      "display_name": "Michele Bevilacqua",
+      "orcid": null
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5093091829",
+      "display_name": "Fabio Petroni",
+      "orcid": "https://orcid.org/0009-0005-5996-9830"
+     },
+     "institutions": []
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5025255782",
+      "display_name": "Percy Liang",
+      "orcid": "https://orcid.org/0000-0002-0458-6139"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I97018004",
+       "display_name": "Stanford University",
+       "country_code": "US"
+      }
+     ]
+    }
+   ],
+   "primary_topic": {
+    "id": "https://openalex.org/T10028",
+    "display_name": "Topic Modeling",
+    "field": {
+     "id": "https://openalex.org/fields/17",
+     "display_name": "Computer Science"
+    },
+    "domain": {
+     "id": "https://openalex.org/domains/3",
+     "display_name": "Physical Sciences"
+    }
+   }
+  },
+  {
+   "id": "https://openalex.org/W4391836235",
+   "doi": "https://doi.org/10.1038/s41467-024-45563-x",
+   "display_name": "Structured information extraction from scientific text with large language models",
+   "publication_year": 2024,
+   "cited_by_count": 731,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5024396096",
+      "display_name": "John M. Dagdelen",
+      "orcid": "https://orcid.org/0000-0003-2181-4815"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I148283060",
+       "display_name": "Lawrence Berkeley National Laboratory",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5013136877",
+      "display_name": "Alexander Dunn",
+      "orcid": "https://orcid.org/0000-0002-8567-1879"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I148283060",
+       "display_name": "Lawrence Berkeley National Laboratory",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5100320214",
+      "display_name": "Sang‐Hoon Lee",
+      "orcid": "https://orcid.org/0000-0003-1710-460X"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I148283060",
+       "display_name": "Lawrence Berkeley National Laboratory",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5065640627",
+      "display_name": "Nicholas Walker",
+      "orcid": "https://orcid.org/0000-0001-6939-953X"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I148283060",
+       "display_name": "Lawrence Berkeley National Laboratory",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5086140371",
+      "display_name": "Andrew Rosen",
+      "orcid": "https://orcid.org/0000-0002-0141-7006"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I148283060",
+       "display_name": "Lawrence Berkeley National Laboratory",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5014983956",
+      "display_name": "Gerbrand Ceder",
+      "orcid": "https://orcid.org/0000-0001-9275-3605"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I148283060",
+       "display_name": "Lawrence Berkeley National Laboratory",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5037535334",
+      "display_name": "Kristin Aslaug Persson",
+      "orcid": "https://orcid.org/0000-0003-2495-5509"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I148283060",
+       "display_name": "Lawrence Berkeley National Laboratory",
+       "country_code": "US"
+      },
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5003640520",
+      "display_name": "Anubhav Jain",
+      "orcid": "https://orcid.org/0000-0001-5893-9967"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I148283060",
+       "display_name": "Lawrence Berkeley National Laboratory",
+       "country_code": "US"
+      }
+     ]
+    }
+   ],
+   "primary_topic": {
+    "id": "https://openalex.org/T11948",
+    "display_name": "Machine Learning in Materials Science",
+    "field": {
+     "id": "https://openalex.org/fields/25",
+     "display_name": "Materials Science"
+    },
+    "domain": {
+     "id": "https://openalex.org/domains/3",
+     "display_name": "Physical Sciences"
+    }
+   }
+  },
+  {
+   "id": "https://openalex.org/W4391160682",
+   "doi": "https://doi.org/10.1038/s41586-023-06879-8",
+   "display_name": "Rapid groundwater decline and some cases of recovery in aquifers globally",
+   "publication_year": 2024,
+   "cited_by_count": 700,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5063099113",
+      "display_name": "Scott Jasechko",
+      "orcid": "https://orcid.org/0000-0001-6470-7708"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I154570441",
+       "display_name": "University of California, Santa Barbara",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5082127391",
+      "display_name": "Hansjörg Seybold",
+      "orcid": "https://orcid.org/0000-0002-3793-1904"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I35440088",
+       "display_name": "ETH Zurich",
+       "country_code": "CH"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5045402093",
+      "display_name": "Debra Perrone",
+      "orcid": "https://orcid.org/0000-0002-4268-8478"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I154570441",
+       "display_name": "University of California, Santa Barbara",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5061206621",
+      "display_name": "Ying Fan",
+      "orcid": "https://orcid.org/0000-0002-0024-7965"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I102322142",
+       "display_name": "Rutgers, The State University of New Jersey",
+       "country_code": "US"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5038814265",
+      "display_name": "Mohammad Shamsudduha",
+      "orcid": "https://orcid.org/0000-0002-9708-7223"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I45129253",
+       "display_name": "University College London",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5023569183",
+      "display_name": "Richard G. Taylor",
+      "orcid": "https://orcid.org/0000-0002-9867-8033"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I45129253",
+       "display_name": "University College London",
+       "country_code": "GB"
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5063611559",
+      "display_name": "Othman Abdurrahman Fallatah",
+      "orcid": "https://orcid.org/0000-0001-6189-9767"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I185163786",
+       "display_name": "King Abdulaziz University",
+       "country_code": "SA"
+      }
+     ]
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5090344707",
+      "display_name": "James W. Kirchner",
+      "orcid": "https://orcid.org/0000-0001-6577-3619"
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I2800262456",
+       "display_name": "Swiss Federal Institute for Forest, Snow and Landscape Research",
+       "country_code": "CH"
+      },
+      {
+       "id": "https://openalex.org/I35440088",
+       "display_name": "ETH Zurich",
+       "country_code": "CH"
+      },
+      {
+       "id": "https://openalex.org/I95457486",
+       "display_name": "University of California, Berkeley",
+       "country_code": "US"
+      }
+     ]
+    }
+   ],
+   "primary_topic": {
+    "id": "https://openalex.org/T10398",
+    "display_name": "Groundwater and Isotope Geochemistry",
+    "field": {
+     "id": "https://openalex.org/fields/19",
+     "display_name": "Earth and Planetary Sciences"
+    },
+    "domain": {
+     "id": "https://openalex.org/domains/3",
+     "display_name": "Physical Sciences"
+    }
+   }
+  }
+ ],
+ "group_by": []
+}
