@@ -46,8 +46,6 @@ Otherwise it is 0. The full definitions are in [USDA's reference guide](https://
 
 The flag works like `is_open` in step 7 of the SQL workspace: its sum is the number of flagged tracts, and its average is the share of tracts that are flagged.
 
-Work in pairs.
-
 ### 1. Start DuckDB and load the data
 
 In GitHub Desktop, pull the latest course files. In VS Code, open `food_access.sql` in this folder and save a copy as `food_access_mine.sql` in the same folder. You will write your queries in this copy. Git ignores it, so pulling course updates does not change it.
@@ -66,13 +64,25 @@ CREATE TABLE tracts AS SELECT * FROM '../../data/week05_food_access_tracts.csv';
 CREATE TABLE counties AS SELECT * FROM '../../data/week05_ca_counties.csv';
 ```
 
-Copy them from your file and paste them at the DuckDB prompt one at a time, pressing Enter after each. Then look at a few rows of each table, for example `SELECT * FROM tracts LIMIT 5;`. You can type a short query like this one straight at the prompt.
+Copy them from your file and paste them at the DuckDB prompt one at a time, pressing Enter after each.
+
+Before writing your answers, inspect the data. Run these commands one at a time at the DuckDB prompt:
+
+```sql
+SHOW TABLES;
+DESCRIBE counties;
+DESCRIBE tracts;
+SELECT * FROM counties LIMIT 5;
+SELECT * FROM tracts LIMIT 5;
+```
+
+`SHOW TABLES` lists the tables. `DESCRIBE` shows a table's column names and data types. These inspection commands work in DuckDB; SQLite uses different commands. `SELECT * ... LIMIT 5` previews up to five records and works in both systems. 
 
 End each query with a semicolon. `.quit` closes DuckDB. If DuckDB says `No files found`, you started it in another folder: type `.quit`, run the `cd` command above, and start again.
 
 ### 2. Answer three questions
 
-Write each query in `food_access_mine.sql`, under the question it answers. To run it, copy it from the file, paste it at the DuckDB prompt and press Enter. If it gives an error or an unexpected result, fix it in the file and paste it again.
+Write each query in `food_access_mine.sql`, under the appropriate question. To run it, copy it from the file, paste it at the DuckDB prompt and press Enter. If it gives an error or an unexpected result, fix it in the file and paste it again.
 
 1. How many tracts are there, and how many of them are flagged? You should get 9,109 and 426.
 2. Which five counties have the most flagged tracts? The county names are in `counties`, so you need both tables. The first is Riverside County, with 67.
