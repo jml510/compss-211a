@@ -275,7 +275,7 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "Lab 5 — Convert district lookup keys, preserve request IDs as text, and explain why types matter.",
+    "practice": "Lab 5 setup — Load request IDs as text and district numbers as whole numbers that can be missing.",
     "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lab/lab05_sql_from_python.ipynb"
   },
   {
@@ -286,7 +286,7 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "Lab 5 — Left join district labels, preserve request IDs, and inspect unmatched requests.",
+    "practice": "Lab 5 §4 — Left join district names in pandas and in SQL, then check the row count and the unmatched requests.",
     "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lab/lab05_sql_from_python.ipynb"
   },
   {
@@ -308,7 +308,7 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "Lab 5 — Inspect SF311 request IDs, types, missing channels, categories, and dates.",
+    "practice": "Lab 5 — Check that each request ID appears once, list the channels, and count the requests with no district.",
     "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lab/lab05_sql_from_python.ipynb"
   },
   {
@@ -319,7 +319,7 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "Lab 5 — Document the provisional Test exclusion while retaining missing channels.",
+    "practice": "Lab 5 setup — Leave out the Test rows, keep the rows with no channel, and print how many rows are kept.",
     "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lab/lab05_sql_from_python.ipynb"
   },
   {
@@ -330,18 +330,18 @@ export const skills = [
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "HW3 — Convert date_opened, then practise grouping request counts by day or month.",
+    "practice": "HW3 §3 — Turn date_opened into real dates with pd.to_datetime().",
     "url": "https://github.com/macss-berkeley/compss-211a/blob/main/homework/hw3_campus_edge.ipynb"
   },
   {
     "id": "sql-basics",
     "category": "Working with data",
     "title": "SQL basics",
-    "description": "Adapt SELECT, WHERE, GROUP BY, and ORDER BY queries in Python. Read an optional SQL join and compare results with pandas.",
+    "description": "Write SELECT, WHERE, GROUP BY, ORDER BY, and JOIN queries, and compare the results with pandas.",
     "weeks": "Week 5",
     "releaseWeek": 5,
     "activity": null,
-    "practice": "Lab 5 — Run SQLite queries from Python; count Phone requests by district and check missing groups.",
+    "practice": "Lab 5 — Run the week's SQL from Python: filter rows, count groups, find missing values, and join two tables.",
     "url": "https://github.com/macss-berkeley/compss-211a/blob/main/lab/lab05_sql_from_python.ipynb"
   },
   {
